@@ -1,7 +1,24 @@
 ﻿@page "/"
+@using System.Text.Json
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Login page</h1>
 
-Welcome to your new app.
+<InputText @bind-Value = "email" placeholder = "Enter email address"/>
+
+<button @onclick="() => addUser(email)">Log in</button>
+
+@code{
+    private string email = String.Empty;
+    private async Task addUser(string email)
+    {
+        Console.WriteLine(email);
+        var jsonContent = JsonSerializer.Serialize(email);
+        // try
+        // {
+        // var response = await Http.PostAsync("");
+        // }
+    }
+}
