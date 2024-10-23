@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\SEP3\\SEP3\\Doctor\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Doctor.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Doctor.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\SEP3\\SEP3\\Doctor\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\SEP3\\SEP3\\Doctor\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\SEP3\\SEP3\\Doctor\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\SEP3\\SEP3\\Doctor\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Doctor.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Doctor.props",
+      "PackagePath": "build\\Doctor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Doctor.props",
+      "PackagePath": "buildMultiTargeting\\Doctor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Doctor.props",
+      "PackagePath": "buildTransitive\\Doctor.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
