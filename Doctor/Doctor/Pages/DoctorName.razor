@@ -1,0 +1,35 @@
+﻿@page "/DoctorName"
+@inject HttpClient Http
+
+<h3>Blazor REST Client</h3>
+
+<p>Enter your name:</p>
+<input @bind="name" placeholder="Enter your name" />
+<button @onclick="SendGreeting">Send</button>
+
+@if (!string.IsNullOrEmpty(responseMessage))
+{
+    <p>Server Response: @responseMessage</p>
+}
+
+@code {
+    private string name;
+    private string responseMessage;
+
+    private async Task SendGreeting()
+    {
+        if (!string.IsNullOrEmpty(name))
+        {
+            try
+            {
+                // Send GET request to the server
+                string requestUrl = $"http://localhost:8080/api/doctorname/name?name={name}";
+                responseMessage = await Http.GetStringAsync(requestUrl);
+            }
+            catch (Exception ex)
+            {
+                responseMessage = $"Error: {ex.Message}";
+            }
+        }
+    }
+}
