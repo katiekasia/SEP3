@@ -1,6 +1,7 @@
+package via.pro3.mainserver;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 
 public class EventRepository {
