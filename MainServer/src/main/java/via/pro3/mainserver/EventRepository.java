@@ -1,5 +1,7 @@
 package via.pro3.mainserver;
 
+import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;

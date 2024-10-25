@@ -1,5 +1,7 @@
 package via.pro3.mainserver;
 
+import org.springframework.stereotype.Repository;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
