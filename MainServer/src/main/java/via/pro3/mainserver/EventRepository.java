@@ -13,12 +13,13 @@ public class EventRepository {
         this.database = database;
     }
 
-    public synchronized void createUser(String user) {
-        String sql = "INSERT INTO users (userid, email) VALUES " +
-                "(?, ?)";
+    public synchronized void createUser(String user, String password) {
+        String sql = "INSERT INTO users (userid, email, password) VALUES " +
+                "(?, ?, ?)";
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setObject(1, UUID.randomUUID());
             statement.setString(2, user);
+            statement.setString(3, password);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -27,12 +27,13 @@ public class Server {
         blockingStub = ProtoGrpc.newBlockingStub(channel);
     }
 
-    @GetMapping("/name")
-    public String getDoctorName(@RequestParam String name) {
+    @GetMapping("/name/password")
+    public String getDoctorName(@RequestParam String name, @RequestParam String password) {
         System.out.println("Client connected at: " + LocalDateTime.now());
 
         loginRequest request = loginRequest.newBuilder()
                 .setEmail(name)
+                .setPassword(password)
                 .build();
 
         loginResponse response = blockingStub.loginDoctor(request);

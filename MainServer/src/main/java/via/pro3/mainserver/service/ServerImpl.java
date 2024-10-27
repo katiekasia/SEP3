@@ -20,11 +20,15 @@ public class ServerImpl extends ProtoGrpc.ProtoImplBase {
     @Override
     public void loginDoctor(loginRequest request, StreamObserver<loginResponse> responseObserver) {
         String name = request.getEmail().toString();
+        String password = request.getPassword().toString();
 
-        eventRepository.createUser(name);
+        eventRepository.createUser(name, password);
 
         String greeting = "Hello " + name + "!";
-        loginResponse reply = loginResponse.newBuilder().setEmail(greeting).build();
+        loginResponse reply = loginResponse.newBuilder()
+                .setEmail(greeting)
+                .setPassword(password)
+                .build();
 
         responseObserver.onNext(reply);
         responseObserver.onCompleted();

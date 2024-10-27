@@ -10,8 +10,10 @@ service Proto {
 
 message loginRequest {
     string email = 1;
+    string password = 2;
 }
 
 message loginResponse {
     string email = 1;
+    string password = 2;
 }
