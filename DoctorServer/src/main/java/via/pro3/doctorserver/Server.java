@@ -20,7 +20,7 @@ public class Server {
 
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress("localhost", 9090)
                 .usePlaintext()
                 .build();
 

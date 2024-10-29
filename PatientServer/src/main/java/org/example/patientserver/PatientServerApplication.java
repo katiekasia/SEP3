@@ -1,4 +1,4 @@
-package via.pro3.patientserver;
+package org.example.patientserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,5 +10,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
   {
     SpringApplication.run(PatientServerApplication.class, args);
   }
-//new
+
 }
