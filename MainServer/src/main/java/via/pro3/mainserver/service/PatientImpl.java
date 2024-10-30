@@ -1,14 +1,13 @@
 package via.pro3.mainserver.service;
 
 import io.grpc.stub.StreamObserver;
-import patient.grpc.Patient;
-import patient.grpc.PatientProtoGrpc;
-import patient.grpc.dataRequest;
+import patient.grpc.PatientBookingGrpc;
+import patient.grpc.bookingRequest;
 import patient.grpc.DBresponse;
 import via.pro3.mainserver.DatabaseSingleton;
 import via.pro3.mainserver.EventRepository;
 
-public class PatientImpl extends PatientProtoGrpc.PatientProtoImplBase{
+public class PatientImpl extends PatientBookingGrpc.PatientBookingImplBase{
   private final EventRepository eventRepository;
 
   public PatientImpl()
@@ -18,14 +17,15 @@ public class PatientImpl extends PatientProtoGrpc.PatientProtoImplBase{
   }
 
   @Override
-  public void fetchData(dataRequest request, StreamObserver<DBresponse> responseObserver)
+  public void bookAppointment(bookingRequest request, StreamObserver<DBresponse> responseObserver)
   {
-    String name = request.getEmail().toString();
+    String dateAndTime = request.getDateAndTime().toString();
 
     //
-    String greeting = "Hello " + name + "!";
-    DBresponse reply = DBresponse.newBuilder().setEmail(greeting).setPassword("1").setUserid("1").build();
+    String response = "Booking at: " + dateAndTime + " confirmed.";
+    DBresponse reply = DBresponse.newBuilder().setConfirmation(response).build();
 
+    System.out.println(response);
     responseObserver.onNext(reply);
     responseObserver.onCompleted();
   }
