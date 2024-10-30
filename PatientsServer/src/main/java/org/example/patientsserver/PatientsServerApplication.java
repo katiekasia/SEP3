@@ -1,14 +1,14 @@
-package org.example.patientserver;
+package org.example.patientsserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication public class PatientServerApplication
+@SpringBootApplication public class PatientsServerApplication
 {
 
   public static void main(String[] args)
   {
-    SpringApplication.run(PatientServerApplication.class, args);
+    SpringApplication.run(PatientsServerApplication.class, args);
   }
 
 }

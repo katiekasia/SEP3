@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/DoctorServer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MainServer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/PatientServer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PatientsServer/src/main/java" charset="UTF-8" />
   </component>
 </project>
