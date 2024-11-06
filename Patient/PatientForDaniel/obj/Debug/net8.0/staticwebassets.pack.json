@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\obj\\Debug\\net8.0\\compressed\\g51aybmtsh.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\obj\\Debug\\net8.0\\scopedcss\\bundle\\PatientForDaniel.styles.css",
+      "PackagePath": "staticwebassets\\PatientForDaniel.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\PatientForDaniel\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.PatientForDaniel.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.PatientForDaniel.props",
+      "PackagePath": "build\\PatientForDaniel.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.PatientForDaniel.props",
+      "PackagePath": "buildMultiTargeting\\PatientForDaniel.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.PatientForDaniel.props",
+      "PackagePath": "buildTransitive\\PatientForDaniel.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
