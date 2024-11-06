@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj": {}
+    "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj": {}
   },
   "projects": {
-    "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj": {
+    "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj",
         "projectName": "Patient",
-        "projectPath": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj",
-        "packagesPath": "/Users/daniel/.nuget/packages/",
-        "outputPath": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/obj/",
+        "projectPath": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/daniel/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
