@@ -1,59 +1,59 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
-      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/bin/Debug/net8.0/wwwroot/_framework/blazor.webassembly.js",
+      "PackagePath": "staticwebassets/_framework/blazor.webassembly.js"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\obj\\Debug\\net8.0\\compressed\\g51aybmtsh.gz",
-      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/obj/Debug/net8.0/compressed/ucn1kgk3em.gz",
+      "PackagePath": "staticwebassets/_framework/blazor.webassembly.js.gz"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Patient.styles.css",
-      "PackagePath": "staticwebassets\\Patient.styles.css"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/obj/Debug/net8.0/scopedcss/bundle/Patient.styles.css",
+      "PackagePath": "staticwebassets/Patient.styles.css"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\css\\app.css",
-      "PackagePath": "staticwebassets\\css\\app.css"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/css/app.css",
+      "PackagePath": "staticwebassets/css/app.css"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
-      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/css/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
-      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/css/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\favicon.png",
-      "PackagePath": "staticwebassets\\favicon.png"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\icon-192.png",
-      "PackagePath": "staticwebassets\\icon-192.png"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/icon-192.png",
+      "PackagePath": "staticwebassets/icon-192.png"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\index.html",
-      "PackagePath": "staticwebassets\\index.html"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
     },
     {
-      "Id": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\wwwroot\\sample-data\\weather.json",
-      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+      "Id": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/wwwroot/sample-data/weather.json",
+      "PackagePath": "staticwebassets/sample-data/weather.json"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Patient.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.Patient.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Patient.props",
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.Patient.props",
       "PackagePath": "build\\Patient.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Patient.props",
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.Patient.props",
       "PackagePath": "buildMultiTargeting\\Patient.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Patient.props",
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.Patient.props",
       "PackagePath": "buildTransitive\\Patient.props"
     }
   ],
