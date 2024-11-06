@@ -1,4 +1,4 @@
-package org.example.patientsserver;
+package via.pro3.patientsserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

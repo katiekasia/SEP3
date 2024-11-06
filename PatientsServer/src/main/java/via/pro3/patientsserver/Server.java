@@ -1,12 +1,11 @@
-package org.example.patientsserver;
+package via.pro3.patientsserver;
 
-import com.google.type.DateTime;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.springframework.web.bind.annotation.*;
 import patient.grpc.DBresponse;
 import patient.grpc.PatientBookingGrpc;
 import patient.grpc.bookingRequest;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
