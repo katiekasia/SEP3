@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj": {}
+    "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj": {
+    "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj",
         "projectName": "Patient",
-        "projectPath": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj",
+        "projectPath": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\Patient.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\obj\\",
+        "outputPath": "C:\\Users\\user\\Documents\\GitHub\\SEP3\\Patient\\Patient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
