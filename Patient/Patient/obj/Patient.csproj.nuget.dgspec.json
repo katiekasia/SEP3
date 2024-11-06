@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj": {}
+    "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj": {
+    "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj",
+        "projectUniqueName": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj",
         "projectName": "Patient",
-        "projectPath": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\Patient.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\SEP3backiup\\Patient\\Patient\\obj\\",
+        "projectPath": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/Patient.csproj",
+        "packagesPath": "/Users/daniel/.nuget/packages/",
+        "outputPath": "/Users/daniel/Downloads/Sep3Final/Untitled/Patient/Patient/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/daniel/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -45,12 +45,12 @@
           "dependencies": {
             "Microsoft.AspNetCore.Components.WebAssembly": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.8, )"
             },
             "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.8, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
