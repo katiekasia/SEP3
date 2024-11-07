@@ -1,13 +1,11 @@
-package via.pro3.mainserver;
-
-import org.springframework.stereotype.Repository;
+package via.pro3.mainserver.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DatabaseSingleton {
+public class DatabaseSingleton implements DatabaseInterface {
     private static DatabaseSingleton instance;
     private final Connection connection;
 
@@ -35,11 +33,12 @@ public class DatabaseSingleton {
         }
         return instance;
     }
-
+    @Override
     public synchronized Connection getConnection(){
         return connection;
     }
 
+    @Override
     public synchronized void execute(PreparedStatement statement){
         try
         {
@@ -49,7 +48,7 @@ public class DatabaseSingleton {
             e.printStackTrace();
         }
     }
-
+@Override
     public synchronized void disconnect(){
         try
         {
