@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.sql.SQLException;
 
 public class EventRepository implements EventInterface {
     private DatabaseInterface database;
