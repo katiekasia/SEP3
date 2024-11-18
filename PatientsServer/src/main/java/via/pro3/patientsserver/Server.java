@@ -1,34 +1,38 @@
 package via.pro3.patientsserver;
 
+import DTOs.CreateAppointmentDto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.web.bind.annotation.*;
-import patient.grpc.DBresponse;
-import patient.grpc.PatientBookingGrpc;
-import patient.grpc.bookingRequest;
+import createBooking.grpc.DBresponse;
+import createBooking.grpc.PatientBookingGrpc;
+import createBooking.grpc.CreateAppointment;
 
-import java.time.LocalDateTime;
 
-@CrossOrigin(origins = "*")
+
+
 @RestController
-@RequestMapping("/api/BookingPage")
-public class Server
-{
-  private PatientBookingGrpc.PatientBookingBlockingStub blockingStub;
-  public Server(){
-    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
+@RequestMapping("/Demo")
+@CrossOrigin(origins = "*")
+public class Server {
+  private final PatientBookingGrpc.PatientBookingBlockingStub blockingStub;
 
+  public Server() {
+    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
     blockingStub = PatientBookingGrpc.newBlockingStub(channel);
   }
 
-  @GetMapping("/book")
-  public String BookAppointment(@RequestParam String  dateAndTime)
-  {
-    System.out.println("Client connected at: " + LocalDateTime.now());
+  @PostMapping("/book")
+  public CreateAppointmentDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
+    CreateAppointment request = CreateAppointment.newBuilder()
+        .setCity(createAppointmentDto.getCity())
+        .setStatus(createAppointmentDto.getStatus())
+        .setDescription(createAppointmentDto.getDescription())
+        .build();
 
-    bookingRequest request = bookingRequest.newBuilder().setDateAndTime(dateAndTime).build();
+    DBresponse response = blockingStub.createAppointment(request);
 
-    DBresponse response = blockingStub.bookAppointment(request);
+    return createAppointmentDto;
 
-    return "Data: " + response.toString();}
+  }
 }

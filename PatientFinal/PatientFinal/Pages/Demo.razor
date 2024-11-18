@@ -1,0 +1,46 @@
+﻿@page "/Demo"
+@inject HttpClient Http
+
+<PageTitle>Book Appointment</PageTitle>
+<h3>Book an Appointment</h3>
+
+@if (!string.IsNullOrEmpty(serverResponse))
+{
+    <p>@serverResponse</p>
+}
+<button @onclick="CreateAppointment">Book</button>
+
+@code {
+    private string serverResponse;
+
+    private async Task CreateAppointment()
+    {
+        // Define appointment details
+        var createAppointmentDto = new
+        {
+            City = "NEw city",
+            Status = "Done",
+            Description = "Bla bla"
+        };
+
+        try
+        {
+            // Send POST request to the server
+            HttpResponseMessage response = await Http.PostAsJsonAsync("http://localhost:8081/Demo/book", createAppointmentDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                serverResponse = "Appointment successfully booked!";
+            }
+            else
+            {
+                serverResponse = $"Error: {response.StatusCode} - {response.ReasonPhrase}";
+            }
+        }
+        catch (Exception e)
+        {
+            serverResponse = $"Error creating an appointment: {e.Message}";
+            Console.Error.WriteLine(e);
+        }
+    }
+}

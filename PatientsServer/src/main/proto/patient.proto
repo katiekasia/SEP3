@@ -1,16 +1,17 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "patient.grpc";
-
+option java_package = "createBooking.grpc";
 
 service PatientBooking {
-  rpc bookAppointment (bookingRequest) returns (DBresponse) {}
+  rpc createAppointment (CreateAppointment) returns (DBresponse) {}
+}
+message CreateAppointment {
+  string city = 1;
+  string status = 2;
+  string description = 3;
 }
 
-message bookingRequest {
-  string dateAndTime = 1;
-}
 
 message DBresponse {
   string confirmation = 1;
