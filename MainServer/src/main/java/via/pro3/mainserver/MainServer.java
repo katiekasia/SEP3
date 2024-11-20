@@ -18,7 +18,7 @@ public class MainServer {
       Model model = new ModelManager();
 
         Server server =
-                ServerBuilder.forPort(9090).addService(new ServerImpl()).addService(new PatientImpl(model)).addService(new RegisterPatientImpl()).build().start();
+                ServerBuilder.forPort(9090).addService(new ServerImpl()).addService(new PatientImpl(model)).addService(new RegisterPatientImpl(model)).build().start();
         System.out.println("Server started, listening on " + server.getPort());
         server.awaitTermination();
     }

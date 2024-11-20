@@ -1,12 +1,21 @@
 package via.pro3.mainserver.DTOs;
 
-public class RegisterPatientDto {
+public class RegisterDto {
     public String name;
     public String surname;
     public String email;
     public String phone;
     public String password;
-    public String CprNo;
+    public String cprno;
+
+    public RegisterDto(String name, String surname, String email, String phone, String password, String cprno) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.cprno = cprno;
+    }
 
     public String getName() {
         return name;
@@ -28,7 +37,7 @@ public class RegisterPatientDto {
         return password;
     }
 
-    public String getCPRNo() {
-        return CprNo;
+    public String getCprNo() {
+        return cprno;
     }
 }
