@@ -5,7 +5,7 @@ public class CreateAppointmentDto
 {
 
   private String city;
-// private String specialization
+ private String specialization;
   private String description;
   private String status;
   //private String patientCPR;
@@ -13,14 +13,14 @@ public class CreateAppointmentDto
 
   //SPECIALIZATION
 
-//  public String getSpecialization()
-//  {
-//    return specialization;
-//  }
-//  public void setSpecialization(String specialization)
-//  {
-//    this.specialization = specialization;
-//  }
+  public String getSpecialization()
+  {
+    return specialization;
+  }
+  public void setSpecialization(String specialization)
+  {
+    this.specialization = specialization;
+  }
 
   //CITY
   public String getCity()

@@ -34,9 +34,10 @@ public class PatientImpl extends PatientBookingGrpc.PatientBookingImplBase{
       String city = request.getCity();
       String status = request.getStatus();
       String description = request.getDescription();
+      String specialization = request.getSpecialization();
       String cprNumber = "12345";
       String doctorId = "1";
-      Appointment appointment = new Appointment(appointmentId, city, "",date,time,description,status,cprNumber,doctorId);
+      Appointment appointment = new Appointment(appointmentId, city, specialization, date,time,description,status,cprNumber,doctorId);
       System.out.println("appointment made");
 
       eventRepository.createAppointment(appointment);

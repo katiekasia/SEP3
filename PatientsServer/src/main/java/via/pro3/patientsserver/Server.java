@@ -28,6 +28,7 @@ public class Server {
         .setCity(createAppointmentDto.getCity())
         .setStatus(createAppointmentDto.getStatus())
         .setDescription(createAppointmentDto.getDescription())
+        .setSpecialization(createAppointmentDto.getSpecialization())
         .build();
 
     DBresponse response = blockingStub.createAppointment(request);
