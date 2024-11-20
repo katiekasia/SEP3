@@ -13,18 +13,19 @@ namespace PatientFinal.Services
     {
         private readonly HttpClient client;
 
-        public HttpAppointmentService()
+        public HttpAppointmentService(HttpClient client)
         {
             this.client = client;
         }
 
+      
         public async Task<CreateAppointmentDto> CreateAppointment(
             CreateAppointmentDto createAppointmentDto)
         {
             try
             {
                 HttpResponseMessage httpResponse =
-                    await client.PostAsJsonAsync("api/Demo/book",
+                    await client.PostAsJsonAsync("http://localhost:8081/Demo/book",
                         createAppointmentDto);
                 string response =
                     await httpResponse.Content.ReadAsStringAsync();
@@ -32,7 +33,7 @@ namespace PatientFinal.Services
                 {
                     throw new Exception(response);
                 }
-
+               
                 return JsonSerializer.Deserialize<CreateAppointmentDto>(response,
                     new JsonSerializerOptions
                     {
@@ -45,5 +46,6 @@ namespace PatientFinal.Services
                 throw;
             }
         }
+        
     }
 }

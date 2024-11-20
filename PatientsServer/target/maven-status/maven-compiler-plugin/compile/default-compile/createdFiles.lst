@@ -9,6 +9,7 @@ createBooking\grpc\DBresponseOrBuilder.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingStub.class
 createBooking\grpc\CreateAppointmentOrBuilder.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingImplBase.class
+via\pro3\patientsserver\Server.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingFutureStub.class
 createBooking\grpc\CreateAppointment$1.class
 createBooking\grpc\PatientBookingGrpc.class

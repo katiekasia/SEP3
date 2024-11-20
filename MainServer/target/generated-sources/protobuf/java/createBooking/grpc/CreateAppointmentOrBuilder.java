@@ -36,4 +36,14 @@ public interface CreateAppointmentOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDescriptionBytes();
+
+  /**
+   * <code>string specialization = 4;</code>
+   */
+  java.lang.String getSpecialization();
+  /**
+   * <code>string specialization = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getSpecializationBytes();
 }

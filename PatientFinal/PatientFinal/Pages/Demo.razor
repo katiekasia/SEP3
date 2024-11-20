@@ -1,8 +1,56 @@
 ﻿@page "/Demo"
+@using PatientFinal.DTOs
+@using PatientFinal.Services
 @inject HttpClient Http
+@inject IAppointmentService AppointmentService
 
 <PageTitle>Book Appointment</PageTitle>
 <h3>Book an Appointment</h3>
+
+@if(!showConfirmation)
+{
+<div> 
+            <label for="location">Choose a location:</label> 
+             <select @onchange="HandleLocationChange" id="location"> 
+                 <option value="">Select a location</option> 
+                 @foreach (var location in locations) 
+                { 
+                     <option value="@location.Detail">@location.Name</option> 
+                 } 
+             </select> 
+         </div> 
+     
+         <div> 
+             <label for="specialization">Choose a specialization:</label> 
+             <select @onchange="HandleSpecializationChange" id="specialization"> 
+                 <option value="">Select a specialization</option> 
+                 @foreach (var spec in specializations) 
+                 { 
+                     <option value="@spec">@spec</option> 
+                 }
+             </select>
+         </div>
+         
+         <div> 
+             <label for="description">Write about your symptoms:</label> 
+         <!-- DESCIPTION Space
+         -->
+         </div>
+         <button @onclick="ConfirmDetails">Confirm Details</button>
+}
+
+
+@if (showConfirmation)
+{
+    <div>
+        <h4>Review and Confirm Your Appointment</h4>
+        <p>Location: @selectedLocation</p>
+        <p>Specialization: @selectedSpecialization</p>
+        <p>Description: @writtenDescription</p>
+        
+      
+    </div>
+}
 
 @if (!string.IsNullOrEmpty(serverResponse))
 {
@@ -11,36 +59,69 @@
 <button @onclick="CreateAppointment">Book</button>
 
 @code {
+     private List<(string Name, string Detail)> locations = 
+         new List<(string Name, string Detail)> 
+         {
+             ("Hospital North", "1234 North St, City A"),
+             ("Clinic Central", "5678 Central Blvd, City B"),
+             ("Health Center South", "91011 South Ave, City C")
+         };
+     
+         private List<string> specializations = new List<string> { "Cardiologist", "Gynecologist", "Family Doctor" };
+         
+    
     private string serverResponse;
+    private string selectedLocation; 
+    private string selectedSpecialization;
+    private string writtenDescription;
+    private bool showConfirmation = false;
 
     private async Task CreateAppointment()
     {
-        // Define appointment details
-        var createAppointmentDto = new
+        var createAppointmentDto = new CreateAppointmentDto()
         {
-            City = "NEw city",
-            Status = "Done",
-            Description = "Bla bla"
+            City = selectedLocation,
+            Status = "Active",
+            Description = writtenDescription,
+            Specialization = selectedSpecialization,
         };
 
         try
         {
             // Send POST request to the server
-            HttpResponseMessage response = await Http.PostAsJsonAsync("http://localhost:8081/Demo/book", createAppointmentDto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                serverResponse = "Appointment successfully booked!";
-            }
-            else
-            {
-                serverResponse = $"Error: {response.StatusCode} - {response.ReasonPhrase}";
-            }
+           var response= await AppointmentService.CreateAppointment(createAppointmentDto);
+           // HttpResponseMessage response = await Http.PostAsJsonAsync("http://localhost:8081/Demo/book", createAppointmentDto);
+           
+           if (response != null)
+           {
+               // Display success message with returned details
+               serverResponse = $"Appointment successfully booked in {response.City} with status '{response.Status}'.";
+           }
+           else
+           {
+               serverResponse = "Failed to book the appointment.";
+           }
+            
         }
         catch (Exception e)
         {
             serverResponse = $"Error creating an appointment: {e.Message}";
             Console.Error.WriteLine(e);
         }
+        
+    }
+    private void HandleLocationChange(ChangeEventArgs e)
+    {
+        selectedLocation = e.Value.ToString();
+    }
+    private void HandleSpecializationChange(ChangeEventArgs e) 
+    {
+        selectedSpecialization = e.Value.ToString();
+        
+    }
+
+    private void ConfirmDetails()
+    {
+        showConfirmation = true;
     }
 }

@@ -2,8 +2,10 @@ example\grpc\loginRequest$1.class
 createBooking\grpc\CreateAppointment$Builder.class
 via\pro3\mainserver\MainServer.class
 createBooking\grpc\CreateAppointmentOrBuilder.class
+via\pro3\mainserver\Model\Prescription.class
 example\grpc\loginRequest.class
 example\grpc\loginResponseOrBuilder.class
+via\pro3\mainserver\Model\AppointmentState.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingDescriptorSupplier.class
 via\pro3\mainserver\database\DatabaseSingleton.class
 example\grpc\ProtoGrpc$ProtoFutureStub.class
@@ -11,8 +13,11 @@ via\pro3\mainserver\Model\Doctor.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingBlockingStub.class
 via\pro3\mainserver\Model\Clinic.class
 example\grpc\loginRequest$Builder.class
+via\pro3\mainserver\Model\IdGenerator.class
 via\pro3\mainserver\Model\Appointment.class
 createBooking\grpc\DBresponse$1.class
+via\pro3\mainserver\Model\GeneratorInterface.class
+via\pro3\mainserver\Model\ActiveAppointment.class
 example\grpc\loginResponse.class
 createBooking\grpc\PatientBookingGrpc$MethodHandlers.class
 createBooking\grpc\DBresponseOrBuilder.class
@@ -25,13 +30,16 @@ example\grpc\ProtoOuterClass$1.class
 createBooking\grpc\CreateAppointment$1.class
 createBooking\grpc\PatientBookingGrpc.class
 example\grpc\ProtoOuterClass.class
+via\pro3\mainserver\Model\ExpiredAppointment.class
 createBooking\grpc\Patient$1.class
 example\grpc\loginResponse$Builder.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingImplBase.class
 via\pro3\mainserver\MainServerApplication.class
 via\pro3\mainserver\database\EventInterface.class
+via\pro3\mainserver\Model\CancelledAppointment.class
 createBooking\grpc\PatientBookingGrpc$PatientBookingFutureStub.class
 example\grpc\loginResponse$1.class
+via\pro3\mainserver\service\PatientImpl.class
 createBooking\grpc\Patient.class
 example\grpc\ProtoGrpc$ProtoBlockingStub.class
 via\pro3\mainserver\database\DatabaseInterface.class
@@ -40,6 +48,7 @@ via\pro3\mainserver\DTOs\CreateAppointmentDto.class
 createBooking\grpc\CreateAppointment.class
 example\grpc\ProtoGrpc$MethodHandlers.class
 example\grpc\ProtoGrpc$ProtoImplBase.class
+via\pro3\mainserver\Model\MyDateAndTime.class
 createBooking\grpc\DBresponse$Builder.class
 example\grpc\loginRequestOrBuilder.class
 example\grpc\ProtoGrpc.class

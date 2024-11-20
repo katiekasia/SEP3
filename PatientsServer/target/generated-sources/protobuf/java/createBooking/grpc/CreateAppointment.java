@@ -18,6 +18,7 @@ public  final class CreateAppointment extends
     city_ = "";
     status_ = "";
     description_ = "";
+    specialization_ = "";
   }
 
   @java.lang.Override
@@ -61,6 +62,12 @@ public  final class CreateAppointment extends
             java.lang.String s = input.readStringRequireUtf8();
 
             description_ = s;
+            break;
+          }
+          case 34: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            specialization_ = s;
             break;
           }
         }
@@ -188,6 +195,40 @@ public  final class CreateAppointment extends
     }
   }
 
+  public static final int SPECIALIZATION_FIELD_NUMBER = 4;
+  private volatile java.lang.Object specialization_;
+  /**
+   * <code>string specialization = 4;</code>
+   */
+  public java.lang.String getSpecialization() {
+    java.lang.Object ref = specialization_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      specialization_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string specialization = 4;</code>
+   */
+  public com.google.protobuf.ByteString
+      getSpecializationBytes() {
+    java.lang.Object ref = specialization_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      specialization_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -209,6 +250,9 @@ public  final class CreateAppointment extends
     if (!getDescriptionBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, description_);
     }
+    if (!getSpecializationBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, specialization_);
+    }
   }
 
   public int getSerializedSize() {
@@ -224,6 +268,9 @@ public  final class CreateAppointment extends
     }
     if (!getDescriptionBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, description_);
+    }
+    if (!getSpecializationBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, specialization_);
     }
     memoizedSize = size;
     return size;
@@ -247,6 +294,8 @@ public  final class CreateAppointment extends
         .equals(other.getStatus());
     result = result && getDescription()
         .equals(other.getDescription());
+    result = result && getSpecialization()
+        .equals(other.getSpecialization());
     return result;
   }
 
@@ -263,6 +312,8 @@ public  final class CreateAppointment extends
     hash = (53 * hash) + getStatus().hashCode();
     hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
     hash = (53 * hash) + getDescription().hashCode();
+    hash = (37 * hash) + SPECIALIZATION_FIELD_NUMBER;
+    hash = (53 * hash) + getSpecialization().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -398,6 +449,8 @@ public  final class CreateAppointment extends
 
       description_ = "";
 
+      specialization_ = "";
+
       return this;
     }
 
@@ -423,6 +476,7 @@ public  final class CreateAppointment extends
       result.city_ = city_;
       result.status_ = status_;
       result.description_ = description_;
+      result.specialization_ = specialization_;
       onBuilt();
       return result;
     }
@@ -474,6 +528,10 @@ public  final class CreateAppointment extends
       }
       if (!other.getDescription().isEmpty()) {
         description_ = other.description_;
+        onChanged();
+      }
+      if (!other.getSpecialization().isEmpty()) {
+        specialization_ = other.specialization_;
         onChanged();
       }
       onChanged();
@@ -705,6 +763,75 @@ public  final class CreateAppointment extends
   checkByteStringIsUtf8(value);
       
       description_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object specialization_ = "";
+    /**
+     * <code>string specialization = 4;</code>
+     */
+    public java.lang.String getSpecialization() {
+      java.lang.Object ref = specialization_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        specialization_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string specialization = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSpecializationBytes() {
+      java.lang.Object ref = specialization_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        specialization_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string specialization = 4;</code>
+     */
+    public Builder setSpecialization(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      specialization_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string specialization = 4;</code>
+     */
+    public Builder clearSpecialization() {
+      
+      specialization_ = getDefaultInstance().getSpecialization();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string specialization = 4;</code>
+     */
+    public Builder setSpecializationBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      specialization_ = value;
       onChanged();
       return this;
     }
