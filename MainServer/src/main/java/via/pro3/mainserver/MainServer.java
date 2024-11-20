@@ -7,6 +7,7 @@ import via.pro3.mainserver.database.DatabaseSingleton;
 import via.pro3.mainserver.database.EventInterface;
 import via.pro3.mainserver.database.EventRepository;
 import via.pro3.mainserver.service.PatientImpl;
+import via.pro3.mainserver.service.RegisterPatientImpl;
 import via.pro3.mainserver.service.ServerImpl;
 
 public class MainServer {
@@ -16,7 +17,8 @@ public class MainServer {
 
         EventInterface eventInterface = new EventRepository(databaseInterface);
 
-        Server server = ServerBuilder.forPort(9090).addService(new ServerImpl()).addService(new PatientImpl()).build().start();
+        Server server =
+                ServerBuilder.forPort(9090).addService(new ServerImpl()).addService(new PatientImpl()).addService(new RegisterPatientImpl()).build().start();
         System.out.println("Server started, listening on " + server.getPort());
         server.awaitTermination();
     }

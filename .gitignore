@@ -76,3 +76,5 @@ node_modules/
 .gitignore_global
 /PatientFinal/PatientFinal/bin/Debug
 /PatientFinal/PatientFinal/obj/Debug
+/MainServer/target/protoc-dependencies
+/MainServer/target/protoc-dependencies

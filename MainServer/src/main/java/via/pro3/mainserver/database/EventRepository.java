@@ -1,34 +1,16 @@
 package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.Model.Appointment;
+import via.pro3.mainserver.Model.Patient;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.UUID;
 
 public class EventRepository implements EventInterface {
-    private DatabaseInterface database;
+    private final DatabaseInterface database;
 
     public EventRepository(DatabaseInterface database) {
         this.database = database;
-    }
-@Override
-    public synchronized void createUser(String user, String password) {
-        String sql = "INSERT INTO users (userid, email, password) VALUES " +
-                "(?, ?, ?)";
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setObject(1, UUID.randomUUID());
-            statement.setString(2, user);
-            statement.setString(3, password);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -47,8 +29,40 @@ public class EventRepository implements EventInterface {
             statement.setString(9, appointment.getDoctorId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
         }
     }
 
+    public synchronized void createUser(Patient patient) {
+        String sql = "INSERT INTO Patient (cpr_number, firstName, lastName, phone_number, email, password) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            if (patient == null) {
+                throw new IllegalArgumentException("Patient cannot be null");
+            }
+
+            System.out.println("Attempting to create patient:");
+            System.out.println("CPR: " + patient.getCPRNo());
+            System.out.println("Name: " + patient.getName());
+            System.out.println("Surname: " + patient.getSurname());
+            System.out.println("Phone: " + patient.getPhone());
+            System.out.println("Email: " + patient.getEmail());
+
+            try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+                statement.setString(1, String.valueOf(patient.getCPRNo()));
+                statement.setString(2, patient.getName());
+                statement.setString(3, patient.getSurname());
+                statement.setString(4, patient.getPhone());
+                statement.setString(5, patient.getEmail());
+                statement.setString(6, patient.getPassword());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error details:");
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("SQL State: " + e.getSQLState());
+            throw new RuntimeException("Failed to create patient: " + e.getMessage(), e);
+            }
+    }
 }

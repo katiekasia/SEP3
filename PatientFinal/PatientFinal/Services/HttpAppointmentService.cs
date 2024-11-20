@@ -1,11 +1,6 @@
 ﻿using PatientFinal.DTOs;
-
-using System;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
-
-
 
 namespace PatientFinal.Services
 {
@@ -30,9 +25,7 @@ namespace PatientFinal.Services
                 string response =
                     await httpResponse.Content.ReadAsStringAsync();
                 if (!httpResponse.IsSuccessStatusCode)
-                {
                     throw new Exception(response);
-                }
                
                 return JsonSerializer.Deserialize<CreateAppointmentDto>(response,
                     new JsonSerializerOptions
