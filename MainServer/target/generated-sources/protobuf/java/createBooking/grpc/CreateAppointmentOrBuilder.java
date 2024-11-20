@@ -8,14 +8,14 @@ public interface CreateAppointmentOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string city = 1;</code>
+   * <code>string patientCpr = 1;</code>
    */
-  java.lang.String getCity();
+  java.lang.String getPatientCpr();
   /**
-   * <code>string city = 1;</code>
+   * <code>string patientCpr = 1;</code>
    */
   com.google.protobuf.ByteString
-      getCityBytes();
+      getPatientCprBytes();
 
   /**
    * <code>string status = 2;</code>
@@ -38,12 +38,42 @@ public interface CreateAppointmentOrBuilder extends
       getDescriptionBytes();
 
   /**
-   * <code>string specialization = 4;</code>
+   * <code>string type = 4;</code>
    */
-  java.lang.String getSpecialization();
+  java.lang.String getType();
   /**
-   * <code>string specialization = 4;</code>
+   * <code>string type = 4;</code>
    */
   com.google.protobuf.ByteString
-      getSpecializationBytes();
+      getTypeBytes();
+
+  /**
+   * <code>string doctorId = 5;</code>
+   */
+  java.lang.String getDoctorId();
+  /**
+   * <code>string doctorId = 5;</code>
+   */
+  com.google.protobuf.ByteString
+      getDoctorIdBytes();
+
+  /**
+   * <code>string appointmentDate = 6;</code>
+   */
+  java.lang.String getAppointmentDate();
+  /**
+   * <code>string appointmentDate = 6;</code>
+   */
+  com.google.protobuf.ByteString
+      getAppointmentDateBytes();
+
+  /**
+   * <code>string appointmentTime = 7;</code>
+   */
+  java.lang.String getAppointmentTime();
+  /**
+   * <code>string appointmentTime = 7;</code>
+   */
+  com.google.protobuf.ByteString
+      getAppointmentTimeBytes();
 }

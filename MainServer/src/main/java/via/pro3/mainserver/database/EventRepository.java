@@ -16,21 +16,21 @@ public class EventRepository implements EventInterface {
     @Override
     public synchronized void createAppointment(Appointment appointment) {
         String sql = "INSERT INTO Appointment (appointmentID, date, time, city, status, description,specialization, CPR_number, Doctor_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, appointment.getAppointmentId());
-            statement.setDate(2, Date.valueOf(appointment.getDate()));
-            statement.setTime(3, appointment.getTime());
-            statement.setString(4, appointment.getCity());
-            statement.setString(5, appointment.getStatus());
-            statement.setString(6, appointment.getDescription());
-            statement.setString(7, appointment.getSpecialization());
-            statement.setString(8, appointment.getPatientCPR());
-            statement.setString(9, appointment.getDoctorId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
-        }
+//
+//        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+//            statement.setInt(1, appointment.getAppointmentId());
+//            statement.setDate(2, Date.valueOf(appointment.getDate()));
+//            statement.setTime(3, appointment.getTime());
+//            statement.setString(4, appointment.getCity());
+//            statement.setString(5, appointment.getStatus());
+//            statement.setString(6, appointment.getDescription());
+//            statement.setString(7, appointment.getSpecialization());
+//            statement.setString(8, appointment.getPatientCPR());
+//            statement.setString(9, appointment.getDoctorId());
+//            statement.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
+//        }
     }
 
     public synchronized void createUser(Patient patient) {

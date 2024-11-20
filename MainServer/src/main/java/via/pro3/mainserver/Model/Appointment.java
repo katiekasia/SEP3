@@ -13,14 +13,30 @@ public class Appointment
   private Clinic clinic;
 
   public Appointment (int id, Clinic clinic,String type,
-      MyDateAndTime dateAndTime, String description)
+      MyDateAndTime dateAndTime, String description, String status)
   {
     setId(id);
     setClinic(clinic);
     setType(type);
     setDateAndTime(dateAndTime);
     setDescription(description);
-    setStatus(new ActiveAppointment());
+    if (status.equals("Active")){
+    setStatus(new ActiveAppointment());}
+    else if (status.equals("Cancelled"))
+    {
+      setStatus(new CancelledAppointment());
+    }else {
+      setStatus(new ExpiredAppointment());
+    }
+  }
+
+  public void cancel(){
+    status.cancel(this);
+  }
+  public void expire(){
+    if (LocalDate.now().isAfter(dateAndTime.getDate())){
+      status.expire(this);
+    }
   }
 //GETTERS BELOW*************************
   public int getAppointmentId()
@@ -56,12 +72,7 @@ public class Appointment
   public String getClinicName(){return clinic.getName();}
   public MyDateAndTime getDateAndTime() {return dateAndTime.copy();}
 
-  public void cancel(){
-    status.cancel(this);
-}
-public void expire(){
-    status.expire(this);
-}
+
   //SETTERS BELOW****************************88
   public void setId(int appointmentId)
   {
@@ -97,7 +108,6 @@ public void expire(){
   {
     this.description = description;
   }
-
 
   public void setStatus(AppointmentState status)
   {

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DatabaseSingleton implements DatabaseInterface {
+public final class DatabaseSingleton implements DatabaseInterface {
     private static DatabaseSingleton instance;
     private final Connection connection;
 

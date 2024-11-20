@@ -15,10 +15,13 @@ public  final class CreateAppointment extends
     super(builder);
   }
   private CreateAppointment() {
-    city_ = "";
+    patientCpr_ = "";
     status_ = "";
     description_ = "";
-    specialization_ = "";
+    type_ = "";
+    doctorId_ = "";
+    appointmentDate_ = "";
+    appointmentTime_ = "";
   }
 
   @java.lang.Override
@@ -49,7 +52,7 @@ public  final class CreateAppointment extends
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            city_ = s;
+            patientCpr_ = s;
             break;
           }
           case 18: {
@@ -67,7 +70,25 @@ public  final class CreateAppointment extends
           case 34: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            specialization_ = s;
+            type_ = s;
+            break;
+          }
+          case 42: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            doctorId_ = s;
+            break;
+          }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            appointmentDate_ = s;
+            break;
+          }
+          case 58: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            appointmentTime_ = s;
             break;
           }
         }
@@ -93,34 +114,34 @@ public  final class CreateAppointment extends
             createBooking.grpc.CreateAppointment.class, createBooking.grpc.CreateAppointment.Builder.class);
   }
 
-  public static final int CITY_FIELD_NUMBER = 1;
-  private volatile java.lang.Object city_;
+  public static final int PATIENTCPR_FIELD_NUMBER = 1;
+  private volatile java.lang.Object patientCpr_;
   /**
-   * <code>string city = 1;</code>
+   * <code>string patientCpr = 1;</code>
    */
-  public java.lang.String getCity() {
-    java.lang.Object ref = city_;
+  public java.lang.String getPatientCpr() {
+    java.lang.Object ref = patientCpr_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      city_ = s;
+      patientCpr_ = s;
       return s;
     }
   }
   /**
-   * <code>string city = 1;</code>
+   * <code>string patientCpr = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getCityBytes() {
-    java.lang.Object ref = city_;
+      getPatientCprBytes() {
+    java.lang.Object ref = patientCpr_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      city_ = b;
+      patientCpr_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -195,34 +216,136 @@ public  final class CreateAppointment extends
     }
   }
 
-  public static final int SPECIALIZATION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object specialization_;
+  public static final int TYPE_FIELD_NUMBER = 4;
+  private volatile java.lang.Object type_;
   /**
-   * <code>string specialization = 4;</code>
+   * <code>string type = 4;</code>
    */
-  public java.lang.String getSpecialization() {
-    java.lang.Object ref = specialization_;
+  public java.lang.String getType() {
+    java.lang.Object ref = type_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      specialization_ = s;
+      type_ = s;
       return s;
     }
   }
   /**
-   * <code>string specialization = 4;</code>
+   * <code>string type = 4;</code>
    */
   public com.google.protobuf.ByteString
-      getSpecializationBytes() {
-    java.lang.Object ref = specialization_;
+      getTypeBytes() {
+    java.lang.Object ref = type_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      specialization_ = b;
+      type_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int DOCTORID_FIELD_NUMBER = 5;
+  private volatile java.lang.Object doctorId_;
+  /**
+   * <code>string doctorId = 5;</code>
+   */
+  public java.lang.String getDoctorId() {
+    java.lang.Object ref = doctorId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      doctorId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string doctorId = 5;</code>
+   */
+  public com.google.protobuf.ByteString
+      getDoctorIdBytes() {
+    java.lang.Object ref = doctorId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      doctorId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int APPOINTMENTDATE_FIELD_NUMBER = 6;
+  private volatile java.lang.Object appointmentDate_;
+  /**
+   * <code>string appointmentDate = 6;</code>
+   */
+  public java.lang.String getAppointmentDate() {
+    java.lang.Object ref = appointmentDate_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      appointmentDate_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string appointmentDate = 6;</code>
+   */
+  public com.google.protobuf.ByteString
+      getAppointmentDateBytes() {
+    java.lang.Object ref = appointmentDate_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      appointmentDate_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int APPOINTMENTTIME_FIELD_NUMBER = 7;
+  private volatile java.lang.Object appointmentTime_;
+  /**
+   * <code>string appointmentTime = 7;</code>
+   */
+  public java.lang.String getAppointmentTime() {
+    java.lang.Object ref = appointmentTime_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      appointmentTime_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string appointmentTime = 7;</code>
+   */
+  public com.google.protobuf.ByteString
+      getAppointmentTimeBytes() {
+    java.lang.Object ref = appointmentTime_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      appointmentTime_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -241,8 +364,8 @@ public  final class CreateAppointment extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getCityBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, city_);
+    if (!getPatientCprBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, patientCpr_);
     }
     if (!getStatusBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, status_);
@@ -250,8 +373,17 @@ public  final class CreateAppointment extends
     if (!getDescriptionBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, description_);
     }
-    if (!getSpecializationBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, specialization_);
+    if (!getTypeBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, type_);
+    }
+    if (!getDoctorIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, doctorId_);
+    }
+    if (!getAppointmentDateBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, appointmentDate_);
+    }
+    if (!getAppointmentTimeBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, appointmentTime_);
     }
   }
 
@@ -260,8 +392,8 @@ public  final class CreateAppointment extends
     if (size != -1) return size;
 
     size = 0;
-    if (!getCityBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, city_);
+    if (!getPatientCprBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, patientCpr_);
     }
     if (!getStatusBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, status_);
@@ -269,8 +401,17 @@ public  final class CreateAppointment extends
     if (!getDescriptionBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, description_);
     }
-    if (!getSpecializationBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, specialization_);
+    if (!getTypeBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, type_);
+    }
+    if (!getDoctorIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, doctorId_);
+    }
+    if (!getAppointmentDateBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, appointmentDate_);
+    }
+    if (!getAppointmentTimeBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, appointmentTime_);
     }
     memoizedSize = size;
     return size;
@@ -288,14 +429,20 @@ public  final class CreateAppointment extends
     createBooking.grpc.CreateAppointment other = (createBooking.grpc.CreateAppointment) obj;
 
     boolean result = true;
-    result = result && getCity()
-        .equals(other.getCity());
+    result = result && getPatientCpr()
+        .equals(other.getPatientCpr());
     result = result && getStatus()
         .equals(other.getStatus());
     result = result && getDescription()
         .equals(other.getDescription());
-    result = result && getSpecialization()
-        .equals(other.getSpecialization());
+    result = result && getType()
+        .equals(other.getType());
+    result = result && getDoctorId()
+        .equals(other.getDoctorId());
+    result = result && getAppointmentDate()
+        .equals(other.getAppointmentDate());
+    result = result && getAppointmentTime()
+        .equals(other.getAppointmentTime());
     return result;
   }
 
@@ -306,14 +453,20 @@ public  final class CreateAppointment extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CITY_FIELD_NUMBER;
-    hash = (53 * hash) + getCity().hashCode();
+    hash = (37 * hash) + PATIENTCPR_FIELD_NUMBER;
+    hash = (53 * hash) + getPatientCpr().hashCode();
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + getStatus().hashCode();
     hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
     hash = (53 * hash) + getDescription().hashCode();
-    hash = (37 * hash) + SPECIALIZATION_FIELD_NUMBER;
-    hash = (53 * hash) + getSpecialization().hashCode();
+    hash = (37 * hash) + TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getType().hashCode();
+    hash = (37 * hash) + DOCTORID_FIELD_NUMBER;
+    hash = (53 * hash) + getDoctorId().hashCode();
+    hash = (37 * hash) + APPOINTMENTDATE_FIELD_NUMBER;
+    hash = (53 * hash) + getAppointmentDate().hashCode();
+    hash = (37 * hash) + APPOINTMENTTIME_FIELD_NUMBER;
+    hash = (53 * hash) + getAppointmentTime().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -443,13 +596,19 @@ public  final class CreateAppointment extends
     }
     public Builder clear() {
       super.clear();
-      city_ = "";
+      patientCpr_ = "";
 
       status_ = "";
 
       description_ = "";
 
-      specialization_ = "";
+      type_ = "";
+
+      doctorId_ = "";
+
+      appointmentDate_ = "";
+
+      appointmentTime_ = "";
 
       return this;
     }
@@ -473,10 +632,13 @@ public  final class CreateAppointment extends
 
     public createBooking.grpc.CreateAppointment buildPartial() {
       createBooking.grpc.CreateAppointment result = new createBooking.grpc.CreateAppointment(this);
-      result.city_ = city_;
+      result.patientCpr_ = patientCpr_;
       result.status_ = status_;
       result.description_ = description_;
-      result.specialization_ = specialization_;
+      result.type_ = type_;
+      result.doctorId_ = doctorId_;
+      result.appointmentDate_ = appointmentDate_;
+      result.appointmentTime_ = appointmentTime_;
       onBuilt();
       return result;
     }
@@ -518,8 +680,8 @@ public  final class CreateAppointment extends
 
     public Builder mergeFrom(createBooking.grpc.CreateAppointment other) {
       if (other == createBooking.grpc.CreateAppointment.getDefaultInstance()) return this;
-      if (!other.getCity().isEmpty()) {
-        city_ = other.city_;
+      if (!other.getPatientCpr().isEmpty()) {
+        patientCpr_ = other.patientCpr_;
         onChanged();
       }
       if (!other.getStatus().isEmpty()) {
@@ -530,8 +692,20 @@ public  final class CreateAppointment extends
         description_ = other.description_;
         onChanged();
       }
-      if (!other.getSpecialization().isEmpty()) {
-        specialization_ = other.specialization_;
+      if (!other.getType().isEmpty()) {
+        type_ = other.type_;
+        onChanged();
+      }
+      if (!other.getDoctorId().isEmpty()) {
+        doctorId_ = other.doctorId_;
+        onChanged();
+      }
+      if (!other.getAppointmentDate().isEmpty()) {
+        appointmentDate_ = other.appointmentDate_;
+        onChanged();
+      }
+      if (!other.getAppointmentTime().isEmpty()) {
+        appointmentTime_ = other.appointmentTime_;
         onChanged();
       }
       onChanged();
@@ -560,71 +734,71 @@ public  final class CreateAppointment extends
       return this;
     }
 
-    private java.lang.Object city_ = "";
+    private java.lang.Object patientCpr_ = "";
     /**
-     * <code>string city = 1;</code>
+     * <code>string patientCpr = 1;</code>
      */
-    public java.lang.String getCity() {
-      java.lang.Object ref = city_;
+    public java.lang.String getPatientCpr() {
+      java.lang.Object ref = patientCpr_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        city_ = s;
+        patientCpr_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string city = 1;</code>
+     * <code>string patientCpr = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getCityBytes() {
-      java.lang.Object ref = city_;
+        getPatientCprBytes() {
+      java.lang.Object ref = patientCpr_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        city_ = b;
+        patientCpr_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string city = 1;</code>
+     * <code>string patientCpr = 1;</code>
      */
-    public Builder setCity(
+    public Builder setPatientCpr(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      city_ = value;
+      patientCpr_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string city = 1;</code>
+     * <code>string patientCpr = 1;</code>
      */
-    public Builder clearCity() {
+    public Builder clearPatientCpr() {
       
-      city_ = getDefaultInstance().getCity();
+      patientCpr_ = getDefaultInstance().getPatientCpr();
       onChanged();
       return this;
     }
     /**
-     * <code>string city = 1;</code>
+     * <code>string patientCpr = 1;</code>
      */
-    public Builder setCityBytes(
+    public Builder setPatientCprBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      city_ = value;
+      patientCpr_ = value;
       onChanged();
       return this;
     }
@@ -767,71 +941,278 @@ public  final class CreateAppointment extends
       return this;
     }
 
-    private java.lang.Object specialization_ = "";
+    private java.lang.Object type_ = "";
     /**
-     * <code>string specialization = 4;</code>
+     * <code>string type = 4;</code>
      */
-    public java.lang.String getSpecialization() {
-      java.lang.Object ref = specialization_;
+    public java.lang.String getType() {
+      java.lang.Object ref = type_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        specialization_ = s;
+        type_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string specialization = 4;</code>
+     * <code>string type = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getSpecializationBytes() {
-      java.lang.Object ref = specialization_;
+        getTypeBytes() {
+      java.lang.Object ref = type_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        specialization_ = b;
+        type_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string specialization = 4;</code>
+     * <code>string type = 4;</code>
      */
-    public Builder setSpecialization(
+    public Builder setType(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      specialization_ = value;
+      type_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string specialization = 4;</code>
+     * <code>string type = 4;</code>
      */
-    public Builder clearSpecialization() {
+    public Builder clearType() {
       
-      specialization_ = getDefaultInstance().getSpecialization();
+      type_ = getDefaultInstance().getType();
       onChanged();
       return this;
     }
     /**
-     * <code>string specialization = 4;</code>
+     * <code>string type = 4;</code>
      */
-    public Builder setSpecializationBytes(
+    public Builder setTypeBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      specialization_ = value;
+      type_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object doctorId_ = "";
+    /**
+     * <code>string doctorId = 5;</code>
+     */
+    public java.lang.String getDoctorId() {
+      java.lang.Object ref = doctorId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        doctorId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string doctorId = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDoctorIdBytes() {
+      java.lang.Object ref = doctorId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        doctorId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string doctorId = 5;</code>
+     */
+    public Builder setDoctorId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      doctorId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string doctorId = 5;</code>
+     */
+    public Builder clearDoctorId() {
+      
+      doctorId_ = getDefaultInstance().getDoctorId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string doctorId = 5;</code>
+     */
+    public Builder setDoctorIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      doctorId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object appointmentDate_ = "";
+    /**
+     * <code>string appointmentDate = 6;</code>
+     */
+    public java.lang.String getAppointmentDate() {
+      java.lang.Object ref = appointmentDate_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        appointmentDate_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string appointmentDate = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAppointmentDateBytes() {
+      java.lang.Object ref = appointmentDate_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        appointmentDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string appointmentDate = 6;</code>
+     */
+    public Builder setAppointmentDate(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      appointmentDate_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string appointmentDate = 6;</code>
+     */
+    public Builder clearAppointmentDate() {
+      
+      appointmentDate_ = getDefaultInstance().getAppointmentDate();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string appointmentDate = 6;</code>
+     */
+    public Builder setAppointmentDateBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      appointmentDate_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object appointmentTime_ = "";
+    /**
+     * <code>string appointmentTime = 7;</code>
+     */
+    public java.lang.String getAppointmentTime() {
+      java.lang.Object ref = appointmentTime_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        appointmentTime_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string appointmentTime = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAppointmentTimeBytes() {
+      java.lang.Object ref = appointmentTime_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        appointmentTime_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string appointmentTime = 7;</code>
+     */
+    public Builder setAppointmentTime(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      appointmentTime_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string appointmentTime = 7;</code>
+     */
+    public Builder clearAppointmentTime() {
+      
+      appointmentTime_ = getDefaultInstance().getAppointmentTime();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string appointmentTime = 7;</code>
+     */
+    public Builder setAppointmentTimeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      appointmentTime_ = value;
       onChanged();
       return this;
     }

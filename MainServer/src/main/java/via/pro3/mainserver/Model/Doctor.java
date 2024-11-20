@@ -9,11 +9,12 @@ public class Doctor
   private String surname;
   private String password;
   private String email;
-  private int id;
+  private String id;
   private String specialisation;
   private Map<Integer,Appointment> appointments;
+  private Clinic clinic;
 
-  public Doctor(int id, String name, String surname, String password, String email,  String specialisation)
+  public Doctor(String  id, String name, String surname, String password, String email,  String specialisation,Clinic clinic)
   {
     setName(name);
     setSurname(surname);
@@ -21,6 +22,7 @@ public class Doctor
     setEmail(email);
     setId(id);
     setSpecialisation(specialisation);
+    setClinic(clinic);
     appointments = new HashMap<Integer, Appointment>();
   }
 
@@ -44,7 +46,11 @@ public Appointment getAppointmentById(int id){
     return email;
   }
 
-  public int getId()
+  public Clinic getClinic(){
+    return clinic;
+  }
+
+  public String getId()
   {
     return id;
   }
@@ -81,9 +87,14 @@ public Appointment getAppointmentById(int id){
     this.name = name;
   }
 
-  public void setId(int id)
+  public void setId(String id)
   {
     this.id = id;
+  }
+
+  public void setClinic(Clinic clinic)
+  {
+    this.clinic = clinic;
   }
 
   public void setEmail(String email)
