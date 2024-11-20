@@ -25,13 +25,14 @@ public class Server {
         registerBlockingStub = RegisterPatientGrpc.newBlockingStub(channel);
     }
 
-    @PostMapping("/book")
-    public CreateAppointmentDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
-        CreateAppointment request = CreateAppointment.newBuilder()
-                .setCity(createAppointmentDto.getCity())
-                .setStatus(createAppointmentDto.getStatus())
-                .setDescription(createAppointmentDto.getDescription())
-                .build();
+  @PostMapping("/book")
+  public CreateAppointmentDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
+    CreateAppointment request = CreateAppointment.newBuilder()
+        .setCity(createAppointmentDto.getCity())
+        .setStatus(createAppointmentDto.getStatus())
+        .setDescription(createAppointmentDto.getDescription())
+        .setSpecialization(createAppointmentDto.getSpecialization())
+        .build();
 
         DBresponse response = blockingStub.createAppointment(request);
 

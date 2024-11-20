@@ -15,8 +15,7 @@ public class EventRepository implements EventInterface {
 
     @Override
     public synchronized void createAppointment(Appointment appointment) {
-        String sql = "INSERT INTO Appointment (appointmentID, date, time, city, status, description, CPR_number, Doctor_ID) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Appointment (appointmentID, date, time, city, status, description,specialization, CPR_number, Doctor_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, appointment.getAppointmentId());
@@ -25,8 +24,9 @@ public class EventRepository implements EventInterface {
             statement.setString(4, appointment.getCity());
             statement.setString(5, appointment.getStatus());
             statement.setString(6, appointment.getDescription());
-            statement.setString(7, appointment.getPatientCPR());
-            statement.setString(8, appointment.getDoctorId());
+            statement.setString(7, appointment.getSpecialization());
+            statement.setString(8, appointment.getPatientCPR());
+            statement.setString(9, appointment.getDoctorId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
