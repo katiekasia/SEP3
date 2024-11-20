@@ -1,0 +1,59 @@
+﻿@page "/Login"
+@inject HttpClient Http
+@using PatientFinal.DTOs
+
+<h3>Register</h3>
+
+<input placeholder="CPR-Number" @bind="CPR"></input>
+<input placeholder="Password" @bind="Password"></input>
+
+
+@if (!string.IsNullOrEmpty(serverResponse))
+{
+    <p>@serverResponse</p>
+}
+
+<button @onclick="LoginPatient">Login</button>
+
+@code {
+    private string CPR;
+    private string Password;
+    private string serverResponse;
+
+
+    private async Task LoginPatient()
+    {
+        // Validate inputs before creating DTO
+        if(string.IsNullOrWhiteSpace(CPR) && string.IsNullOrWhiteSpace(Password))
+        {
+            serverResponse = "Please fill in the login credentials";
+        }
+        
+
+        var LoginDto = new
+        {
+            password = Password,
+            cprno = CPR
+        };
+
+        try
+        {
+            HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
+                    "http://localhost:8081/Demo/login", LoginDto);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                serverResponse = "Patient logged in successfully " + LoginDto.cprno;
+            }
+            else
+            {
+                serverResponse = await responseMessage.Content.ReadAsStringAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            serverResponse = $"Login failed: {e.Message}";
+            Console.WriteLine(e);
+        }
+    }
+}
