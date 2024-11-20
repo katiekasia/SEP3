@@ -1,5 +1,6 @@
 package via.pro3.mainserver.Model;
 
+import DTOs.LoginDto;
 import DTOs.RegisterDto;
 import registerPatient.grpc.Response;
 import via.pro3.mainserver.database.DatabaseInterface;
@@ -30,5 +31,10 @@ public class ModelManager implements Model
     Response response = Response.newBuilder()
             .setConfirmation("Patient registered successfully")
             .build();
+  }
+
+  @Override
+  public void loginPatient(LoginDto loginDto) {
+    
   }
 }
