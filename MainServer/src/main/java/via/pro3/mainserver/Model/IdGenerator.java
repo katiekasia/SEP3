@@ -9,31 +9,35 @@ public class IdGenerator implements GeneratorInterface
 
   @Override public int generateAppointmentId()
   {
-    return 0;
+    int nextId = appointmentIds.size();
+    appointmentIds.add(nextId);
+    return nextId;
   }
 
   @Override public int generatePrescriptionId()
   {
-    return 0;
+    int nextId = prescriptionIds.size();
+    addPrescriptionId(nextId);
+    return nextId;
   }
 
   @Override public void addAppointmentId(int id)
   {
-
+    appointmentIds.add(id);
   }
 
   @Override public void addPrescriptionId(int id)
   {
-
+    prescriptionIds.add(id);
   }
 
   @Override public void setAppointmentIds(Set<Integer>  ids)
   {
-
+appointmentIds = ids;
   }
 
   @Override public void setPrescriptionIds(Set<Integer>  ids)
   {
-
+prescriptionIds = ids;
   }
 }
