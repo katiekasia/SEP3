@@ -10,7 +10,7 @@ public class CancelledAppointment extends AppointmentState
 //TODO
   @Override public void expire(Appointment appointment)
   {
-
+    appointment.setStatus(new ExpiredAppointment());
   }
 
   @Override public String status()
