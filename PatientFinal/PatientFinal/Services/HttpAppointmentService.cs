@@ -26,7 +26,6 @@ namespace PatientFinal.Services
                     await httpResponse.Content.ReadAsStringAsync();
                 if (!httpResponse.IsSuccessStatusCode)
                     throw new Exception(response);
-                }
                
                 return JsonSerializer.Deserialize<CreateAppointmentDto>(response,
                     new JsonSerializerOptions
