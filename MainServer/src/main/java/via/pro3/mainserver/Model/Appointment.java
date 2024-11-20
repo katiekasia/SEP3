@@ -1,91 +1,96 @@
 package via.pro3.mainserver.Model;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Appointment
 {
-  private int appointmentId;
-  private String city;
-  private String specialization;
-  private LocalDate date;
-  private Time time;
+  private int id;
+  private MyDateAndTime dateAndTime;
   private String description;
-  private String status;
-  private String patientCPR;
-  private String doctorId;
+  private AppointmentState status;
+  private String type;
+  private Clinic clinic;
 
-  public Appointment (int appointmentId, String city,String specialization,
-      LocalDate date, Time time, String description, String status,
-      String patientCPR, String doctorId)
+  public Appointment (int id, Clinic clinic,String type,
+      MyDateAndTime dateAndTime, String description)
   {
-    this.appointmentId = appointmentId;
-    this.city = city;
-    this.specialization = specialization;
-    this.date = date;
-    this.time = time;
-    this.description = description;
-    this.status = status;
-    this.patientCPR = patientCPR;
-    this.doctorId = doctorId;
+    setId(id);
+    setClinic(clinic);
+    setType(type);
+    setDateAndTime(dateAndTime);
+    setDescription(description);
+    setStatus(new ActiveAppointment());
   }
-
+//GETTERS BELOW*************************
   public int getAppointmentId()
   {
-    return appointmentId;
+    return id;
   }
-
-  public void setAppointmentId(int appointmentId)
-  {
-    this.appointmentId = appointmentId;
-  }
-  //DATE
   public LocalDate getDate()
   {
-    return date;
+    return dateAndTime.getDate();
+  }
+  public String getType()
+  {
+    return type;
+  }
+  public String getCity()
+  {
+    return clinic.getCity();
+  }
+  public LocalTime getTime()
+  {
+    return dateAndTime.getTime();
+  }
+  public String getDescription()
+  {
+    return description;
+  }
+  public String getStatus()
+  {
+    return status.status();
+  }
+  public String getAdressString(){return clinic.getAddress();}
+  public Clinic getClinic() {return clinic.copy();}
+  public String getClinicName(){return clinic.getName();}
+  public MyDateAndTime getDateAndTime() {return dateAndTime.copy();}
+
+  public void cancel(){
+    status.cancel(this);
+}
+public void expire(){
+    status.expire(this);
+}
+  //SETTERS BELOW****************************88
+  public void setId(int appointmentId)
+  {
+    this.id = appointmentId;
   }
 
   public void setDate(LocalDate date)
   {
-    this.date = date;
-  }
-  //SPECIALIZATION
-
-  public String getSpecialization()
-  {
-    return specialization;
-  }
-  public void setSpecialization(String specialization)
-  {
-    this.specialization = specialization;
+    dateAndTime.setDate(date);
   }
 
-  //CITY
-  public String getCity()
+  public void setType(String type)
   {
-    return city;
-  }
-  public void setCity()
-  {
-    this.city = city;
-  }
-  //TIME
-
-  public Time getTime()
-  {
-    return time;
+    this.type = type;
   }
 
-  public void setTime(Time time)
+  public void setDateAndTime(MyDateAndTime dateAndTime)
   {
-    this.time = time;
+    this.dateAndTime = dateAndTime.copy();
   }
-  //DESCRIPTION
 
-  public String getDescription()
+  public void setClinic(Clinic clinic)
   {
-    return description;
+    this.clinic = clinic.copy();
+  }
+
+  public void setTime(LocalTime time)
+  {
+    this.dateAndTime.setTime(time);
   }
 
   public void setDescription(String description)
@@ -93,29 +98,11 @@ public class Appointment
     this.description = description;
   }
 
-  //STATUS
 
-  public String getStatus()
-  {
-    return status;
-  }
-
-  public void setStatus(String status)
+  public void setStatus(AppointmentState status)
   {
     this.status = status;
   }
-  //DOCTOR ID
-
-  public String getDoctorId()
-  {
-    return doctorId;
-  }
-  //PATIENT ID
-  public String getPatientCPR()
-  {
-    return patientCPR;
-  }
-
 
 }
 

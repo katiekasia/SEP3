@@ -1,5 +1,8 @@
 package via.pro3.mainserver.Model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Doctor
 {
   private String name;
@@ -8,6 +11,7 @@ public class Doctor
   private String email;
   private int id;
   private String specialisation;
+  private Map<Integer,Appointment> appointments;
 
   public Doctor(int id, String name, String surname, String password, String email,  String specialisation)
   {
@@ -17,9 +21,23 @@ public class Doctor
     setEmail(email);
     setId(id);
     setSpecialisation(specialisation);
+    appointments = new HashMap<Integer, Appointment>();
   }
 
+
+public void addAppointment(Appointment appointment){
+    appointments.put(appointment.getAppointmentId(), appointment);
+}
+  public void removeAppointmentById(int id)
+  {
+    appointments.remove(id);
+  }
+
+
 //GETTERS BELOW**************************
+public Appointment getAppointmentById(int id){
+  return appointments.get(id);
+}
 
   public String getEmail()
   {
@@ -49,6 +67,9 @@ public class Doctor
   public String getSpecialisation()
   {
     return specialisation;
+  }
+  public Map<Integer, Appointment> getAppointments(){
+    return appointments;
   }
   @Override public String toString(){
   return getId() + getName() + " " + getSurname() + " " + getSpecialisation();
@@ -85,4 +106,8 @@ public class Doctor
     this.surname = surname;
   }
 
+  public void setAppointments(Map<Integer,Appointment> appointments)
+  {
+    this.appointments = appointments;
+  }
 }

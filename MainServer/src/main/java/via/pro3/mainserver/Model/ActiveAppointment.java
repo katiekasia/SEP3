@@ -5,12 +5,12 @@ public class ActiveAppointment extends AppointmentState
   //TODO
   @Override public void cancel(Appointment appointment)
   {
-
+    appointment.setStatus(new CancelledAppointment());
   }
 
   @Override public void expire(Appointment appointment)
   {
-
+appointment.setStatus(new ExpiredAppointment());
   }
 
   @Override public String status()
