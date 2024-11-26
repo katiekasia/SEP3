@@ -1,31 +1,27 @@
 package DTOs;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public class CreateAppointmentDto
 {
 
   private String type;
   private String description;
   private String status;
-  private String patientCPR;
+  private String patientCpr;
   private String doctorId;
-  private String  appointmentDate;
-  private String  appointmentTime;
+  private String  date;
+  private String  time;
 
   public CreateAppointmentDto(String type, String description, String status,
-      String patientCR, String doctorId, String  appointmentDate, String appointmentTime)
+      String patientCpr, String doctorId, String  appointmentDate, String appointmentTime)
   {
 
     setType(type);
     setDescription(description);
     setStatus(status);
-    setPatientCPR(patientCR);
+    setPatientCPR(patientCpr);
     setDoctorId(doctorId);
-    setAppointmentDate(appointmentDate);
-    setAppointmentTime(appointmentTime);
+    setDate(appointmentDate);
+    setTime(appointmentTime);
   }
 //GETTERS BELOW*****************
   public String getType()
@@ -50,26 +46,17 @@ public class CreateAppointmentDto
 
   public String getPatientCpr()
   {
-    return patientCPR;
+    return patientCpr;
   }
 
-  public LocalDate getAppointmentDate()
+  public String getDate()
   {
-    return LocalDate.parse(appointmentDate) ;
-  }
-  public String getAppointmentTimeStr(){
-    return appointmentTime;
+    return date ;
   }
 
-  public String getAppointmentDateStr()
+  public String getTime()
   {
-    return appointmentDate;
-  }
-
-  public LocalTime getAppointmentTime()
-  {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
-    return LocalTime.parse(appointmentTime, formatter) ;
+    return time ;
   }
 
   //SETTERS BELOW*************************
@@ -87,9 +74,9 @@ public class CreateAppointmentDto
     this.status = status;
   }
 
-  public void setPatientCPR(String patientCPR)
+  public void setPatientCPR(String patientCpr)
   {
-    this.patientCPR = patientCPR;
+    this.patientCpr = patientCpr;
   }
 
   public void setDoctorId(String doctorId)
@@ -97,14 +84,14 @@ public class CreateAppointmentDto
     this.doctorId = doctorId;
   }
 
-  public void setAppointmentDate(String appointmentDate)
+  public void setDate(String appointmentDate)
   {
-    this.appointmentDate = appointmentDate;
+    this.date = appointmentDate;
   }
 
-  public void setAppointmentTime(String appointmentTime)
+  public void setTime(String appointmentTime)
   {
 
-    this.appointmentTime = appointmentTime;
+    this.time = appointmentTime;
   }
 }

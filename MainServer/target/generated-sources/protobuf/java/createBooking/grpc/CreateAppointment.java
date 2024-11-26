@@ -15,10 +15,10 @@ public  final class CreateAppointment extends
     super(builder);
   }
   private CreateAppointment() {
-    patientCpr_ = "";
-    status_ = "";
-    description_ = "";
     type_ = "";
+    description_ = "";
+    status_ = "";
+    patientCpr_ = "";
     doctorId_ = "";
     appointmentDate_ = "";
     appointmentTime_ = "";
@@ -52,25 +52,25 @@ public  final class CreateAppointment extends
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            patientCpr_ = s;
+            type_ = s;
             break;
           }
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            status_ = s;
+            description_ = s;
             break;
           }
           case 26: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            description_ = s;
+            status_ = s;
             break;
           }
           case 34: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            type_ = s;
+            patientCpr_ = s;
             break;
           }
           case 42: {
@@ -114,78 +114,44 @@ public  final class CreateAppointment extends
             createBooking.grpc.CreateAppointment.class, createBooking.grpc.CreateAppointment.Builder.class);
   }
 
-  public static final int PATIENTCPR_FIELD_NUMBER = 1;
-  private volatile java.lang.Object patientCpr_;
+  public static final int TYPE_FIELD_NUMBER = 1;
+  private volatile java.lang.Object type_;
   /**
-   * <code>string patientCpr = 1;</code>
+   * <code>string type = 1;</code>
    */
-  public java.lang.String getPatientCpr() {
-    java.lang.Object ref = patientCpr_;
+  public java.lang.String getType() {
+    java.lang.Object ref = type_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      patientCpr_ = s;
+      type_ = s;
       return s;
     }
   }
   /**
-   * <code>string patientCpr = 1;</code>
+   * <code>string type = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getPatientCprBytes() {
-    java.lang.Object ref = patientCpr_;
+      getTypeBytes() {
+    java.lang.Object ref = type_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      patientCpr_ = b;
+      type_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
   }
 
-  public static final int STATUS_FIELD_NUMBER = 2;
-  private volatile java.lang.Object status_;
-  /**
-   * <code>string status = 2;</code>
-   */
-  public java.lang.String getStatus() {
-    java.lang.Object ref = status_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      status_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string status = 2;</code>
-   */
-  public com.google.protobuf.ByteString
-      getStatusBytes() {
-    java.lang.Object ref = status_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      status_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int DESCRIPTION_FIELD_NUMBER = 3;
+  public static final int DESCRIPTION_FIELD_NUMBER = 2;
   private volatile java.lang.Object description_;
   /**
-   * <code>string description = 3;</code>
+   * <code>string description = 2;</code>
    */
   public java.lang.String getDescription() {
     java.lang.Object ref = description_;
@@ -200,7 +166,7 @@ public  final class CreateAppointment extends
     }
   }
   /**
-   * <code>string description = 3;</code>
+   * <code>string description = 2;</code>
    */
   public com.google.protobuf.ByteString
       getDescriptionBytes() {
@@ -216,34 +182,68 @@ public  final class CreateAppointment extends
     }
   }
 
-  public static final int TYPE_FIELD_NUMBER = 4;
-  private volatile java.lang.Object type_;
+  public static final int STATUS_FIELD_NUMBER = 3;
+  private volatile java.lang.Object status_;
   /**
-   * <code>string type = 4;</code>
+   * <code>string status = 3;</code>
    */
-  public java.lang.String getType() {
-    java.lang.Object ref = type_;
+  public java.lang.String getStatus() {
+    java.lang.Object ref = status_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      type_ = s;
+      status_ = s;
       return s;
     }
   }
   /**
-   * <code>string type = 4;</code>
+   * <code>string status = 3;</code>
    */
   public com.google.protobuf.ByteString
-      getTypeBytes() {
-    java.lang.Object ref = type_;
+      getStatusBytes() {
+    java.lang.Object ref = status_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      type_ = b;
+      status_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PATIENTCPR_FIELD_NUMBER = 4;
+  private volatile java.lang.Object patientCpr_;
+  /**
+   * <code>string patientCpr = 4;</code>
+   */
+  public java.lang.String getPatientCpr() {
+    java.lang.Object ref = patientCpr_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      patientCpr_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string patientCpr = 4;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPatientCprBytes() {
+    java.lang.Object ref = patientCpr_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      patientCpr_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -364,17 +364,17 @@ public  final class CreateAppointment extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getPatientCprBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, patientCpr_);
-    }
-    if (!getStatusBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, status_);
+    if (!getTypeBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, type_);
     }
     if (!getDescriptionBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, description_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
     }
-    if (!getTypeBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, type_);
+    if (!getStatusBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, status_);
+    }
+    if (!getPatientCprBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, patientCpr_);
     }
     if (!getDoctorIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, doctorId_);
@@ -392,17 +392,17 @@ public  final class CreateAppointment extends
     if (size != -1) return size;
 
     size = 0;
-    if (!getPatientCprBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, patientCpr_);
-    }
-    if (!getStatusBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, status_);
+    if (!getTypeBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, type_);
     }
     if (!getDescriptionBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, description_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
     }
-    if (!getTypeBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, type_);
+    if (!getStatusBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, status_);
+    }
+    if (!getPatientCprBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, patientCpr_);
     }
     if (!getDoctorIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, doctorId_);
@@ -429,14 +429,14 @@ public  final class CreateAppointment extends
     createBooking.grpc.CreateAppointment other = (createBooking.grpc.CreateAppointment) obj;
 
     boolean result = true;
-    result = result && getPatientCpr()
-        .equals(other.getPatientCpr());
-    result = result && getStatus()
-        .equals(other.getStatus());
-    result = result && getDescription()
-        .equals(other.getDescription());
     result = result && getType()
         .equals(other.getType());
+    result = result && getDescription()
+        .equals(other.getDescription());
+    result = result && getStatus()
+        .equals(other.getStatus());
+    result = result && getPatientCpr()
+        .equals(other.getPatientCpr());
     result = result && getDoctorId()
         .equals(other.getDoctorId());
     result = result && getAppointmentDate()
@@ -453,14 +453,14 @@ public  final class CreateAppointment extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + PATIENTCPR_FIELD_NUMBER;
-    hash = (53 * hash) + getPatientCpr().hashCode();
-    hash = (37 * hash) + STATUS_FIELD_NUMBER;
-    hash = (53 * hash) + getStatus().hashCode();
-    hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
-    hash = (53 * hash) + getDescription().hashCode();
     hash = (37 * hash) + TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getType().hashCode();
+    hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+    hash = (53 * hash) + getDescription().hashCode();
+    hash = (37 * hash) + STATUS_FIELD_NUMBER;
+    hash = (53 * hash) + getStatus().hashCode();
+    hash = (37 * hash) + PATIENTCPR_FIELD_NUMBER;
+    hash = (53 * hash) + getPatientCpr().hashCode();
     hash = (37 * hash) + DOCTORID_FIELD_NUMBER;
     hash = (53 * hash) + getDoctorId().hashCode();
     hash = (37 * hash) + APPOINTMENTDATE_FIELD_NUMBER;
@@ -596,13 +596,13 @@ public  final class CreateAppointment extends
     }
     public Builder clear() {
       super.clear();
-      patientCpr_ = "";
-
-      status_ = "";
+      type_ = "";
 
       description_ = "";
 
-      type_ = "";
+      status_ = "";
+
+      patientCpr_ = "";
 
       doctorId_ = "";
 
@@ -632,10 +632,10 @@ public  final class CreateAppointment extends
 
     public createBooking.grpc.CreateAppointment buildPartial() {
       createBooking.grpc.CreateAppointment result = new createBooking.grpc.CreateAppointment(this);
-      result.patientCpr_ = patientCpr_;
-      result.status_ = status_;
-      result.description_ = description_;
       result.type_ = type_;
+      result.description_ = description_;
+      result.status_ = status_;
+      result.patientCpr_ = patientCpr_;
       result.doctorId_ = doctorId_;
       result.appointmentDate_ = appointmentDate_;
       result.appointmentTime_ = appointmentTime_;
@@ -680,20 +680,20 @@ public  final class CreateAppointment extends
 
     public Builder mergeFrom(createBooking.grpc.CreateAppointment other) {
       if (other == createBooking.grpc.CreateAppointment.getDefaultInstance()) return this;
-      if (!other.getPatientCpr().isEmpty()) {
-        patientCpr_ = other.patientCpr_;
-        onChanged();
-      }
-      if (!other.getStatus().isEmpty()) {
-        status_ = other.status_;
+      if (!other.getType().isEmpty()) {
+        type_ = other.type_;
         onChanged();
       }
       if (!other.getDescription().isEmpty()) {
         description_ = other.description_;
         onChanged();
       }
-      if (!other.getType().isEmpty()) {
-        type_ = other.type_;
+      if (!other.getStatus().isEmpty()) {
+        status_ = other.status_;
+        onChanged();
+      }
+      if (!other.getPatientCpr().isEmpty()) {
+        patientCpr_ = other.patientCpr_;
         onChanged();
       }
       if (!other.getDoctorId().isEmpty()) {
@@ -734,216 +734,9 @@ public  final class CreateAppointment extends
       return this;
     }
 
-    private java.lang.Object patientCpr_ = "";
-    /**
-     * <code>string patientCpr = 1;</code>
-     */
-    public java.lang.String getPatientCpr() {
-      java.lang.Object ref = patientCpr_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        patientCpr_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string patientCpr = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getPatientCprBytes() {
-      java.lang.Object ref = patientCpr_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        patientCpr_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string patientCpr = 1;</code>
-     */
-    public Builder setPatientCpr(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      patientCpr_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string patientCpr = 1;</code>
-     */
-    public Builder clearPatientCpr() {
-      
-      patientCpr_ = getDefaultInstance().getPatientCpr();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string patientCpr = 1;</code>
-     */
-    public Builder setPatientCprBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      patientCpr_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object status_ = "";
-    /**
-     * <code>string status = 2;</code>
-     */
-    public java.lang.String getStatus() {
-      java.lang.Object ref = status_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        status_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string status = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getStatusBytes() {
-      java.lang.Object ref = status_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        status_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string status = 2;</code>
-     */
-    public Builder setStatus(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      status_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string status = 2;</code>
-     */
-    public Builder clearStatus() {
-      
-      status_ = getDefaultInstance().getStatus();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string status = 2;</code>
-     */
-    public Builder setStatusBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      status_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object description_ = "";
-    /**
-     * <code>string description = 3;</code>
-     */
-    public java.lang.String getDescription() {
-      java.lang.Object ref = description_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        description_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string description = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDescriptionBytes() {
-      java.lang.Object ref = description_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        description_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string description = 3;</code>
-     */
-    public Builder setDescription(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      description_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string description = 3;</code>
-     */
-    public Builder clearDescription() {
-      
-      description_ = getDefaultInstance().getDescription();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string description = 3;</code>
-     */
-    public Builder setDescriptionBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      description_ = value;
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object type_ = "";
     /**
-     * <code>string type = 4;</code>
+     * <code>string type = 1;</code>
      */
     public java.lang.String getType() {
       java.lang.Object ref = type_;
@@ -958,7 +751,7 @@ public  final class CreateAppointment extends
       }
     }
     /**
-     * <code>string type = 4;</code>
+     * <code>string type = 1;</code>
      */
     public com.google.protobuf.ByteString
         getTypeBytes() {
@@ -974,7 +767,7 @@ public  final class CreateAppointment extends
       }
     }
     /**
-     * <code>string type = 4;</code>
+     * <code>string type = 1;</code>
      */
     public Builder setType(
         java.lang.String value) {
@@ -987,7 +780,7 @@ public  final class CreateAppointment extends
       return this;
     }
     /**
-     * <code>string type = 4;</code>
+     * <code>string type = 1;</code>
      */
     public Builder clearType() {
       
@@ -996,7 +789,7 @@ public  final class CreateAppointment extends
       return this;
     }
     /**
-     * <code>string type = 4;</code>
+     * <code>string type = 1;</code>
      */
     public Builder setTypeBytes(
         com.google.protobuf.ByteString value) {
@@ -1006,6 +799,213 @@ public  final class CreateAppointment extends
   checkByteStringIsUtf8(value);
       
       type_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object description_ = "";
+    /**
+     * <code>string description = 2;</code>
+     */
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string description = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string description = 2;</code>
+     */
+    public Builder setDescription(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      description_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 2;</code>
+     */
+    public Builder clearDescription() {
+      
+      description_ = getDefaultInstance().getDescription();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string description = 2;</code>
+     */
+    public Builder setDescriptionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      description_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object status_ = "";
+    /**
+     * <code>string status = 3;</code>
+     */
+    public java.lang.String getStatus() {
+      java.lang.Object ref = status_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        status_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string status = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getStatusBytes() {
+      java.lang.Object ref = status_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        status_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string status = 3;</code>
+     */
+    public Builder setStatus(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      status_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string status = 3;</code>
+     */
+    public Builder clearStatus() {
+      
+      status_ = getDefaultInstance().getStatus();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string status = 3;</code>
+     */
+    public Builder setStatusBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      status_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object patientCpr_ = "";
+    /**
+     * <code>string patientCpr = 4;</code>
+     */
+    public java.lang.String getPatientCpr() {
+      java.lang.Object ref = patientCpr_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        patientCpr_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string patientCpr = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPatientCprBytes() {
+      java.lang.Object ref = patientCpr_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        patientCpr_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string patientCpr = 4;</code>
+     */
+    public Builder setPatientCpr(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      patientCpr_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string patientCpr = 4;</code>
+     */
+    public Builder clearPatientCpr() {
+      
+      patientCpr_ = getDefaultInstance().getPatientCpr();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string patientCpr = 4;</code>
+     */
+    public Builder setPatientCprBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      patientCpr_ = value;
       onChanged();
       return this;
     }

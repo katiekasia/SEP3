@@ -33,9 +33,9 @@ public final class Patient {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rpatient.proto\"\236\001\n\021CreateAppointment\022\022\n" +
-      "\npatientCpr\030\001 \001(\t\022\016\n\006status\030\002 \001(\t\022\023\n\013des" +
-      "cription\030\003 \001(\t\022\014\n\004type\030\004 \001(\t\022\020\n\010doctorId" +
+      "\n\rpatient.proto\"\236\001\n\021CreateAppointment\022\014\n" +
+      "\004type\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\016\n\006stat" +
+      "us\030\003 \001(\t\022\022\n\npatientCpr\030\004 \001(\t\022\020\n\010doctorId" +
       "\030\005 \001(\t\022\027\n\017appointmentDate\030\006 \001(\t\022\027\n\017appoi" +
       "ntmentTime\030\007 \001(\t\"\"\n\nDBresponse\022\024\n\014confir" +
       "mation\030\001 \001(\t2H\n\016PatientBooking\0226\n\021create" +
@@ -59,7 +59,7 @@ public final class Patient {
     internal_static_CreateAppointment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CreateAppointment_descriptor,
-        new java.lang.String[] { "PatientCpr", "Status", "Description", "Type", "DoctorId", "AppointmentDate", "AppointmentTime", });
+        new java.lang.String[] { "Type", "Description", "Status", "PatientCpr", "DoctorId", "AppointmentDate", "AppointmentTime", });
     internal_static_DBresponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_DBresponse_fieldAccessorTable = new

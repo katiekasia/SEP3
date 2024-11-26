@@ -8,44 +8,44 @@ public interface CreateAppointmentOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string patientCpr = 1;</code>
+   * <code>string type = 1;</code>
    */
-  java.lang.String getPatientCpr();
+  java.lang.String getType();
   /**
-   * <code>string patientCpr = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getPatientCprBytes();
-
-  /**
-   * <code>string status = 2;</code>
-   */
-  java.lang.String getStatus();
-  /**
-   * <code>string status = 2;</code>
+   * <code>string type = 1;</code>
    */
   com.google.protobuf.ByteString
-      getStatusBytes();
+      getTypeBytes();
 
   /**
-   * <code>string description = 3;</code>
+   * <code>string description = 2;</code>
    */
   java.lang.String getDescription();
   /**
-   * <code>string description = 3;</code>
+   * <code>string description = 2;</code>
    */
   com.google.protobuf.ByteString
       getDescriptionBytes();
 
   /**
-   * <code>string type = 4;</code>
+   * <code>string status = 3;</code>
    */
-  java.lang.String getType();
+  java.lang.String getStatus();
   /**
-   * <code>string type = 4;</code>
+   * <code>string status = 3;</code>
    */
   com.google.protobuf.ByteString
-      getTypeBytes();
+      getStatusBytes();
+
+  /**
+   * <code>string patientCpr = 4;</code>
+   */
+  java.lang.String getPatientCpr();
+  /**
+   * <code>string patientCpr = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getPatientCprBytes();
 
   /**
    * <code>string doctorId = 5;</code>

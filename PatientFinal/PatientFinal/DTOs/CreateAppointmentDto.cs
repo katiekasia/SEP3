@@ -4,13 +4,17 @@ namespace PatientFinal.DTOs;
 
 public class CreateAppointmentDto
 {
+        public string type {get; set;}
+        public string description { get; set; }
+        public string status { get; set; }
+        public string patientCpr { get; set; }
+        public string doctorId { get; set; }
         
-        public string appoitmentDate { get; set; }
-        public string appoitmentTime { get; set; }
-       public string Specialization { get; set; }
-       public string City { get; set; }
-        public string Status { get; set; }
-        public string Description { get; set; }
-        public string PatientCpr { get; set; }
-        public string DoctorId { get; set; }
+        public string date { get; set; }
+        public string time { get; set; }
+    
+     
+        
+       
+      
 }

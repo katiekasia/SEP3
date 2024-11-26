@@ -33,17 +33,19 @@ public class Server {
 
   @PostMapping("/book")
   public CreateAppointmentDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
+    System.out.println("here");
     CreateAppointment request = CreateAppointment.newBuilder()
         .setDoctorId(createAppointmentDto.getDoctorId())
         .setStatus(createAppointmentDto.getStatus())
         .setDescription(createAppointmentDto.getDescription())
         .setType(createAppointmentDto.getType())
         .setPatientCpr(createAppointmentDto.getPatientCpr())
-        .setAppointmentDate(createAppointmentDto.getAppointmentDateStr())
-        .setAppointmentTime(createAppointmentDto.getAppointmentTimeStr())
+        .setAppointmentDate(createAppointmentDto.getDate())
+        .setAppointmentTime(createAppointmentDto.getTime())
         .build();
-
+    System.out.println("before res");
         DBresponse response = blockingStub.createAppointment(request);
+    System.out.println("sent");
 
         return createAppointmentDto;
 

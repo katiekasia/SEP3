@@ -7,10 +7,11 @@ service PatientBooking {
   rpc createAppointment (CreateAppointment) returns (DBresponse) {}
 }
 message CreateAppointment {
-  string patientCpr = 1;
-  string status = 2;
-  string description = 3;
-  string type = 4;
+
+  string type = 1;
+  string description = 2;
+  string status = 3;
+  string patientCpr = 4;
   string doctorId = 5;
   string appointmentDate = 6;
   string appointmentTime = 7;

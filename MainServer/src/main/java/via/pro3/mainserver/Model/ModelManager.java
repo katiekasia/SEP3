@@ -9,6 +9,9 @@ import via.pro3.mainserver.database.DatabaseSingleton;
 import via.pro3.mainserver.database.EventInterface;
 import via.pro3.mainserver.database.EventRepository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class ModelManager implements Model
 {
   private GeneratorInterface idGenerator;
@@ -26,7 +29,10 @@ public class ModelManager implements Model
   @Override public void createAppointment(
       CreateAppointmentDto createAppointmentDto)
   {
-    MyDateAndTime dateAndTime = new MyDateAndTime(createAppointmentDto.getAppointmentDate(), createAppointmentDto.getAppointmentTime());
+    System.out.println("iMD");
+    LocalDate date =LocalDate.parse(createAppointmentDto.getDate());
+    LocalTime time = LocalTime.parse(createAppointmentDto.getTime());
+    MyDateAndTime dateAndTime = new MyDateAndTime(date, time);
     Clinic clinic = eventRepository.getClinicByDoctorId(createAppointmentDto.getDoctorId());
     Doctor doctor = eventRepository.getDoctorById(createAppointmentDto.getDoctorId());
     Patient patient = getPatientByCpr(createAppointmentDto.getPatientCpr());
@@ -39,6 +45,7 @@ public class ModelManager implements Model
     {
       eventRepository.createAppointment(appointment, doctor, patient);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }

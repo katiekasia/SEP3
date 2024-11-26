@@ -17,12 +17,14 @@ public class PatientImpl extends PatientBookingGrpc.PatientBookingImplBase {
 
   @Override public void createAppointment(CreateAppointment request, StreamObserver<DBresponse> responseObserver) {
       try {
+        System.out.println("rec");
         CreateAppointmentDto newAppointment = new CreateAppointmentDto(request.getType(),
             request.getDescription(), request.getStatus(),request.getPatientCpr(),request.getDoctorId(),
             request.getAppointmentDate(), request.getAppointmentTime());
         model.createAppointment(newAppointment);
       } catch (Exception e) {
           responseObserver.onError(e);
+          e.printStackTrace();
       } finally {
           responseObserver.onCompleted();
       }

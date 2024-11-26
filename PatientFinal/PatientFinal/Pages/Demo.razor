@@ -1,4 +1,5 @@
 ﻿@page "/Demo"
+@using System.Diagnostics
 @using PatientFinal.DTOs
 @using PatientFinal.Services
 @inject HttpClient Http
@@ -22,12 +23,12 @@
         </div>
 
         <div class="form-group">
-            <label for="specialization">Choose a specialization:</label>
+            <label for="specialization">Choose a type of visit:</label>
             <select id="specialization" class="dropdown" @onchange="HandleSpecializationChange">
                 <option value="">Select a specialization</option>
-                @foreach (var spec in specializations)
+                @foreach (var type in types)
                 {
-                    <option value="@spec">@spec</option>
+                    <option value="@type">@type</option>
                 }
             </select>
         </div>
@@ -56,7 +57,7 @@
     <div id="confirmation-review" class="confirmation-container">
         <h4>Review and Confirm Your Appointment</h4>
         <p><strong>Location:</strong> @selectedLocation</p>
-        <p><strong>Specialization:</strong> @selectedSpecialization</p>
+        <p><strong>Specialization:</strong> @selectedTypes</p>
         <p><strong>Description:</strong> @writtenDescription</p>
         <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
         <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
@@ -78,22 +79,24 @@
         ("Health Center South", "91011 South Ave, City C")
     };
 
-    private List<string> specializations = new() { "Cardiologist", "Gynecologist", "Family Doctor" };
+    private List<string> types = new() { "Cardiologist", "Gynecologist", "Family Doctor" };
 
     private string? serverResponse;
     private string? selectedLocation;
-    private string? selectedSpecialization;
+    private string? selectedTypes;
     private string? writtenDescription;
     private DateTime? selectedDate;
     private TimeOnly? selectedTime;
     private bool showConfirmation = false;
 
     private void HandleLocationChange(ChangeEventArgs e) => selectedLocation = e.Value?.ToString();
-    private void HandleSpecializationChange(ChangeEventArgs e) => selectedSpecialization = e.Value?.ToString();
+    private void HandleSpecializationChange(ChangeEventArgs e) => selectedTypes = e.Value?.ToString();
     private void ConfirmDetails() => showConfirmation = true;
 
     private async Task CreateAppointment()
     {
+        Console.WriteLine(selectedDate.ToString());
+        Console.WriteLine(selectedTime.ToString());
         if (selectedDate == null || selectedTime == null)
         {
             serverResponse = "Please select a valid date and time.";
@@ -102,23 +105,28 @@
 
         var createAppointmentDto = new CreateAppointmentDto()
         {
-            City = selectedLocation,
-            Status = "Active",
-            Description = writtenDescription,
-            Specialization = selectedSpecialization,
-            appoitmentDate = selectedDate?.ToString("yyyy-MM-dd"),
-            appoitmentTime = selectedTime?.ToString()
+            status = "Active",
+            description = writtenDescription,
+            type = selectedTypes,
+            doctorId = "23333",
+            patientCpr = "23333",
+            date = selectedDate?.ToString("yyyy-MM-dd"),
+            time = selectedTime?.ToString("HH:mm")
         };
 
         try
         {
+            
             var response = await AppointmentService.CreateAppointment(createAppointmentDto);
             serverResponse = response != null
-                ? $"Appointment successfully booked in {response.City} with status '{response.Status}'."
+                ? $"Appointment successfully booked in {response} with status '{response.status}'."
                 : "Failed to book the appointment.";
         }
         catch (Exception e)
         {
+            // System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+            // Console.WriteLine("KK");
+            // Debug.WriteLine(Environment.StackTrace);
             serverResponse = $"Error creating an appointment: {e.Message}";
         }
     }
