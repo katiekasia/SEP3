@@ -12,8 +12,8 @@ public class CreateAppointmentDto
   private String status;
   private String patientCPR;
   private String doctorId;
-  private LocalDate appointmentDate;
-  private LocalTime appointmentTime;
+  private String  appointmentDate;
+  private String  appointmentTime;
 
   public CreateAppointmentDto(String type, String description, String status,
       String patientCR, String doctorId, String  appointmentDate, String appointmentTime)
@@ -55,12 +55,13 @@ public class CreateAppointmentDto
 
   public LocalDate getAppointmentDate()
   {
-    return appointmentDate;
+    return LocalDate.parse(appointmentDate) ;
   }
 
   public LocalTime getAppointmentTime()
   {
-    return appointmentTime;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+    return LocalTime.parse(appointmentTime, formatter) ;
   }
 
   //SETTERS BELOW*************************
@@ -90,12 +91,12 @@ public class CreateAppointmentDto
 
   public void setAppointmentDate(String appointmentDate)
   {
-    this.appointmentDate = LocalDate.parse(appointmentDate);
+    this.appointmentDate = appointmentDate;
   }
 
   public void setAppointmentTime(String appointmentTime)
   {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
-    this.appointmentTime = LocalTime.parse(appointmentTime, formatter);
+
+    this.appointmentTime = appointmentTime;
   }
 }

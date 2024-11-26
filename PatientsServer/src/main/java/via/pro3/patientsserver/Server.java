@@ -31,7 +31,7 @@ public class Server {
         .setDoctorId("PLACEHOLDER")
         .setStatus(createAppointmentDto.getStatus())
         .setDescription(createAppointmentDto.getDescription())
-        .setType(createAppointmentDto.getSpecialization())
+        .setType(createAppointmentDto.getType())
         .setPatientCpr("PLACEHOLDER PATIENT SERVER")
         .build();
 

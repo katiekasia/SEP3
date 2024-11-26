@@ -1,35 +1,36 @@
 package DTOs;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class CreateAppointmentDto
 {
 
-  private String city;
- private String specialization;
+  private String type;
   private String description;
   private String status;
-  //private String patientCPR;
- // private String doctorId;
+  private String patientCPR;
+  private String doctorId;
+  private String  appointmentDate;
+  private String  appointmentTime;
 
-  //SPECIALIZATION
-
-  public String getSpecialization()
+  public CreateAppointmentDto(String type, String description, String status,
+      String patientCR, String doctorId, String  appointmentDate, String appointmentTime)
   {
-    return specialization;
-  }
-  public void setSpecialization(String specialization)
-  {
-    this.specialization = specialization;
-  }
 
-  //CITY
-  public String getCity()
-  {
-    return city;
+    setType(type);
+    setDescription(description);
+    setStatus(status);
+    setPatientCPR(patientCR);
+    setDoctorId(doctorId);
+    setAppointmentDate(appointmentDate);
+    setAppointmentTime(appointmentTime);
   }
-
-  public void setCity(String city) {
-    this.city = city;
+//GETTERS BELOW*****************
+  public String getType()
+  {
+    return type;
   }
 
   public String getDescription()
@@ -37,47 +38,65 @@ public class CreateAppointmentDto
     return description;
   }
 
-  public void setDescription(String description)
-  {
-    this.description = description;
-  }
-
-  //STATUS
-
   public String getStatus()
   {
     return status;
+  }
+
+  public String getDoctorId()
+  {
+    return doctorId;
+  }
+
+  public String getPatientCpr()
+  {
+    return patientCPR;
+  }
+
+  public LocalDate getAppointmentDate()
+  {
+    return LocalDate.parse(appointmentDate) ;
+  }
+
+  public LocalTime getAppointmentTime()
+  {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+    return LocalTime.parse(appointmentTime, formatter) ;
+  }
+
+  //SETTERS BELOW*************************
+  public void setType(String type)
+  {
+    this.type = type;
+  }
+  public void setDescription(String description)
+  {
+    this.description = description;
   }
 
   public void setStatus(String status)
   {
     this.status = status;
   }
-  //DOCTOR ID
 
-//  public String getDoctorId()
-//  {
-//    return doctorId;
-//  }
-//  //PATIENT ID
-//  public String getPatientCpr()
-//  {
-//    return patientCPR;
-//  }
-//
-//
-//  public String getPatientCPR() {
-//    return patientCPR;
-//  }
-//
-//  public void setPatientCPR(String patientCPR) {
-//    this.patientCPR = patientCPR;
-//  }
-//
-//
-//  public void setDoctorId(String doctorId) {
-//    this.doctorId = doctorId;
-//  }
+  public void setPatientCPR(String patientCPR)
+  {
+    this.patientCPR = patientCPR;
+  }
 
+  public void setDoctorId(String doctorId)
+  {
+    this.doctorId = doctorId;
+  }
 
+  public void setAppointmentDate(String appointmentDate)
+  {
+    this.appointmentDate = appointmentDate;
+  }
+
+  public void setAppointmentTime(String appointmentTime)
+  {
+
+    this.appointmentTime = appointmentTime;
+  }
 }
