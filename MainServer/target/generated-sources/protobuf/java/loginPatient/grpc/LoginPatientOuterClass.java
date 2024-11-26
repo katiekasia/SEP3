@@ -15,15 +15,15 @@ public final class LoginPatientOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_LoginRequestPatient_descriptor;
+    internal_static_LoginRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_LoginRequestPatient_fieldAccessorTable;
+      internal_static_LoginRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_loginResponsePatient_descriptor;
+    internal_static_loginResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_loginResponsePatient_fieldAccessorTable;
+      internal_static_loginResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -33,12 +33,12 @@ public final class LoginPatientOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022loginPatient.proto\"4\n\023LoginRequestPati" +
-      "ent\022\013\n\003cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\",\n\024lo" +
-      "ginResponsePatient\022\024\n\014confirmation\030\001 \001(\t" +
-      "2M\n\014LoginPatient\022=\n\014loginPatient\022\024.Login" +
-      "RequestPatient\032\025.loginResponsePatient\"\000B" +
-      "\025\n\021loginPatient.grpcP\001b\006proto3"
+      "\n\022loginPatient.proto\"-\n\014LoginRequest\022\013\n\003" +
+      "cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"%\n\rloginResp" +
+      "onse\022\024\n\014confirmation\030\001 \001(\t2?\n\014LoginPatie" +
+      "nt\022/\n\014loginPatient\022\r.LoginRequest\032\016.logi" +
+      "nResponse\"\000B\025\n\021loginPatient.grpcP\001b\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -52,17 +52,17 @@ public final class LoginPatientOuterClass {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_LoginRequestPatient_descriptor =
+    internal_static_LoginRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_LoginRequestPatient_fieldAccessorTable = new
+    internal_static_LoginRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_LoginRequestPatient_descriptor,
+        internal_static_LoginRequest_descriptor,
         new java.lang.String[] { "Cpr", "Password", });
-    internal_static_loginResponsePatient_descriptor =
+    internal_static_loginResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_loginResponsePatient_fieldAccessorTable = new
+    internal_static_loginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_loginResponsePatient_descriptor,
+        internal_static_loginResponse_descriptor,
         new java.lang.String[] { "Confirmation", });
   }
 

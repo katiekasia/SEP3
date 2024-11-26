@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "registerPatient.grpc";
+
+service RegisterPatient {
+  rpc registerPatient (RegisterRequest) returns (Response) {}
+}
+message RegisterRequest {
+  string name = 1;
+  string surname = 2;
+  string email = 3;
+  string phone = 4;
+  string password = 5;
+  string CPRNo = 6;
+}
+
+
+message Response {
+  string confirmation = 1;
+}

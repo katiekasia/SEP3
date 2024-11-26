@@ -10,6 +10,6 @@ public interface Model
    Patient getPatientByCpr(String cpr);
   Doctor getDoctorById(String id);
   void registerPatient(RegisterDto registerDto);
-  void loginPatient(LoginDto loginDto);
+  String loginPatient(LoginDto loginDto);
 
 }

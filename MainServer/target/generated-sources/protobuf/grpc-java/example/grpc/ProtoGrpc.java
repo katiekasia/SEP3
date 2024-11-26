@@ -28,16 +28,16 @@ public final class ProtoGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<example.grpc.loginRequest,
-      example.grpc.loginResponse> METHOD_LOGIN_DOCTOR =
-      io.grpc.MethodDescriptor.<example.grpc.loginRequest, example.grpc.loginResponse>newBuilder()
+  public static final io.grpc.MethodDescriptor<example.grpc.test1,
+      example.grpc.test2> METHOD_LOGIN_DOCTOR =
+      io.grpc.MethodDescriptor.<example.grpc.test1, example.grpc.test2>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "Proto", "loginDoctor"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              example.grpc.loginRequest.getDefaultInstance()))
+              example.grpc.test1.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              example.grpc.loginResponse.getDefaultInstance()))
+              example.grpc.test2.getDefaultInstance()))
           .build();
 
   /**
@@ -69,8 +69,8 @@ public final class ProtoGrpc {
 
     /**
      */
-    public void loginDoctor(example.grpc.loginRequest request,
-        io.grpc.stub.StreamObserver<example.grpc.loginResponse> responseObserver) {
+    public void loginDoctor(example.grpc.test1 request,
+        io.grpc.stub.StreamObserver<example.grpc.test2> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_LOGIN_DOCTOR, responseObserver);
     }
 
@@ -80,8 +80,8 @@ public final class ProtoGrpc {
             METHOD_LOGIN_DOCTOR,
             asyncUnaryCall(
               new MethodHandlers<
-                example.grpc.loginRequest,
-                example.grpc.loginResponse>(
+                example.grpc.test1,
+                example.grpc.test2>(
                   this, METHODID_LOGIN_DOCTOR)))
           .build();
     }
@@ -107,8 +107,8 @@ public final class ProtoGrpc {
 
     /**
      */
-    public void loginDoctor(example.grpc.loginRequest request,
-        io.grpc.stub.StreamObserver<example.grpc.loginResponse> responseObserver) {
+    public void loginDoctor(example.grpc.test1 request,
+        io.grpc.stub.StreamObserver<example.grpc.test2> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_LOGIN_DOCTOR, getCallOptions()), request, responseObserver);
     }
@@ -134,7 +134,7 @@ public final class ProtoGrpc {
 
     /**
      */
-    public example.grpc.loginResponse loginDoctor(example.grpc.loginRequest request) {
+    public example.grpc.test2 loginDoctor(example.grpc.test1 request) {
       return blockingUnaryCall(
           getChannel(), METHOD_LOGIN_DOCTOR, getCallOptions(), request);
     }
@@ -160,8 +160,8 @@ public final class ProtoGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<example.grpc.loginResponse> loginDoctor(
-        example.grpc.loginRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<example.grpc.test2> loginDoctor(
+        example.grpc.test1 request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_LOGIN_DOCTOR, getCallOptions()), request);
     }
@@ -187,8 +187,8 @@ public final class ProtoGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_LOGIN_DOCTOR:
-          serviceImpl.loginDoctor((example.grpc.loginRequest) request,
-              (io.grpc.stub.StreamObserver<example.grpc.loginResponse>) responseObserver);
+          serviceImpl.loginDoctor((example.grpc.test1) request,
+              (io.grpc.stub.StreamObserver<example.grpc.test2>) responseObserver);
           break;
         default:
           throw new AssertionError();

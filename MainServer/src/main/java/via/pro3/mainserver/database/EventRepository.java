@@ -168,4 +168,28 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Failed to create patient: " + e.getMessage(), e);
             }
     }
+
+    public synchronized String loginUser(String cprnumber, String password)
+    {
+        String sql = "SELET * FROM Patient WHERE password=? and CPR_number=?";
+        try(PreparedStatement statement = database.getConnection().prepareStatement(sql))
+        {
+            statement.setString(1, password);
+            statement.setString(2, cprnumber);
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if(resultSet.next())
+                {
+                    return "Patient logged in successfully";
+                }
+                else {
+                    throw new RuntimeException("No credentials found");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException("Failed to fetch patient from SQL");
+        }
+    }
 }

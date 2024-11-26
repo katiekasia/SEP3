@@ -15,15 +15,15 @@ public final class ProtoOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_loginRequest_descriptor;
+    internal_static_test1_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_loginRequest_fieldAccessorTable;
+      internal_static_test1_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_loginResponse_descriptor;
+    internal_static_test2_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_loginResponse_fieldAccessorTable;
+      internal_static_test2_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -33,11 +33,11 @@ public final class ProtoOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013proto.proto\"/\n\014loginRequest\022\r\n\005email\030\001" +
-      " \001(\t\022\020\n\010password\030\002 \001(\t\"0\n\rloginResponse\022" +
-      "\r\n\005email\030\001 \001(\t\022\020\n\010password\030\002 \001(\t27\n\005Prot" +
-      "o\022.\n\013loginDoctor\022\r.loginRequest\032\016.loginR" +
-      "esponse\"\000B\020\n\014example.grpcP\001b\006proto3"
+      "\n\013proto.proto\"(\n\005test1\022\r\n\005email\030\001 \001(\t\022\020\n" +
+      "\010password\030\002 \001(\t\"(\n\005test2\022\r\n\005email\030\001 \001(\t\022" +
+      "\020\n\010password\030\002 \001(\t2(\n\005Proto\022\037\n\013loginDocto" +
+      "r\022\006.test1\032\006.test2\"\000B\020\n\014example.grpcP\001b\006p" +
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -51,17 +51,17 @@ public final class ProtoOuterClass {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_loginRequest_descriptor =
+    internal_static_test1_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_loginRequest_fieldAccessorTable = new
+    internal_static_test1_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_loginRequest_descriptor,
+        internal_static_test1_descriptor,
         new java.lang.String[] { "Email", "Password", });
-    internal_static_loginResponse_descriptor =
+    internal_static_test2_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_loginResponse_fieldAccessorTable = new
+    internal_static_test2_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_loginResponse_descriptor,
+        internal_static_test2_descriptor,
         new java.lang.String[] { "Email", "Password", });
   }
 

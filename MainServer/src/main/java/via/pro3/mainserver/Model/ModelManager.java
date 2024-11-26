@@ -69,8 +69,8 @@ public class ModelManager implements Model
         .build();
   }
 
-  @Override public void loginPatient(LoginDto loginDto)
+  @Override public String loginPatient(LoginDto loginDto)
   {
-
+   return eventRepository.loginUser(loginDto.getCpr(), loginDto.getPassword());
   }
 }

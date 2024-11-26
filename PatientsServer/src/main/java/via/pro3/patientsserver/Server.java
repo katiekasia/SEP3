@@ -1,9 +1,13 @@
 package via.pro3.patientsserver;
 
 import DTOs.CreateAppointmentDto;
+import DTOs.LoginDto;
 import DTOs.RegisterDto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import loginPatient.grpc.LoginPatientGrpc;
+import loginPatient.grpc.LoginRequest;
+import loginPatient.grpc.loginResponse;
 import org.springframework.web.bind.annotation.*;
 import createBooking.grpc.DBresponse;
 import createBooking.grpc.PatientBookingGrpc;
@@ -18,11 +22,13 @@ import registerPatient.grpc.Response;
 public class Server {
     private final PatientBookingGrpc.PatientBookingBlockingStub blockingStub;
     private final RegisterPatientGrpc.RegisterPatientBlockingStub registerBlockingStub;
+    private final LoginPatientGrpc.LoginPatientBlockingStub loginBlockingStub;
 
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
         blockingStub = PatientBookingGrpc.newBlockingStub(channel);
         registerBlockingStub = RegisterPatientGrpc.newBlockingStub(channel);
+        loginBlockingStub = LoginPatientGrpc.newBlockingStub(channel);
     }
 
   @PostMapping("/book")
@@ -72,4 +78,27 @@ public class Server {
             throw new RuntimeException("Error registering patient", e);
         }
     }
+
+    @PostMapping("/login")
+    public LoginDto loginPatient(@RequestBody LoginDto loginDto) {
+        try {
+            LoginRequest request = LoginRequest.newBuilder()
+                    .setCpr(loginDto.getCpr())
+                    .setCpr(loginDto.getPassword())
+                    .build();
+
+            loginResponse response = loginBlockingStub.loginPatient(request);
+
+            if (response.getConfirmation() == null){
+                throw new RuntimeException("Patient login failed: " + response.getConfirmation());
+            }
+
+            return loginDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error logging in", e);
+        }
+    }
+
+
 }

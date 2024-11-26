@@ -28,16 +28,16 @@ public final class LoginPatientGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<loginPatient.grpc.LoginRequestPatient,
-      loginPatient.grpc.loginResponsePatient> METHOD_LOGIN_PATIENT =
-      io.grpc.MethodDescriptor.<loginPatient.grpc.LoginRequestPatient, loginPatient.grpc.loginResponsePatient>newBuilder()
+  public static final io.grpc.MethodDescriptor<loginPatient.grpc.LoginRequest,
+      loginPatient.grpc.loginResponse> METHOD_LOGIN_PATIENT =
+      io.grpc.MethodDescriptor.<loginPatient.grpc.LoginRequest, loginPatient.grpc.loginResponse>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "LoginPatient", "loginPatient"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              loginPatient.grpc.LoginRequestPatient.getDefaultInstance()))
+              loginPatient.grpc.LoginRequest.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              loginPatient.grpc.loginResponsePatient.getDefaultInstance()))
+              loginPatient.grpc.loginResponse.getDefaultInstance()))
           .build();
 
   /**
@@ -69,8 +69,8 @@ public final class LoginPatientGrpc {
 
     /**
      */
-    public void loginPatient(loginPatient.grpc.LoginRequestPatient request,
-        io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponsePatient> responseObserver) {
+    public void loginPatient(loginPatient.grpc.LoginRequest request,
+        io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_LOGIN_PATIENT, responseObserver);
     }
 
@@ -80,8 +80,8 @@ public final class LoginPatientGrpc {
             METHOD_LOGIN_PATIENT,
             asyncUnaryCall(
               new MethodHandlers<
-                loginPatient.grpc.LoginRequestPatient,
-                loginPatient.grpc.loginResponsePatient>(
+                loginPatient.grpc.LoginRequest,
+                loginPatient.grpc.loginResponse>(
                   this, METHODID_LOGIN_PATIENT)))
           .build();
     }
@@ -107,8 +107,8 @@ public final class LoginPatientGrpc {
 
     /**
      */
-    public void loginPatient(loginPatient.grpc.LoginRequestPatient request,
-        io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponsePatient> responseObserver) {
+    public void loginPatient(loginPatient.grpc.LoginRequest request,
+        io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_LOGIN_PATIENT, getCallOptions()), request, responseObserver);
     }
@@ -134,7 +134,7 @@ public final class LoginPatientGrpc {
 
     /**
      */
-    public loginPatient.grpc.loginResponsePatient loginPatient(loginPatient.grpc.LoginRequestPatient request) {
+    public loginPatient.grpc.loginResponse loginPatient(loginPatient.grpc.LoginRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_LOGIN_PATIENT, getCallOptions(), request);
     }
@@ -160,8 +160,8 @@ public final class LoginPatientGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<loginPatient.grpc.loginResponsePatient> loginPatient(
-        loginPatient.grpc.LoginRequestPatient request) {
+    public com.google.common.util.concurrent.ListenableFuture<loginPatient.grpc.loginResponse> loginPatient(
+        loginPatient.grpc.LoginRequest request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_LOGIN_PATIENT, getCallOptions()), request);
     }
@@ -187,8 +187,8 @@ public final class LoginPatientGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_LOGIN_PATIENT:
-          serviceImpl.loginPatient((loginPatient.grpc.LoginRequestPatient) request,
-              (io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponsePatient>) responseObserver);
+          serviceImpl.loginPatient((loginPatient.grpc.LoginRequest) request,
+              (io.grpc.stub.StreamObserver<loginPatient.grpc.loginResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
