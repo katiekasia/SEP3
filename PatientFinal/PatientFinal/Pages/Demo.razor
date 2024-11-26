@@ -7,121 +7,205 @@
 <PageTitle>Book Appointment</PageTitle>
 <h3>Book an Appointment</h3>
 
-@if(!showConfirmation)
+@if (!showConfirmation)
 {
-<div> 
-            <label for="location">Choose a location:</label> 
-             <select @onchange="HandleLocationChange" id="location"> 
-                 <option value="">Select a location</option> 
-                 @foreach (var location in locations) 
-                { 
-                     <option value="@location.Detail">@location.Name</option> 
-                 } 
-             </select> 
-         </div> 
-     
-         <div> 
-             <label for="specialization">Choose a specialization:</label> 
-             <select @onchange="HandleSpecializationChange" id="specialization"> 
-                 <option value="">Select a specialization</option> 
-                 @foreach (var spec in specializations) 
-                 { 
-                     <option value="@spec">@spec</option> 
-                 }
-             </select>
-         </div>
-         
-         <div>
-             <label for="description">Write about your symptoms:</label>
-             <textarea id="description" rows="5" cols="50" @bind="writtenDescription"></textarea>
-         </div>
+    <div id="appointment-form" class="form-container">
+        <div class="form-group">
+            <label for="location">Choose a location:</label>
+            <select id="location" class="dropdown" @onchange="HandleLocationChange">
+                <option value="">Select a location</option>
+                @foreach (var location in locations)
+                {
+                    <option value="@location.Detail">@location.Name</option>
+                }
+            </select>
+        </div>
 
-         <button @onclick="ConfirmDetails">Confirm Details</button>
+        <div class="form-group">
+            <label for="specialization">Choose a specialization:</label>
+            <select id="specialization" class="dropdown" @onchange="HandleSpecializationChange">
+                <option value="">Select a specialization</option>
+                @foreach (var spec in specializations)
+                {
+                    <option value="@spec">@spec</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Describe your symptoms:</label>
+            <textarea id="description" class="textarea" rows="5" @bind="writtenDescription"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" class="input" @bind="selectedDate" />
+        </div>
+
+        <div class="form-group">
+            <label for="time">Select Time:</label>
+            <input type="time" id="time" class="input" step="900" @bind="selectedTime" />
+        </div>
+
+        <button class="btn-confirm" @onclick="ConfirmDetails">Confirm Details</button>
+    </div>
 }
-
 
 @if (showConfirmation)
 {
-    <div>
+    <div id="confirmation-review" class="confirmation-container">
         <h4>Review and Confirm Your Appointment</h4>
-        <p>Location: @selectedLocation</p>
-        <p>Specialization: @selectedSpecialization</p>
-        <p>Description: @writtenDescription</p>
-        
-      
+        <p><strong>Location:</strong> @selectedLocation</p>
+        <p><strong>Specialization:</strong> @selectedSpecialization</p>
+        <p><strong>Description:</strong> @writtenDescription</p>
+        <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
+        <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
+
+        <button class="btn-book" @onclick="CreateAppointment">Book</button>
     </div>
 }
 
 @if (!string.IsNullOrEmpty(serverResponse))
 {
-    <p>@serverResponse</p>
+    <div id="server-response" class="response-container">@serverResponse</div>
 }
-<button @onclick="CreateAppointment">Book</button>
 
 @code {
-     private List<(string Name, string Detail)> locations = 
-         new List<(string Name, string Detail)> 
-         {
-             ("Hospital North", "1234 North St, City A"),
-             ("Clinic Central", "5678 Central Blvd, City B"),
-             ("Health Center South", "91011 South Ave, City C")
-         };
-     
-         private List<string> specializations = new List<string> { "Cardiologist", "Gynecologist", "Family Doctor" };
-         
-    
-    private string serverResponse;
-    private string selectedLocation; 
-    private string selectedSpecialization;
-    private string writtenDescription;
+    private List<(string Name, string Detail)> locations = new()
+    {
+        ("Hospital North", "1234 North St, City A"),
+        ("Clinic Central", "5678 Central Blvd, City B"),
+        ("Health Center South", "91011 South Ave, City C")
+    };
+
+    private List<string> specializations = new() { "Cardiologist", "Gynecologist", "Family Doctor" };
+
+    private string? serverResponse;
+    private string? selectedLocation;
+    private string? selectedSpecialization;
+    private string? writtenDescription;
+    private DateTime? selectedDate;
+    private TimeOnly? selectedTime;
     private bool showConfirmation = false;
+
+    private void HandleLocationChange(ChangeEventArgs e) => selectedLocation = e.Value?.ToString();
+    private void HandleSpecializationChange(ChangeEventArgs e) => selectedSpecialization = e.Value?.ToString();
+    private void ConfirmDetails() => showConfirmation = true;
 
     private async Task CreateAppointment()
     {
+        if (selectedDate == null || selectedTime == null)
+        {
+            serverResponse = "Please select a valid date and time.";
+            return;
+        }
+
         var createAppointmentDto = new CreateAppointmentDto()
         {
             City = selectedLocation,
             Status = "Active",
             Description = writtenDescription,
             Specialization = selectedSpecialization,
+            appoitmentDate = selectedDate?.ToString("yyyy-MM-dd"),
+            appoitmentTime = selectedTime?.ToString()
         };
 
         try
         {
-            // Send POST request to the server
-           var response= await AppointmentService.CreateAppointment(createAppointmentDto);
-           // HttpResponseMessage response = await Http.PostAsJsonAsync("http://localhost:8081/Demo/book", createAppointmentDto);
-           
-           if (response != null)
-           {
-               // Display success message with returned details
-               serverResponse = $"Appointment successfully booked in {response.City} with status '{response.Status}'.";
-           }
-           else
-           {
-               serverResponse = "Failed to book the appointment.";
-           }
-            
+            var response = await AppointmentService.CreateAppointment(createAppointmentDto);
+            serverResponse = response != null
+                ? $"Appointment successfully booked in {response.City} with status '{response.Status}'."
+                : "Failed to book the appointment.";
         }
         catch (Exception e)
         {
             serverResponse = $"Error creating an appointment: {e.Message}";
-            Console.Error.WriteLine(e);
         }
-        
-    }
-    private void HandleLocationChange(ChangeEventArgs e)
-    {
-        selectedLocation = e.Value.ToString();
-    }
-    private void HandleSpecializationChange(ChangeEventArgs e) 
-    {
-        selectedSpecialization = e.Value.ToString();
-        
-    }
-
-    private void ConfirmDetails()
-    {
-        showConfirmation = true;
     }
 }
+
+
+<style>
+    /* General container for the form */
+    #appointment-form {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 600px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+    /* Grouped form elements */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    /* Dropdowns and inputs */
+    .dropdown,
+    .input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    /* Textarea styling */
+    .textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        resize: vertical;
+    }
+
+    /* Buttons */
+    .btn-confirm,
+    .btn-book {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .btn-confirm {
+        background-color: #007bff;
+    }
+
+    .btn-book {
+        background-color: #28a745;
+    }
+
+    .btn-confirm:hover,
+    .btn-book:hover {
+        opacity: 0.9;
+    }
+
+    /* Confirmation container */
+    #confirmation-review {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 600px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+
+    /* Server response styling */
+    .response-container {
+        margin: 20px auto;
+        padding: 10px;
+        max-width: 600px;
+        border: 1px solid #007bff;
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border-radius: 5px;
+    }
+
+</style>

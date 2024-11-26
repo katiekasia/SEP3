@@ -20,7 +20,7 @@ namespace PatientFinal.Services
             try
             {
                 HttpResponseMessage httpResponse =
-                    await client.PostAsJsonAsync("http://localhost:8081/Demo/book",
+                    await client.PostAsJsonAsync("http://localhost:8081/book",
                         createAppointmentDto);
                 string response =
                     await httpResponse.Content.ReadAsStringAsync();
