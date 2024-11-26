@@ -31,11 +31,11 @@
              </select>
          </div>
          
-         <div> 
-             <label for="description">Write about your symptoms:</label> 
-         <!-- DESCIPTION Space
-         -->
+         <div>
+             <label for="description">Write about your symptoms:</label>
+             <textarea id="description" rows="5" cols="50" @bind="writtenDescription"></textarea>
          </div>
+
          <button @onclick="ConfirmDetails">Confirm Details</button>
 }
 

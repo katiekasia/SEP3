@@ -40,12 +40,12 @@ public class ModelManager implements Model
 
   @Override public Patient getPatientByCpr(String cpr)
   {
-    return null;
+    return eventRepository.getPatientByCpr(cpr);
   }
 
   @Override public Doctor getDoctorById(String id)
   {
-    return null;
+    return eventRepository.getDoctorById(id);
   }
 
   @Override

@@ -1,6 +1,8 @@
 package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.Model.Appointment;
+import via.pro3.mainserver.Model.Clinic;
+import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
 
 import java.sql.*;
@@ -32,6 +34,107 @@ public class EventRepository implements EventInterface {
 //            throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
 //        }
     }
+
+    @Override
+    public synchronized Clinic getClinicByDoctorId(String doctorId)
+    {
+        String sql = "SELECT * FROM Clinic WHERE doctorID = ?";
+        try(PreparedStatement statement = database.getConnection()
+            .prepareStatement(sql))
+        {
+            statement.setString(1,doctorId);
+            try(ResultSet resultSet = statement.executeQuery())
+            {
+                if(resultSet.next())
+                {
+                    return new Clinic(
+                        resultSet.getString("name"),
+                        resultSet.getString("city"),
+                        resultSet.getString("address"),
+                        //TO DO IS TO ADD A NUMBER FOR ADDRESS INTO DATABASE
+                        resultSet.getString("address")
+                    );
+                }
+                else {
+                    throw new RuntimeException("No clinic found");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException("Failed to fetch doctor from SQL");
+        }
+    }
+
+
+    @Override
+    public synchronized Doctor getDoctorById(String doctorId)
+    {
+        String sql = "SELET * FROM Doctor WHERE = doctorID=?";
+        try(PreparedStatement statement = database.getConnection()
+            .prepareStatement(sql))
+        {
+            statement.setString(1,doctorId);
+
+
+            try(ResultSet resultSet = statement.executeQuery())
+            {
+                if(resultSet.next())
+                {
+                    return new Doctor(
+                        resultSet.getString("doctorID"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("password"),
+                        //TO DO IS TO SET THE CORRECT EMAIL INTO DATABASE
+                        resultSet.getString("firstName"),
+                        resultSet.getString("specialization"),
+                        getClinicByDoctorId(doctorId)
+
+                    );
+                }
+                else {
+                    throw new RuntimeException("No doctor found");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException("Failed to fetch doctor from SQL");
+        }
+    }
+
+    @Override
+    public synchronized Patient getPatientByCpr(String patientCpr)
+    {
+        String sql = "SELET * FROM Patient WHERE CPR_number=?";
+        try(PreparedStatement statement = database.getConnection().prepareStatement(sql))
+        {
+            statement.setString(1, patientCpr);
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if(resultSet.next())
+                {
+                    return new Patient(
+                        resultSet.getString("CPR_number"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")
+                    );
+                }
+                else {
+                    throw new RuntimeException("No patient found");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException("Failed to fetch patient from SQL");
+        }
+    }
+
 
     public synchronized void createUser(Patient patient) {
         String sql = "INSERT INTO Patient (cpr_number, firstName, lastName, phone_number, email, password) " +
