@@ -27,15 +27,20 @@ public class ModelManager implements Model
       CreateAppointmentDto createAppointmentDto)
   {
     MyDateAndTime dateAndTime = new MyDateAndTime(createAppointmentDto.getAppointmentDate(), createAppointmentDto.getAppointmentTime());
-    //TODO REMOVE PLACEHOLDER CLINIC
-    Clinic clinic = new Clinic("PLACEHOLDER","S","S","S");
-    Doctor doctor = getDoctorById(createAppointmentDto.getDoctorId());
+    Clinic clinic = eventRepository.getClinicByDoctorId(createAppointmentDto.getDoctorId());
+    Doctor doctor = eventRepository.getDoctorById(createAppointmentDto.getDoctorId());
     Patient patient = getPatientByCpr(createAppointmentDto.getPatientCpr());
     Appointment appointment = new Appointment(
         idGenerator.generateAppointmentId(), clinic,
         createAppointmentDto.getType(), dateAndTime,createAppointmentDto.getDescription(), createAppointmentDto.getStatus());
     doctor.addAppointment(appointment);
-    eventRepository.createAppointment(appointment);
+    patient.addAppointment(appointment);
+    try
+    {
+      eventRepository.createAppointment(appointment, doctor, patient);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public Patient getPatientByCpr(String cpr)

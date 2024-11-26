@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 public interface EventInterface
 {
-  void createAppointment(Appointment appointment);
+  void createAppointment(Appointment appointment, Doctor doctor, Patient patient);
 
   void createUser(Patient patient);
   Doctor getDoctorById(String id);
