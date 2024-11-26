@@ -3,8 +3,8 @@
 
 package example.grpc;
 
-public interface loginResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:loginResponse)
+public interface test2OrBuilder extends
+    // @@protoc_insertion_point(interface_extends:test2)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -17,4 +17,5 @@ public interface EventInterface
   Doctor getDoctorById(String id);
   Patient getPatientByCpr(String cpr);
   Clinic getClinicByDoctorId(String id);
+  String loginUser(String cprnumber, String password);
 }

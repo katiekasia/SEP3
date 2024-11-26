@@ -1,7 +1,6 @@
 package via.pro3.mainserver.service;
 
-import example.grpc.loginResponse;
-import example.grpc.loginRequest;
+
 import example.grpc.ProtoGrpc;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;

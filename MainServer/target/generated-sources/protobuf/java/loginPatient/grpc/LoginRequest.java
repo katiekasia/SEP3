@@ -4,17 +4,17 @@
 package loginPatient.grpc;
 
 /**
- * Protobuf type {@code LoginRequestPatient}
+ * Protobuf type {@code LoginRequest}
  */
-public  final class LoginRequestPatient extends
+public  final class LoginRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:LoginRequestPatient)
-    LoginRequestPatientOrBuilder {
-  // Use LoginRequestPatient.newBuilder() to construct.
-  private LoginRequestPatient(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:LoginRequest)
+    LoginRequestOrBuilder {
+  // Use LoginRequest.newBuilder() to construct.
+  private LoginRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private LoginRequestPatient() {
+  private LoginRequest() {
     cpr_ = "";
     password_ = "";
   }
@@ -24,7 +24,7 @@ public  final class LoginRequestPatient extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private LoginRequestPatient(
+  private LoginRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -69,14 +69,14 @@ public  final class LoginRequestPatient extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequestPatient_descriptor;
+    return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequestPatient_fieldAccessorTable
+    return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            loginPatient.grpc.LoginRequestPatient.class, loginPatient.grpc.LoginRequestPatient.Builder.class);
+            loginPatient.grpc.LoginRequest.class, loginPatient.grpc.LoginRequest.Builder.class);
   }
 
   public static final int CPR_FIELD_NUMBER = 1;
@@ -188,10 +188,10 @@ public  final class LoginRequestPatient extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof loginPatient.grpc.LoginRequestPatient)) {
+    if (!(obj instanceof loginPatient.grpc.LoginRequest)) {
       return super.equals(obj);
     }
-    loginPatient.grpc.LoginRequestPatient other = (loginPatient.grpc.LoginRequestPatient) obj;
+    loginPatient.grpc.LoginRequest other = (loginPatient.grpc.LoginRequest) obj;
 
     boolean result = true;
     result = result && getCpr()
@@ -217,69 +217,69 @@ public  final class LoginRequestPatient extends
     return hash;
   }
 
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(byte[] data)
+  public static loginPatient.grpc.LoginRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(java.io.InputStream input)
+  public static loginPatient.grpc.LoginRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseDelimitedFrom(java.io.InputStream input)
+  public static loginPatient.grpc.LoginRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseDelimitedFrom(
+  public static loginPatient.grpc.LoginRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static loginPatient.grpc.LoginRequestPatient parseFrom(
+  public static loginPatient.grpc.LoginRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -291,7 +291,7 @@ public  final class LoginRequestPatient extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(loginPatient.grpc.LoginRequestPatient prototype) {
+  public static Builder newBuilder(loginPatient.grpc.LoginRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -306,25 +306,25 @@ public  final class LoginRequestPatient extends
     return builder;
   }
   /**
-   * Protobuf type {@code LoginRequestPatient}
+   * Protobuf type {@code LoginRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:LoginRequestPatient)
-      loginPatient.grpc.LoginRequestPatientOrBuilder {
+      // @@protoc_insertion_point(builder_implements:LoginRequest)
+      loginPatient.grpc.LoginRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequestPatient_descriptor;
+      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequestPatient_fieldAccessorTable
+      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              loginPatient.grpc.LoginRequestPatient.class, loginPatient.grpc.LoginRequestPatient.Builder.class);
+              loginPatient.grpc.LoginRequest.class, loginPatient.grpc.LoginRequest.Builder.class);
     }
 
-    // Construct using loginPatient.grpc.LoginRequestPatient.newBuilder()
+    // Construct using loginPatient.grpc.LoginRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -350,23 +350,23 @@ public  final class LoginRequestPatient extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequestPatient_descriptor;
+      return loginPatient.grpc.LoginPatientOuterClass.internal_static_LoginRequest_descriptor;
     }
 
-    public loginPatient.grpc.LoginRequestPatient getDefaultInstanceForType() {
-      return loginPatient.grpc.LoginRequestPatient.getDefaultInstance();
+    public loginPatient.grpc.LoginRequest getDefaultInstanceForType() {
+      return loginPatient.grpc.LoginRequest.getDefaultInstance();
     }
 
-    public loginPatient.grpc.LoginRequestPatient build() {
-      loginPatient.grpc.LoginRequestPatient result = buildPartial();
+    public loginPatient.grpc.LoginRequest build() {
+      loginPatient.grpc.LoginRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public loginPatient.grpc.LoginRequestPatient buildPartial() {
-      loginPatient.grpc.LoginRequestPatient result = new loginPatient.grpc.LoginRequestPatient(this);
+    public loginPatient.grpc.LoginRequest buildPartial() {
+      loginPatient.grpc.LoginRequest result = new loginPatient.grpc.LoginRequest(this);
       result.cpr_ = cpr_;
       result.password_ = password_;
       onBuilt();
@@ -400,16 +400,16 @@ public  final class LoginRequestPatient extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof loginPatient.grpc.LoginRequestPatient) {
-        return mergeFrom((loginPatient.grpc.LoginRequestPatient)other);
+      if (other instanceof loginPatient.grpc.LoginRequest) {
+        return mergeFrom((loginPatient.grpc.LoginRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(loginPatient.grpc.LoginRequestPatient other) {
-      if (other == loginPatient.grpc.LoginRequestPatient.getDefaultInstance()) return this;
+    public Builder mergeFrom(loginPatient.grpc.LoginRequest other) {
+      if (other == loginPatient.grpc.LoginRequest.getDefaultInstance()) return this;
       if (!other.getCpr().isEmpty()) {
         cpr_ = other.cpr_;
         onChanged();
@@ -430,11 +430,11 @@ public  final class LoginRequestPatient extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      loginPatient.grpc.LoginRequestPatient parsedMessage = null;
+      loginPatient.grpc.LoginRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (loginPatient.grpc.LoginRequestPatient) e.getUnfinishedMessage();
+        parsedMessage = (loginPatient.grpc.LoginRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -592,39 +592,39 @@ public  final class LoginRequestPatient extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:LoginRequestPatient)
+    // @@protoc_insertion_point(builder_scope:LoginRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:LoginRequestPatient)
-  private static final loginPatient.grpc.LoginRequestPatient DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:LoginRequest)
+  private static final loginPatient.grpc.LoginRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new loginPatient.grpc.LoginRequestPatient();
+    DEFAULT_INSTANCE = new loginPatient.grpc.LoginRequest();
   }
 
-  public static loginPatient.grpc.LoginRequestPatient getDefaultInstance() {
+  public static loginPatient.grpc.LoginRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<LoginRequestPatient>
-      PARSER = new com.google.protobuf.AbstractParser<LoginRequestPatient>() {
-    public LoginRequestPatient parsePartialFrom(
+  private static final com.google.protobuf.Parser<LoginRequest>
+      PARSER = new com.google.protobuf.AbstractParser<LoginRequest>() {
+    public LoginRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LoginRequestPatient(input, extensionRegistry);
+        return new LoginRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<LoginRequestPatient> parser() {
+  public static com.google.protobuf.Parser<LoginRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<LoginRequestPatient> getParserForType() {
+  public com.google.protobuf.Parser<LoginRequest> getParserForType() {
     return PARSER;
   }
 
-  public loginPatient.grpc.LoginRequestPatient getDefaultInstanceForType() {
+  public loginPatient.grpc.LoginRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

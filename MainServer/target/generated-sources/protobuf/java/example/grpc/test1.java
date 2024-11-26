@@ -4,17 +4,17 @@
 package example.grpc;
 
 /**
- * Protobuf type {@code loginRequest}
+ * Protobuf type {@code test1}
  */
-public  final class loginRequest extends
+public  final class test1 extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:loginRequest)
-    loginRequestOrBuilder {
-  // Use loginRequest.newBuilder() to construct.
-  private loginRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:test1)
+    test1OrBuilder {
+  // Use test1.newBuilder() to construct.
+  private test1(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private loginRequest() {
+  private test1() {
     email_ = "";
     password_ = "";
   }
@@ -24,7 +24,7 @@ public  final class loginRequest extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private loginRequest(
+  private test1(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -69,14 +69,14 @@ public  final class loginRequest extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return example.grpc.ProtoOuterClass.internal_static_loginRequest_descriptor;
+    return example.grpc.ProtoOuterClass.internal_static_test1_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return example.grpc.ProtoOuterClass.internal_static_loginRequest_fieldAccessorTable
+    return example.grpc.ProtoOuterClass.internal_static_test1_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            example.grpc.loginRequest.class, example.grpc.loginRequest.Builder.class);
+            example.grpc.test1.class, example.grpc.test1.Builder.class);
   }
 
   public static final int EMAIL_FIELD_NUMBER = 1;
@@ -188,10 +188,10 @@ public  final class loginRequest extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof example.grpc.loginRequest)) {
+    if (!(obj instanceof example.grpc.test1)) {
       return super.equals(obj);
     }
-    example.grpc.loginRequest other = (example.grpc.loginRequest) obj;
+    example.grpc.test1 other = (example.grpc.test1) obj;
 
     boolean result = true;
     result = result && getEmail()
@@ -217,69 +217,69 @@ public  final class loginRequest extends
     return hash;
   }
 
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static example.grpc.loginRequest parseFrom(byte[] data)
+  public static example.grpc.test1 parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static example.grpc.loginRequest parseFrom(java.io.InputStream input)
+  public static example.grpc.test1 parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static example.grpc.loginRequest parseDelimitedFrom(java.io.InputStream input)
+  public static example.grpc.test1 parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static example.grpc.loginRequest parseDelimitedFrom(
+  public static example.grpc.test1 parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static example.grpc.loginRequest parseFrom(
+  public static example.grpc.test1 parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -291,7 +291,7 @@ public  final class loginRequest extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(example.grpc.loginRequest prototype) {
+  public static Builder newBuilder(example.grpc.test1 prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -306,25 +306,25 @@ public  final class loginRequest extends
     return builder;
   }
   /**
-   * Protobuf type {@code loginRequest}
+   * Protobuf type {@code test1}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:loginRequest)
-      example.grpc.loginRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:test1)
+      example.grpc.test1OrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return example.grpc.ProtoOuterClass.internal_static_loginRequest_descriptor;
+      return example.grpc.ProtoOuterClass.internal_static_test1_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return example.grpc.ProtoOuterClass.internal_static_loginRequest_fieldAccessorTable
+      return example.grpc.ProtoOuterClass.internal_static_test1_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              example.grpc.loginRequest.class, example.grpc.loginRequest.Builder.class);
+              example.grpc.test1.class, example.grpc.test1.Builder.class);
     }
 
-    // Construct using example.grpc.loginRequest.newBuilder()
+    // Construct using example.grpc.test1.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -350,23 +350,23 @@ public  final class loginRequest extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return example.grpc.ProtoOuterClass.internal_static_loginRequest_descriptor;
+      return example.grpc.ProtoOuterClass.internal_static_test1_descriptor;
     }
 
-    public example.grpc.loginRequest getDefaultInstanceForType() {
-      return example.grpc.loginRequest.getDefaultInstance();
+    public example.grpc.test1 getDefaultInstanceForType() {
+      return example.grpc.test1.getDefaultInstance();
     }
 
-    public example.grpc.loginRequest build() {
-      example.grpc.loginRequest result = buildPartial();
+    public example.grpc.test1 build() {
+      example.grpc.test1 result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public example.grpc.loginRequest buildPartial() {
-      example.grpc.loginRequest result = new example.grpc.loginRequest(this);
+    public example.grpc.test1 buildPartial() {
+      example.grpc.test1 result = new example.grpc.test1(this);
       result.email_ = email_;
       result.password_ = password_;
       onBuilt();
@@ -400,16 +400,16 @@ public  final class loginRequest extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof example.grpc.loginRequest) {
-        return mergeFrom((example.grpc.loginRequest)other);
+      if (other instanceof example.grpc.test1) {
+        return mergeFrom((example.grpc.test1)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(example.grpc.loginRequest other) {
-      if (other == example.grpc.loginRequest.getDefaultInstance()) return this;
+    public Builder mergeFrom(example.grpc.test1 other) {
+      if (other == example.grpc.test1.getDefaultInstance()) return this;
       if (!other.getEmail().isEmpty()) {
         email_ = other.email_;
         onChanged();
@@ -430,11 +430,11 @@ public  final class loginRequest extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      example.grpc.loginRequest parsedMessage = null;
+      example.grpc.test1 parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (example.grpc.loginRequest) e.getUnfinishedMessage();
+        parsedMessage = (example.grpc.test1) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -592,39 +592,39 @@ public  final class loginRequest extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:loginRequest)
+    // @@protoc_insertion_point(builder_scope:test1)
   }
 
-  // @@protoc_insertion_point(class_scope:loginRequest)
-  private static final example.grpc.loginRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:test1)
+  private static final example.grpc.test1 DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new example.grpc.loginRequest();
+    DEFAULT_INSTANCE = new example.grpc.test1();
   }
 
-  public static example.grpc.loginRequest getDefaultInstance() {
+  public static example.grpc.test1 getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<loginRequest>
-      PARSER = new com.google.protobuf.AbstractParser<loginRequest>() {
-    public loginRequest parsePartialFrom(
+  private static final com.google.protobuf.Parser<test1>
+      PARSER = new com.google.protobuf.AbstractParser<test1>() {
+    public test1 parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new loginRequest(input, extensionRegistry);
+        return new test1(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<loginRequest> parser() {
+  public static com.google.protobuf.Parser<test1> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<loginRequest> getParserForType() {
+  public com.google.protobuf.Parser<test1> getParserForType() {
     return PARSER;
   }
 
-  public example.grpc.loginRequest getDefaultInstanceForType() {
+  public example.grpc.test1 getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -3,8 +3,8 @@
 
 package loginPatient.grpc;
 
-public interface loginResponsePatientOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:loginResponsePatient)
+public interface loginResponseOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:loginResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**
