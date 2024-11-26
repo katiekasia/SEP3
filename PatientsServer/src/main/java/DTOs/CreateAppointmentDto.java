@@ -57,6 +57,14 @@ public class CreateAppointmentDto
   {
     return LocalDate.parse(appointmentDate) ;
   }
+  public String getAppointmentTimeStr(){
+    return appointmentTime;
+  }
+
+  public String getAppointmentDateStr()
+  {
+    return appointmentDate;
+  }
 
   public LocalTime getAppointmentTime()
   {

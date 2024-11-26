@@ -63,6 +63,14 @@ public class CreateAppointmentDto
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
     return LocalTime.parse(appointmentTime, formatter) ;
   }
+  public String getAppointmentTimeStr(){
+    return appointmentTime;
+  }
+
+  public String getAppointmentDateStr()
+  {
+    return appointmentDate;
+  }
 
   //SETTERS BELOW*************************
   public void setType(String type)
