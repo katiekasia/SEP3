@@ -7,5 +7,5 @@ public class LoginDto
     public String getPassword() {
         return password;
     }
-    public String getCpr() {return cpr;}
+    public String getcpr() {return cpr;}
 }

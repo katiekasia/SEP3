@@ -4,7 +4,7 @@ option java_multiple_files = true;
 option java_package = "loginPatient.grpc";
 
 service LoginPatient {
-  rpc loginPatient (LoginRequest) returns (loginResponse) {}
+  rpc loginPatient (LoginRequest) returns (LoginResponse) {}
 }
 
 message LoginRequest {
@@ -13,6 +13,6 @@ message LoginRequest {
 }
 
 
-message loginResponse {
+message LoginResponse {
   string confirmation = 1;
 }

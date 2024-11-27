@@ -20,10 +20,10 @@ public final class LoginPatientOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LoginRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_loginResponse_descriptor;
+    internal_static_LoginResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_loginResponse_fieldAccessorTable;
+      internal_static_LoginResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -34,9 +34,9 @@ public final class LoginPatientOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022loginPatient.proto\"-\n\014LoginRequest\022\013\n\003" +
-      "cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"%\n\rloginResp" +
+      "cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"%\n\rLoginResp" +
       "onse\022\024\n\014confirmation\030\001 \001(\t2?\n\014LoginPatie" +
-      "nt\022/\n\014loginPatient\022\r.LoginRequest\032\016.logi" +
+      "nt\022/\n\014loginPatient\022\r.LoginRequest\032\016.Logi" +
       "nResponse\"\000B\025\n\021loginPatient.grpcP\001b\006prot" +
       "o3"
     };
@@ -58,11 +58,11 @@ public final class LoginPatientOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginRequest_descriptor,
         new java.lang.String[] { "Cpr", "Password", });
-    internal_static_loginResponse_descriptor =
+    internal_static_LoginResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_loginResponse_fieldAccessorTable = new
+    internal_static_LoginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_loginResponse_descriptor,
+        internal_static_LoginResponse_descriptor,
         new java.lang.String[] { "Confirmation", });
   }
 

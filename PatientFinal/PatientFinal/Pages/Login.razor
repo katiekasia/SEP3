@@ -1,11 +1,12 @@
 ﻿@page "/Login"
 @inject HttpClient Http
+@using System.Text.Json
 @using PatientFinal.DTOs
 
 <h3>Login</h3>
 
-<input placeholder="CPR-Number" @bind="CPR"></input>
-<input placeholder="Password" @bind="Password"></input>
+<input placeholder="CPR-Number" @bind="cprno"></input>
+<input placeholder="Password" @bind="passwordinput"></input>
 
 
 @if (!string.IsNullOrEmpty(serverResponse))
@@ -16,44 +17,39 @@
 <button @onclick="LoginPatient">Login</button>
 
 @code {
-    private string CPR;
-    private string Password;
+    private string cprno;
+    private string passwordinput;
     private string serverResponse;
-
+    private bool isLoading;
 
     private async Task LoginPatient()
     {
-        // Validate inputs before creating DTO
-        if(string.IsNullOrWhiteSpace(CPR) && string.IsNullOrWhiteSpace(Password))
+        if (string.IsNullOrWhiteSpace(cprno) || string.IsNullOrWhiteSpace(passwordinput))
         {
-            serverResponse = "Please fill in the login credentials";
+            serverResponse = "Both CPR and Password are required";
+            return;
         }
-        
-
-        var LoginDto = new
-        {
-            password = Password,
-            cprno = CPR
-        };
 
         try
         {
+            var loginDto = new { password = passwordinput, cpr = cprno };
+
             HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
-                    "http://localhost:8081/Demo/login", LoginDto);
+                "http://localhost:8081/Demo/login", loginDto);
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                serverResponse = "Patient logged in successfully " + LoginDto.cprno;
+                serverResponse = await responseMessage.Content.ReadAsStringAsync();
             }
             else
             {
-                serverResponse = await responseMessage.Content.ReadAsStringAsync();
+                serverResponse = "PUla";
             }
         }
         catch (Exception e)
         {
-            serverResponse = $"Login failed: {e.Message}";
-            Console.WriteLine(e);
+            serverResponse = $"Loggin failed: {e.Message}";
         }
     }
+
 }

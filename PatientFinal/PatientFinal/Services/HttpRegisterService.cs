@@ -21,7 +21,7 @@ namespace PatientFinal.Services
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (!httpResponseMessage.IsSuccessStatusCode)
                     throw new ApplicationException(response);
-                
+
                 return JsonSerializer.Deserialize<RegisterDto>(response, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
