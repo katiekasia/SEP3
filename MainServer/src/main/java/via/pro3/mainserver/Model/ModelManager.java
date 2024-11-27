@@ -80,6 +80,9 @@ public class ModelManager implements Model
 
   @Override public String loginPatient(LoginDto loginDto)
   {
-   return eventRepository.loginUser(loginDto.getcpr(), loginDto.getPassword());
+    System.out.println("HERE");
+    System.out.println(loginDto.getcpr());
+    System.out.println(loginDto.getPassword());
+   return eventRepository.loginUser(loginDto);
   }
 }

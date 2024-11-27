@@ -24,7 +24,7 @@ public class LoginImpl extends LoginPatientGrpc.LoginPatientImplBase
     {
         try{
             LoginDto loginDto = new LoginDto(request.getCpr(), request.getPassword());
-
+            System.out.println(loginDto.getcpr() + " in impl");
 
             LoginResponse response = LoginResponse.newBuilder()
                     .setConfirmation(model.loginPatient(loginDto))
@@ -32,6 +32,7 @@ public class LoginImpl extends LoginPatientGrpc.LoginPatientImplBase
             responseObserver.onNext(response);
             System.out.println(response);
         } catch (Exception e) {
+            e.printStackTrace();
             LoginResponse loginResponse = LoginResponse.newBuilder().setConfirmation("login failed")
                     .build();
             responseObserver.onNext(loginResponse);

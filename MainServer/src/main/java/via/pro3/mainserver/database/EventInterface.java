@@ -1,5 +1,6 @@
 package via.pro3.mainserver.database;
 
+import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -17,5 +18,5 @@ public interface EventInterface
   Doctor getDoctorById(String id);
   Patient getPatientByCpr(String cpr);
   Clinic getClinicByDoctorId(String id);
-  String loginUser(String cprnumber, String password);
+  String loginUser(LoginDto request);
 }

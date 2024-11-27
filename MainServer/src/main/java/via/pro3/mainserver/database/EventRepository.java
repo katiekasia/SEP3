@@ -1,5 +1,6 @@
 package via.pro3.mainserver.database;
 
+import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -113,7 +114,7 @@ public class EventRepository implements EventInterface {
     }
 
     public synchronized void createUser(Patient patient) {
-        String sql = "INSERT INTO Patient (CPR_number, first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Patient (cpr_number, first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             if (patient == null) {
@@ -134,11 +135,11 @@ public class EventRepository implements EventInterface {
         }
     }
 
-    public synchronized String loginUser(String cprNumber, String password) {
-        String sql = "SELECT * FROM Patient WHERE password = ? AND CPR_number = ?";
+    public synchronized String loginUser(LoginDto request) {
+        String sql = "SELECT * FROM patient WHERE CPR_number = ? AND password =?";
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, password);
-            statement.setString(2, cprNumber);
+            statement.setString(1, request.getcpr());
+            statement.setString(2, request.getPassword());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return "Patient logged in successfully";

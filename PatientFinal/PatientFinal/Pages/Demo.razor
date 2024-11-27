@@ -118,7 +118,6 @@
         {
             
             var response = await AppointmentService.CreateAppointment(createAppointmentDto);
-            Console.WriteLine(response);
             serverResponse = response.response != null
                 ? response.response
                 :" response";

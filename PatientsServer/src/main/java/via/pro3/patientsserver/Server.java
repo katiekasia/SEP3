@@ -8,7 +8,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import loginPatient.grpc.LoginPatientGrpc;
 import loginPatient.grpc.LoginRequest;
-import loginPatient.grpc.loginResponse;
+import loginPatient.grpc.LoginResponse;
 import org.springframework.web.bind.annotation.*;
 import createBooking.grpc.DBresponse;
 import createBooking.grpc.PatientBookingGrpc;
@@ -85,20 +85,23 @@ public class Server {
     }
 
     @PostMapping("/login")
-    public LoginDto loginPatient(@RequestBody LoginDto loginDto) {
+    public ResponseDto loginPatient(@RequestBody LoginDto loginDto) {
         try {
             LoginRequest request = LoginRequest.newBuilder()
-                    .setCpr(loginDto.getCpr())
-                    .setCpr(loginDto.getPassword())
+                    .setCpr(loginDto.getcpr())
+                    .setPassword(loginDto.getPassword())
                     .build();
+          System.out.println("Got here");
 
-            loginResponse response = loginBlockingStub.loginPatient(request);
+            LoginResponse response = loginBlockingStub.loginPatient(request);
 
             if (response.getConfirmation() == null){
                 throw new RuntimeException("Patient login failed: " + response.getConfirmation());
             }
-
-            return loginDto;
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getConfirmation());
+          System.out.println(response.getConfirmation());
+            return responseDto;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error logging in", e);

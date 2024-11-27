@@ -13,16 +13,16 @@ namespace PatientFinal.Services
             this.client = client;
         }
 
-        public async Task<LoginDto> LoginPatient(LoginDto request)
+        public async Task<ResponseDto> LoginPatient(LoginDto request)
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("api/Demo/login", request);
+                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("http://localhost:8081/Demo/login", request);
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (!httpResponseMessage.IsSuccessStatusCode)
                     throw new ApplicationException(response);
 
-                return JsonSerializer.Deserialize<LoginDto>(response, new JsonSerializerOptions
+                return JsonSerializer.Deserialize<ResponseDto>(response, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });

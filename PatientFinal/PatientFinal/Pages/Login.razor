@@ -1,7 +1,9 @@
 ﻿@page "/Login"
 @inject HttpClient Http
+@inject ILoginService LoginService
 @using System.Text.Json
 @using PatientFinal.DTOs
+@using PatientFinal.Services
 
 <h3>Login</h3>
 
@@ -32,19 +34,14 @@
 
         try
         {
-            var loginDto = new { password = passwordinput, cpr = cprno };
+            var loginDto = new LoginDto() { password = passwordinput, cpr = cprno };
 
-            HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
-                "http://localhost:8081/Demo/login", loginDto);
+            var response = await LoginService.LoginPatient(loginDto);
+            // HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
+            //     "http://localhost:8081/Demo/login", loginDto);
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                serverResponse = await responseMessage.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                serverResponse = "PUla";
-            }
+            serverResponse = response.response != null ? response.response : "pula";
+          
         }
         catch (Exception e)
         {
