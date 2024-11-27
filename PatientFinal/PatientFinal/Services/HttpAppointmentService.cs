@@ -14,7 +14,7 @@ namespace PatientFinal.Services
         }
 
       
-        public async Task<CreateAppointmentDto> CreateAppointment(
+        public async Task<ResponseDto> CreateAppointment(
             CreateAppointmentDto createAppointmentDto)
         {
             try
@@ -26,12 +26,10 @@ namespace PatientFinal.Services
                     await httpResponse.Content.ReadAsStringAsync();
                 if (!httpResponse.IsSuccessStatusCode)
                     throw new Exception(response);
-               
-                return JsonSerializer.Deserialize<CreateAppointmentDto>(response,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
+                Console.WriteLine(response);
+                return JsonSerializer.Deserialize<ResponseDto>(response,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             }
             catch (Exception ex)
             {

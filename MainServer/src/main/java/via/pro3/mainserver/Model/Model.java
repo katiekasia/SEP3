@@ -6,7 +6,7 @@ import via.pro3.mainserver.DTOs.RegisterDto;
 
 public interface Model
 {
-   void createAppointment(CreateAppointmentDto createAppointmentDto);
+   String createAppointment(CreateAppointmentDto createAppointmentDto);
    Patient getPatientByCpr(String cpr);
   Doctor getDoctorById(String id);
   void registerPatient(RegisterDto registerDto);

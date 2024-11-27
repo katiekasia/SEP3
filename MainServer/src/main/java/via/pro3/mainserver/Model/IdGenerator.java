@@ -1,5 +1,6 @@
 package via.pro3.mainserver.Model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class IdGenerator implements GeneratorInterface
@@ -7,6 +8,10 @@ public class IdGenerator implements GeneratorInterface
   private Set<Integer> appointmentIds;
   private Set<Integer> prescriptionIds;
 
+  public IdGenerator(){
+    appointmentIds = new HashSet<Integer>();
+    prescriptionIds = new HashSet<Integer>();
+  }
   @Override public int generateAppointmentId()
   {
     int nextId = appointmentIds.size();

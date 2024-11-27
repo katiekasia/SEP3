@@ -12,11 +12,11 @@ public class Patient {
     private String email;
     private Map<Integer,Appointment> appointments;
 
-    public Patient(String name, String surname, String password, String CPRNo, String phone, String email) {
+    public Patient(String CPRNo, String name, String surname, String phone, String email, String password) {
+        this.CPRNo = CPRNo;
         this.name = name;
         this.surname = surname;
         this.password = password;
-        this.CPRNo = CPRNo;
         this.phone = phone;
         this.email = email;
         appointments = new HashMap<Integer, Appointment>();

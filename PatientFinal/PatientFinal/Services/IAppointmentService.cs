@@ -5,5 +5,5 @@ namespace PatientFinal.Services;
 public interface IAppointmentService
 {
 
-    public Task<CreateAppointmentDto> CreateAppointment(CreateAppointmentDto request);
+    public Task<ResponseDto> CreateAppointment(CreateAppointmentDto request);
 }

@@ -26,16 +26,16 @@ public class ModelManager implements Model
 
 
 
-  @Override public void createAppointment(
+  @Override public String createAppointment(
       CreateAppointmentDto createAppointmentDto)
   {
-    System.out.println("iMD");
     LocalDate date =LocalDate.parse(createAppointmentDto.getDate());
     LocalTime time = LocalTime.parse(createAppointmentDto.getTime());
     MyDateAndTime dateAndTime = new MyDateAndTime(date, time);
     Clinic clinic = eventRepository.getClinicByDoctorId(createAppointmentDto.getDoctorId());
     Doctor doctor = eventRepository.getDoctorById(createAppointmentDto.getDoctorId());
     Patient patient = getPatientByCpr(createAppointmentDto.getPatientCpr());
+
     Appointment appointment = new Appointment(
         idGenerator.generateAppointmentId(), clinic,
         createAppointmentDto.getType(), dateAndTime,createAppointmentDto.getDescription(), createAppointmentDto.getStatus());
@@ -44,10 +44,12 @@ public class ModelManager implements Model
     try
     {
       eventRepository.createAppointment(appointment, doctor, patient);
+
     }catch (Exception e){
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
+    return "Appointment created in " + appointment.getCity() + " at " + appointment.getDateAndTime().toString();
   }
 
   @Override public Patient getPatientByCpr(String cpr)

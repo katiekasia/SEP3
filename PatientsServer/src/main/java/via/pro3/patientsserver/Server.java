@@ -3,11 +3,12 @@ package via.pro3.patientsserver;
 import DTOs.CreateAppointmentDto;
 import DTOs.LoginDto;
 import DTOs.RegisterDto;
+import DTOs.ResponseDto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import loginPatient.grpc.LoginPatientGrpc;
 import loginPatient.grpc.LoginRequest;
-import loginPatient.grpc.LoginResponse;
+import loginPatient.grpc.loginResponse;
 import org.springframework.web.bind.annotation.*;
 import createBooking.grpc.DBresponse;
 import createBooking.grpc.PatientBookingGrpc;
@@ -31,29 +32,35 @@ public class Server {
         loginBlockingStub = LoginPatientGrpc.newBlockingStub(channel);
     }
 
-    @PostMapping("/book")
-    public CreateAppointmentDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
-        System.out.println("here");
-        CreateAppointment request = CreateAppointment.newBuilder()
-                .setDoctorId(createAppointmentDto.getDoctorId())
-                .setStatus(createAppointmentDto.getStatus())
-                .setDescription(createAppointmentDto.getDescription())
-                .setType(createAppointmentDto.getType())
-                .setPatientCpr(createAppointmentDto.getPatientCpr())
-                .setAppointmentDate(createAppointmentDto.getDate())
-                .setAppointmentTime(createAppointmentDto.getTime())
-                .build();
-        System.out.println("before res");
-        DBresponse response = blockingStub.createAppointment(request);
-        System.out.println("sent");
+  @PostMapping("/book")
+  public ResponseDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
 
-        return createAppointmentDto;
+    CreateAppointment request = CreateAppointment.newBuilder()
+        .setType(createAppointmentDto.getType())
+        .setDescription(createAppointmentDto.getDescription())
+        .setStatus(createAppointmentDto.getStatus())
+        .setPatientCpr(createAppointmentDto.getPatientCpr())
+        .setDoctorId(createAppointmentDto.getDoctorId())
+        .setAppointmentDate(createAppointmentDto.getDate())
+        .setAppointmentTime(createAppointmentDto.getTime())
+        .build();
+
+        DBresponse response = blockingStub.createAppointment(request);
+    ResponseDto responseDto= new ResponseDto();
+    responseDto.setResponse(response.getConfirmation());
+        return responseDto;
 
     }
 
     @PostMapping("/register")
     public RegisterDto registerPatient(@RequestBody RegisterDto registerDto) {
         try {
+            System.out.println(registerDto.getName());
+            System.out.println(registerDto.getSurname());
+            System.out.println(registerDto.getEmail());
+            System.out.println(registerDto.getPassword());
+            System.out.println(registerDto.getPhone());
+            System.out.println(registerDto.getCprNo());
             RegisterRequest request = RegisterRequest.newBuilder()
                     .setName(registerDto.getName())
                     .setSurname(registerDto.getSurname())
@@ -65,7 +72,7 @@ public class Server {
 
             Response response = registerBlockingStub.registerPatient(request);
 
-            if (response.getConfirmation() == null) {
+            if (response.getConfirmation() == null){
                 throw new RuntimeException("Patient registration failed: " + response.getConfirmation());
             }
             System.out.println("Got here");
@@ -78,26 +85,25 @@ public class Server {
     }
 
     @PostMapping("/login")
-    public String loginPatient(@RequestBody LoginDto loginDto) {
-        System.out.println(loginDto.getcpr());
-        System.out.println(loginDto.getPassword());
+    public LoginDto loginPatient(@RequestBody LoginDto loginDto) {
         try {
             LoginRequest request = LoginRequest.newBuilder()
-                    .setCpr(loginDto.getcpr())
-                    .setPassword(loginDto.getPassword())
+                    .setCpr(loginDto.getCpr())
+                    .setCpr(loginDto.getPassword())
                     .build();
 
-            LoginResponse response = loginBlockingStub.loginPatient(request);
+            loginResponse response = loginBlockingStub.loginPatient(request);
 
-            if (response.getConfirmation() == null) {
+            if (response.getConfirmation() == null){
                 throw new RuntimeException("Patient login failed: " + response.getConfirmation());
             }
 
-            System.out.println(response.getConfirmation());
-            return response.getConfirmation();
+            return loginDto;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error logging in", e);
         }
     }
+
+
 }
