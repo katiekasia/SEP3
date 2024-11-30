@@ -1,22 +1,21 @@
 package via.pro3.doctorserver;
 
-import example.grpc.ProtoGrpc;
-import example.grpc.loginResponse;
-import example.grpc.loginRequest;
+import DTOs.LoginDto;
+import DTOs.ResponseDto;
+import loginDoctor.grpc.LoginDoctorGrpc;
+import loginDoctor.grpc.LoginDoctorRequest;
+import loginDoctor.grpc.LoginDoctorResponse;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/doctorname")
+@RequestMapping("/Doctor")
 
 public class Server {
-
-    private ProtoGrpc.ProtoBlockingStub blockingStub;
+    private final LoginDoctorGrpc.LoginDoctorBlockingStub loginDoctorBlockingStub;
 
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder
@@ -24,19 +23,30 @@ public class Server {
                 .usePlaintext()
                 .build();
 
-        blockingStub = ProtoGrpc.newBlockingStub(channel);
+        loginDoctorBlockingStub = LoginDoctorGrpc.newBlockingStub(channel);
     }
 
-    @GetMapping("/name/password")
-    public String getDoctorName(@RequestParam String name, @RequestParam String password) {
-        System.out.println("Client connected at: " + LocalDateTime.now());
+    @PostMapping("/login")
+    public ResponseDto loginDoctor(@RequestBody LoginDto loginDto) {
+        if (loginDto == null || loginDto.getcpr() == null || loginDto.getPassword() == null) {
+            throw new IllegalArgumentException("Invalid login credentials");
+        }
 
-        loginRequest request = loginRequest.newBuilder()
-                .setEmail(name)
-                .setPassword(password)
-                .build();
+        try {
+            LoginDoctorRequest request = LoginDoctorRequest.newBuilder()
+                    .setId(loginDto.getcpr())
+                    .setPassword(loginDto.getPassword())
+                    .build();
 
-        loginResponse response = blockingStub.loginDoctor(request);
-        return "Hello, " + response.getEmail();
+            LoginDoctorResponse response = loginDoctorBlockingStub.loginDoctor(request);
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getConfirmation());
+
+            return responseDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Login failed: " + e.getMessage());
+        }
     }
 }

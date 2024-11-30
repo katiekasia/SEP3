@@ -91,7 +91,6 @@ public class Server {
                     .setCpr(loginDto.getcpr())
                     .setPassword(loginDto.getPassword())
                     .build();
-          System.out.println("Got here");
 
             LoginResponse response = loginBlockingStub.loginPatient(request);
 

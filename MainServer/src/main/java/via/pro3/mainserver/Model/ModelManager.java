@@ -85,4 +85,9 @@ public class ModelManager implements Model
     System.out.println(loginDto.getPassword());
    return eventRepository.loginUser(loginDto);
   }
+
+  @Override
+  public String loginDoctor(LoginDto loginDto) {
+    return eventRepository.loginDoctor(loginDto);
+  }
 }

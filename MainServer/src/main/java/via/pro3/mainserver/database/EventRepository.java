@@ -151,4 +151,22 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public String loginDoctor(LoginDto request) {
+        String sql = "SELECT * FROM doctor WHERE id = ? AND password =?";
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setString(1, request.getcpr());
+            statement.setString(2, request.getPassword());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return "LoggedIn";
+                } else {
+                    return "Nope";
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
+        }
+    }
 }

@@ -11,5 +11,6 @@ public interface Model
   Doctor getDoctorById(String id);
   void registerPatient(RegisterDto registerDto);
   String loginPatient(LoginDto loginDto);
+  String loginDoctor(LoginDto loginDto);
 
 }
