@@ -12,7 +12,6 @@ message LoginDoctorRequest {
   string password = 2;
 }
 
-
 message LoginDoctorResponse {
   string confirmation = 1;
 }

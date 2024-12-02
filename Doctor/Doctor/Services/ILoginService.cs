@@ -4,5 +4,5 @@ namespace Doctor.Services;
 
 public interface ILoginService
 {
-    public Task<LoginDto> LoginDoctor(LoginDto loginDto);
+    public Task<LoginDto> LoginServiceMethod(LoginDto loginDto, string endpoint);
 }

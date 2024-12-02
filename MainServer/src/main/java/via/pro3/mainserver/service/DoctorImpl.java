@@ -28,7 +28,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
         catch (Exception e){
             e.printStackTrace();
             LoginDoctorResponse loginDoctorResponse = LoginDoctorResponse.newBuilder()
-                    .setConfirmation("Login failed").build();
+                    .setConfirmation("Failed").build();
             responseObserver.onNext(loginDoctorResponse);
         }
         finally {

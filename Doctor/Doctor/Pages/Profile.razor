@@ -1,0 +1,63 @@
+@page "/Profile"
+@using Doctor.DTOs
+@using Doctor.Services
+@inject HttpClient Http;
+@inject ILoginService LoginService;
+<h3>Profile Overview</h3>
+
+<AuthorizeView>
+    <NotAuthorized>
+        You need to login first
+    </NotAuthorized>
+    
+    <Authorized>
+        <p>ID: @id</p>
+        <p>First name: @firstName</p>
+        <p>Last name: @lastName</p>
+
+        <input @bind="@currentPassword"></input>
+        <input @bind="@newPassword"></input>
+        <button @onclick="ChangePassword">Change password</button>
+
+        @if (!string.IsNullOrEmpty(responseMessage))
+        {
+        <p>Server Response: @responseMessage</p>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string id;
+    private string firstName;
+    private string lastName;
+    private string specialisation;
+    private string newPassword;
+    private string currentPassword;
+    private string responseMessage;
+
+    private async Task ChangePassword()
+    {
+        if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword))
+        {
+            responseMessage = "Fields cannot be emtpy";
+            return;
+        }
+
+        try
+        {
+            var changePasswordDto = new LoginDto()
+            {
+                cpr = currentPassword,
+                password = newPassword
+            };
+
+            var response = await LoginService
+                .LoginServiceMethod(changePasswordDto, "/changePassword");
+            
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Changing password failed: {e.Message}";
+        }
+    }
+}

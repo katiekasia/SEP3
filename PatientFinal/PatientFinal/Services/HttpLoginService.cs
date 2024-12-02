@@ -25,7 +25,7 @@ namespace PatientFinal.Services
                 return JsonSerializer.Deserialize<UserDto>(response, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                });
+                })!;
             }
             catch (Exception ex)
             {
