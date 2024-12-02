@@ -19,5 +19,5 @@ public interface EventInterface
   Patient getPatientByCpr(String cpr);
   Clinic getClinicByDoctorId(String id);
   String loginDoctor(LoginDto request);
-  boolean loginUser(LoginDto request);
+  String changePassowrdDoctor(LoginDto request);
 }

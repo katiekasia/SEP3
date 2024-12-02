@@ -13,11 +13,12 @@ public class HttpLoginService: ILoginService
         this.client = client;
     }
     
-    public async Task<LoginDto> LoginDoctor(LoginDto loginDto)
+    public async Task<LoginDto> LoginServiceMethod(LoginDto loginDto, string endpoint)
     {
         try
         {
-            HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("http://localhost:8080/Doctor/login", loginDto);
+            HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync
+                ($"http://localhost:8080/Doctor/{endpoint}", loginDto);
             string response = await httpResponseMessage.Content.ReadAsStringAsync();
             if (!httpResponseMessage.IsSuccessStatusCode)
                 throw new ApplicationException(response);
@@ -25,7 +26,7 @@ public class HttpLoginService: ILoginService
             return JsonSerializer.Deserialize<LoginDto>(response, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            }); 
+            })!; 
         }
         catch (Exception ex)
         {
