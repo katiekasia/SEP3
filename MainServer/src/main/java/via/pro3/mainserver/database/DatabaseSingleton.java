@@ -12,7 +12,7 @@ public final class DatabaseSingleton implements DatabaseInterface {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres?currentSchema=sep3";
     private static final String USER = "postgres";
-    private static final String PSWD = "VIAVIAVIA";
+    private static final String PSWD = "admin";
 
     private DatabaseSingleton(){
         Connection conn = null;

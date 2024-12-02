@@ -1,7 +1,7 @@
 package via.pro3.mainserver.Model;
 
 
-import registerPatient.grpc.Response;
+import patient.grpc.DBresponse;
 import via.pro3.mainserver.DTOs.CreateAppointmentDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.RegisterDto;
@@ -75,7 +75,7 @@ public class ModelManager implements Model
 
     eventRepository.createUser(patient);
 
-    Response response = Response.newBuilder()
+    DBresponse response = DBresponse.newBuilder()
         .setConfirmation("Patient registered successfully")
         .build();
   }

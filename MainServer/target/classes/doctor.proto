@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "doctor.grpc";
+
+service Doctor {
+  rpc loginDoctor (LoginDoctorRequest) returns (LoginDoctorResponse) {}
+}
+
+message LoginDoctorRequest {
+  string id = 1;
+  string password = 2;
+}
+
+
+message LoginDoctorResponse {
+  string confirmation = 1;
+}

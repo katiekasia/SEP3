@@ -5,30 +5,17 @@ import DTOs.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
-import loginPatient.grpc.LoginPatientGrpc;
-import loginPatient.grpc.LoginRequest;
-import loginPatient.grpc.LoginResponse;
 import org.springframework.web.bind.annotation.*;
-import createBooking.grpc.DBresponse;
-import createBooking.grpc.PatientBookingGrpc;
-import createBooking.grpc.CreateAppointment;
-import registerPatient.grpc.RegisterPatientGrpc;
-import registerPatient.grpc.RegisterRequest;
-import registerPatient.grpc.Response;
+import patient.grpc.*;
 
 @RestController
 @RequestMapping("/Demo")
 @CrossOrigin(origins = "*")
 public class Server {
     private final PatientBookingGrpc.PatientBookingBlockingStub blockingStub;
-    private final RegisterPatientGrpc.RegisterPatientBlockingStub registerBlockingStub;
-    private final LoginPatientGrpc.LoginPatientBlockingStub loginBlockingStub;
-
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
         blockingStub = PatientBookingGrpc.newBlockingStub(channel);
-        registerBlockingStub = RegisterPatientGrpc.newBlockingStub(channel);
-        loginBlockingStub = LoginPatientGrpc.newBlockingStub(channel);
     }
 
   @PostMapping("/book")
@@ -69,7 +56,7 @@ public class Server {
                     .setCPRNo(registerDto.getCprNo())
                     .build();
 
-            Response response = registerBlockingStub.registerPatient(request);
+            DBresponse response = blockingStub.registerPatient(request);
 
             if (response.getConfirmation() == null){
                 throw new RuntimeException("Patient registration failed: " + response.getConfirmation());
@@ -93,7 +80,7 @@ public class Server {
                     .setPassword(loginDto.getPassword())
                     .build();
 
-            LoginResponse response = loginBlockingStub.loginPatient(request);
+            LoginResponse response = blockingStub.loginPatient(request);
 
           UserDto userDto = new UserDto();
           userDto.setName(response.getName());

@@ -2,9 +2,9 @@ package via.pro3.doctorserver;
 
 import DTOs.LoginDto;
 import DTOs.ResponseDto;
-import loginDoctor.grpc.LoginDoctorGrpc;
-import loginDoctor.grpc.LoginDoctorRequest;
-import loginDoctor.grpc.LoginDoctorResponse;
+import doctor.grpc.DoctorGrpc;
+import doctor.grpc.LoginDoctorRequest;
+import doctor.grpc.LoginDoctorResponse;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import io.grpc.ManagedChannel;
@@ -15,7 +15,7 @@ import io.grpc.ManagedChannelBuilder;
 @RequestMapping("/Doctor")
 
 public class Server {
-    private final LoginDoctorGrpc.LoginDoctorBlockingStub loginDoctorBlockingStub;
+    private final DoctorGrpc.DoctorBlockingStub blockingStub;
 
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder
@@ -23,7 +23,7 @@ public class Server {
                 .usePlaintext()
                 .build();
 
-        loginDoctorBlockingStub = LoginDoctorGrpc.newBlockingStub(channel);
+        blockingStub = DoctorGrpc.newBlockingStub(channel);
     }
 
     @PostMapping("/login")
@@ -38,7 +38,7 @@ public class Server {
                     .setPassword(loginDto.getPassword())
                     .build();
 
-            LoginDoctorResponse response = loginDoctorBlockingStub.loginDoctor(request);
+            LoginDoctorResponse response = blockingStub.loginDoctor(request);
 
             ResponseDto responseDto = new ResponseDto();
             responseDto.setResponse(response.getConfirmation());
