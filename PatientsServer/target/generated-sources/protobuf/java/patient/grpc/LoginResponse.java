@@ -97,12 +97,12 @@ public  final class LoginResponse extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return patient.grpc.Patient.internal_static_LoginResponse_descriptor;
+    return patient.grpc.PatientOuterClass.internal_static_LoginResponse_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return patient.grpc.Patient.internal_static_LoginResponse_fieldAccessorTable
+    return patient.grpc.PatientOuterClass.internal_static_LoginResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             patient.grpc.LoginResponse.class, patient.grpc.LoginResponse.Builder.class);
   }
@@ -518,12 +518,12 @@ public  final class LoginResponse extends
       patient.grpc.LoginResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return patient.grpc.Patient.internal_static_LoginResponse_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_LoginResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return patient.grpc.Patient.internal_static_LoginResponse_fieldAccessorTable
+      return patient.grpc.PatientOuterClass.internal_static_LoginResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               patient.grpc.LoginResponse.class, patient.grpc.LoginResponse.Builder.class);
     }
@@ -562,7 +562,7 @@ public  final class LoginResponse extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return patient.grpc.Patient.internal_static_LoginResponse_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_LoginResponse_descriptor;
     }
 
     public patient.grpc.LoginResponse getDefaultInstanceForType() {

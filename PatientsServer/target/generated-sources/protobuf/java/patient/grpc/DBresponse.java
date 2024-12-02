@@ -62,12 +62,12 @@ public  final class DBresponse extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return patient.grpc.Patient.internal_static_DBresponse_descriptor;
+    return patient.grpc.PatientOuterClass.internal_static_DBresponse_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return patient.grpc.Patient.internal_static_DBresponse_fieldAccessorTable
+    return patient.grpc.PatientOuterClass.internal_static_DBresponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             patient.grpc.DBresponse.class, patient.grpc.DBresponse.Builder.class);
   }
@@ -263,12 +263,12 @@ public  final class DBresponse extends
       patient.grpc.DBresponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return patient.grpc.Patient.internal_static_DBresponse_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_DBresponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return patient.grpc.Patient.internal_static_DBresponse_fieldAccessorTable
+      return patient.grpc.PatientOuterClass.internal_static_DBresponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               patient.grpc.DBresponse.class, patient.grpc.DBresponse.Builder.class);
     }
@@ -297,7 +297,7 @@ public  final class DBresponse extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return patient.grpc.Patient.internal_static_DBresponse_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_DBresponse_descriptor;
     }
 
     public patient.grpc.DBresponse getDefaultInstanceForType() {

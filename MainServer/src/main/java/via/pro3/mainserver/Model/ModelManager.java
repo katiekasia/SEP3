@@ -66,18 +66,19 @@ public class ModelManager implements Model
 
   @Override
   public void registerPatient(RegisterDto registerDto) {
-    Patient patient = new Patient(registerDto.getName(),
-        registerDto.getSurname(),
-        registerDto.getPassword(),
-        registerDto.getCprNo(),
-        registerDto.getPhone(),
-        registerDto.getEmail());
+    Patient patient = new Patient(registerDto.getCprNo(),registerDto.getName(),registerDto.getSurname(),registerDto.getPhone(),registerDto.getEmail(),registerDto.getPassword());
 
-    eventRepository.createUser(patient);
+    try
+    {
+      eventRepository.createUser(patient);
+      System.out.println("manager");
+      DBresponse response = DBresponse.newBuilder()
+          .setConfirmation("Patient registered successfully")
+          .build();
+    }catch (Exception e){
+      throw new RuntimeException("Something went wrong");
+    }
 
-    DBresponse response = DBresponse.newBuilder()
-        .setConfirmation("Patient registered successfully")
-        .build();
   }
 
   @Override public Patient loginPatient(LoginDto loginDto)

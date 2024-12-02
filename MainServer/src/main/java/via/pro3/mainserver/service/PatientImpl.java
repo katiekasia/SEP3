@@ -56,7 +56,7 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .setPhone(patient.getPhone())
                     .setSurname(patient.getSurname())
                     .setCpr(patient.getCPRNo())
-                    //.setPassword(patient.getPassword())
+                    .setPassword(patient.getPassword())
                     .build();
 
             responseObserver.onNext(response);
@@ -77,9 +77,13 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         try {
             RegisterDto registerDto = new RegisterDto(request.getName(), request.getSurname(), request.getEmail(),
                     request.getPhone(), request.getPassword(), request.getCPRNo());
+            System.out.println("impl is here");
+
             model.registerPatient(registerDto);
+
             responseObserver.onNext(DBresponse.newBuilder().build());
         } catch (Exception e) {
+            e.printStackTrace();
             DBresponse errorResponse = DBresponse.newBuilder()
                     .setConfirmation("Registration failed: " + e.getMessage())
                     .build();

@@ -12,10 +12,10 @@ import patient.grpc.*;
 @RequestMapping("/Demo")
 @CrossOrigin(origins = "*")
 public class Server {
-    private final PatientBookingGrpc.PatientBookingBlockingStub blockingStub;
+    private final PatientGrpc.PatientBlockingStub blockingStub;
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
-        blockingStub = PatientBookingGrpc.newBlockingStub(channel);
+        blockingStub = PatientGrpc.newBlockingStub(channel);
     }
 
   @PostMapping("/book")
@@ -39,7 +39,7 @@ public class Server {
     }
 
     @PostMapping("/register")
-    public RegisterDto registerPatient(@RequestBody RegisterDto registerDto) {
+    public ResponseDto  registerPatient(@RequestBody RegisterDto registerDto) {
         try {
             System.out.println(registerDto.getName());
             System.out.println(registerDto.getSurname());
@@ -47,12 +47,14 @@ public class Server {
             System.out.println(registerDto.getPassword());
             System.out.println(registerDto.getPhone());
             System.out.println(registerDto.getCprNo());
+
+            String password = PasswordHasher.hash(registerDto.getPassword());
             RegisterRequest request = RegisterRequest.newBuilder()
                     .setName(registerDto.getName())
                     .setSurname(registerDto.getSurname())
                     .setEmail(registerDto.getEmail())
                     .setPhone(registerDto.getPhone())
-                    .setPassword(registerDto.getPassword())
+                    .setPassword(password)
                     .setCPRNo(registerDto.getCprNo())
                     .build();
 
@@ -62,8 +64,9 @@ public class Server {
                 throw new RuntimeException("Patient registration failed: " + response.getConfirmation());
             }
             System.out.println("Got here");
-
-            return registerDto;
+            ResponseDto responseDto= new ResponseDto();
+            responseDto.setResponse(response.getConfirmation());
+            return responseDto;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error registering patient", e);
@@ -80,7 +83,7 @@ public class Server {
                     .build();
 
             LoginResponse response = blockingStub.loginPatient(request);
-
+          System.out.println("Got here");
             if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
             {
               UserDto userDto = new UserDto();
@@ -92,6 +95,7 @@ public class Server {
 
               return userDto;
             }else {
+              System.out.println("this no work");
               throw new RuntimeException("Invalid credentials");
             }
         } catch (StatusRuntimeException e) {

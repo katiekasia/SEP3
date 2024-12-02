@@ -6,14 +6,14 @@ C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\ResponseDt
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UserDto.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\via\pro3\patientsserver\PatientsServerApplication.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\via\pro3\patientsserver\Server.java
-C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\grpc-java\patient\grpc\PatientBookingGrpc.java
+C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\grpc-java\patient\grpc\PatientGrpc.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\CreateAppointment.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\CreateAppointmentOrBuilder.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\DBresponse.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\DBresponseOrBuilder.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\LoginResponse.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\LoginResponseOrBuilder.java
-C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\Patient.java
+C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\PatientOuterClass.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\PatientRequest.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\PatientRequestOrBuilder.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\RegisterRequest.java

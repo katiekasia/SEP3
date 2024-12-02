@@ -97,12 +97,12 @@ public  final class RegisterRequest extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return patient.grpc.Patient.internal_static_RegisterRequest_descriptor;
+    return patient.grpc.PatientOuterClass.internal_static_RegisterRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return patient.grpc.Patient.internal_static_RegisterRequest_fieldAccessorTable
+    return patient.grpc.PatientOuterClass.internal_static_RegisterRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             patient.grpc.RegisterRequest.class, patient.grpc.RegisterRequest.Builder.class);
   }
@@ -518,12 +518,12 @@ public  final class RegisterRequest extends
       patient.grpc.RegisterRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return patient.grpc.Patient.internal_static_RegisterRequest_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_RegisterRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return patient.grpc.Patient.internal_static_RegisterRequest_fieldAccessorTable
+      return patient.grpc.PatientOuterClass.internal_static_RegisterRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               patient.grpc.RegisterRequest.class, patient.grpc.RegisterRequest.Builder.class);
     }
@@ -562,7 +562,7 @@ public  final class RegisterRequest extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return patient.grpc.Patient.internal_static_RegisterRequest_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_RegisterRequest_descriptor;
     }
 
     public patient.grpc.RegisterRequest getDefaultInstanceForType() {

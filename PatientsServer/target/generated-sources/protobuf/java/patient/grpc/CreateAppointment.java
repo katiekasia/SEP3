@@ -104,12 +104,12 @@ public  final class CreateAppointment extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return patient.grpc.Patient.internal_static_CreateAppointment_descriptor;
+    return patient.grpc.PatientOuterClass.internal_static_CreateAppointment_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return patient.grpc.Patient.internal_static_CreateAppointment_fieldAccessorTable
+    return patient.grpc.PatientOuterClass.internal_static_CreateAppointment_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             patient.grpc.CreateAppointment.class, patient.grpc.CreateAppointment.Builder.class);
   }
@@ -569,12 +569,12 @@ public  final class CreateAppointment extends
       patient.grpc.CreateAppointmentOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return patient.grpc.Patient.internal_static_CreateAppointment_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_CreateAppointment_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return patient.grpc.Patient.internal_static_CreateAppointment_fieldAccessorTable
+      return patient.grpc.PatientOuterClass.internal_static_CreateAppointment_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               patient.grpc.CreateAppointment.class, patient.grpc.CreateAppointment.Builder.class);
     }
@@ -615,7 +615,7 @@ public  final class CreateAppointment extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return patient.grpc.Patient.internal_static_CreateAppointment_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_CreateAppointment_descriptor;
     }
 
     public patient.grpc.CreateAppointment getDefaultInstanceForType() {

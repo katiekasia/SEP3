@@ -62,12 +62,12 @@ public  final class PatientRequest extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return patient.grpc.Patient.internal_static_PatientRequest_descriptor;
+    return patient.grpc.PatientOuterClass.internal_static_PatientRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return patient.grpc.Patient.internal_static_PatientRequest_fieldAccessorTable
+    return patient.grpc.PatientOuterClass.internal_static_PatientRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             patient.grpc.PatientRequest.class, patient.grpc.PatientRequest.Builder.class);
   }
@@ -263,12 +263,12 @@ public  final class PatientRequest extends
       patient.grpc.PatientRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return patient.grpc.Patient.internal_static_PatientRequest_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_PatientRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return patient.grpc.Patient.internal_static_PatientRequest_fieldAccessorTable
+      return patient.grpc.PatientOuterClass.internal_static_PatientRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               patient.grpc.PatientRequest.class, patient.grpc.PatientRequest.Builder.class);
     }
@@ -297,7 +297,7 @@ public  final class PatientRequest extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return patient.grpc.Patient.internal_static_PatientRequest_descriptor;
+      return patient.grpc.PatientOuterClass.internal_static_PatientRequest_descriptor;
     }
 
     public patient.grpc.PatientRequest getDefaultInstanceForType() {
