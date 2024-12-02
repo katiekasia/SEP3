@@ -30,10 +30,10 @@ public final class PatientOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RegisterRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_LoginRequest_descriptor;
+    internal_static_PatientRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_LoginRequest_fieldAccessorTable;
+      internal_static_PatientRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginResponse_descriptor;
   static final 
@@ -56,15 +56,15 @@ public final class PatientOuterClass {
       "mation\030\001 \001(\t\"o\n\017RegisterRequest\022\014\n\004name\030" +
       "\001 \001(\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n" +
       "\005phone\030\004 \001(\t\022\020\n\010password\030\005 \001(\t\022\r\n\005CPRNo\030" +
-      "\006 \001(\t\"-\n\014LoginRequest\022\013\n\003cpr\030\001 \001(\t\022\020\n\010pa" +
-      "ssword\030\002 \001(\t\"Y\n\rLoginResponse\022\014\n\004name\030\001 ",
-      "\001(\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n\005p" +
-      "hone\030\004 \001(\t\022\013\n\003cpr\030\005 \001(\t2\246\001\n\007Patient\0226\n\021c" +
-      "reateAppointment\022\022.CreateAppointment\032\013.D" +
-      "Bresponse\"\000\022/\n\014loginPatient\022\r.LoginReque" +
-      "st\032\016.LoginResponse\"\000\0222\n\017registerPatient\022" +
-      "\020.RegisterRequest\032\013.DBresponse\"\000B\020\n\014pati" +
-      "ent.grpcP\001b\006proto3"
+      "\006 \001(\t\"\035\n\016PatientRequest\022\013\n\003cpr\030\001 \001(\t\"k\n\r" +
+      "LoginResponse\022\014\n\004name\030\001 \001(\t\022\017\n\007surname\030\002",
+      " \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\013\n\003cp" +
+      "r\030\005 \001(\t\022\020\n\010password\030\006 \001(\t2\250\001\n\007Patient\0226\n" +
+      "\021createAppointment\022\022.CreateAppointment\032\013" +
+      ".DBresponse\"\000\0221\n\014loginPatient\022\017.PatientR" +
+      "equest\032\016.LoginResponse\"\000\0222\n\017registerPati" +
+      "ent\022\020.RegisterRequest\032\013.DBresponse\"\000B\020\n\014" +
+      "patient.grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -96,18 +96,18 @@ public final class PatientOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_RegisterRequest_descriptor,
         new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Password", "CPRNo", });
-    internal_static_LoginRequest_descriptor =
+    internal_static_PatientRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_LoginRequest_fieldAccessorTable = new
+    internal_static_PatientRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_LoginRequest_descriptor,
-        new java.lang.String[] { "Cpr", "Password", });
+        internal_static_PatientRequest_descriptor,
+        new java.lang.String[] { "Cpr", });
     internal_static_LoginResponse_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_LoginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginResponse_descriptor,
-        new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Cpr", });
+        new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Cpr", "Password", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

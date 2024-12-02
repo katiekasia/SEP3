@@ -75,21 +75,25 @@ public class Server {
         try {
 
 
-            LoginRequest request = LoginRequest.newBuilder()
+          PatientRequest request = PatientRequest.newBuilder()
                     .setCpr(loginDto.getcpr())
-                    .setPassword(loginDto.getPassword())
                     .build();
 
             LoginResponse response = blockingStub.loginPatient(request);
 
-          UserDto userDto = new UserDto();
-          userDto.setName(response.getName());
-          userDto.setEmail(response.getEmail());
-          userDto.setPhone(response.getPhone());
-          userDto.setSurname(response.getSurname());
-          userDto.setCpr(response.getCpr());
+            if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
+            {
+              UserDto userDto = new UserDto();
+              userDto.setName(response.getName());
+              userDto.setEmail(response.getEmail());
+              userDto.setPhone(response.getPhone());
+              userDto.setSurname(response.getSurname());
+              userDto.setCpr(response.getCpr());
 
-          return userDto;
+              return userDto;
+            }else {
+              throw new RuntimeException("Invalid credentials");
+            }
         } catch (StatusRuntimeException e) {
             e.printStackTrace();
             throw new RuntimeException("Error logging in", e);

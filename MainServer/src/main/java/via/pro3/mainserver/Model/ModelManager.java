@@ -80,7 +80,7 @@ public class ModelManager implements Model
         .build();
   }
 
-  @Override public UserDto loginPatient(LoginDto loginDto)
+  @Override public Patient loginPatient(LoginDto loginDto)
   {
     try
     {
@@ -88,12 +88,8 @@ public class ModelManager implements Model
         Patient patient = getPatientByCpr(loginDto.getcpr());
 
         //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
-          UserDto userDto = new UserDto(patient.getName(),
-              patient.getSurname(),
-              patient.getEmail(),
-              patient.getPhone(),
-              patient.getCPRNo());
-          return userDto;
+
+          return patient;
        // }else {
        //   throw new RuntimeException("Invalid login credentials");
       //  }

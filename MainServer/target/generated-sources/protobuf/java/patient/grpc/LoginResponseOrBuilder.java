@@ -56,4 +56,14 @@ public interface LoginResponseOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCprBytes();
+
+  /**
+   * <code>string password = 6;</code>
+   */
+  java.lang.String getPassword();
+  /**
+   * <code>string password = 6;</code>
+   */
+  com.google.protobuf.ByteString
+      getPasswordBytes();
 }
