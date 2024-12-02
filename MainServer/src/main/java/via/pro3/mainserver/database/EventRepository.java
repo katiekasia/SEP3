@@ -119,30 +119,21 @@ public class EventRepository implements EventInterface {
 
             try (Connection conn = database.getConnection();
                 PreparedStatement statement = conn.prepareStatement(sql)) {
-                System.out.println("creating user: " + patient);
-                conn.setAutoCommit(false);
-                statement.setQueryTimeout(30);
-                if (conn == null){
-                    throw new IllegalArgumentException("Connection cannot be null");
-                }
-                System.out.println(patient.toString());
+
+
                 statement.setString(1, patient.getCPRNo());
-                System.out.println("bla");
+
                 statement.setString(2, patient.getName());
-                System.out.println("bla2");
+
                 statement.setString(3, patient.getSurname());
-                System.out.println("bla3");
+
                 statement.setString(4, patient.getPhone());
-                System.out.println("bla4");
+
                 System.out.println(patient.getPhone());
                 statement.setString(5, patient.getEmail());
-                System.out.println("bla5");
+
                 statement.setString(6, patient.getPassword());
-                System.out.println("bla6");
-                int rowsAffected = statement.executeUpdate();
-                System.out.println("kys");
-                System.out.println("Rows affected: " + rowsAffected);
-                conn.commit();
+                statement.executeUpdate();
 
             }
          catch (SQLException e) {
