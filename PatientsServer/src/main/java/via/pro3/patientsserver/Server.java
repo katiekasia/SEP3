@@ -1,11 +1,10 @@
 package via.pro3.patientsserver;
 
-import DTOs.CreateAppointmentDto;
-import DTOs.LoginDto;
-import DTOs.RegisterDto;
-import DTOs.ResponseDto;
+import Auth.PasswordHasher;
+import DTOs.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import loginPatient.grpc.LoginPatientGrpc;
 import loginPatient.grpc.LoginRequest;
 import loginPatient.grpc.LoginResponse;
@@ -85,8 +84,10 @@ public class Server {
     }
 
     @PostMapping("/login")
-    public ResponseDto loginPatient(@RequestBody LoginDto loginDto) {
+    public UserDto loginPatient(@RequestBody LoginDto loginDto) {
         try {
+
+
             LoginRequest request = LoginRequest.newBuilder()
                     .setCpr(loginDto.getcpr())
                     .setPassword(loginDto.getPassword())
@@ -94,18 +95,20 @@ public class Server {
 
             LoginResponse response = loginBlockingStub.loginPatient(request);
 
-            if (response.getConfirmation() == null){
-                throw new RuntimeException("Patient login failed: " + response.getConfirmation());
-            }
-            ResponseDto responseDto = new ResponseDto();
-            responseDto.setResponse(response.getConfirmation());
-          System.out.println(response.getConfirmation());
-            return responseDto;
-        } catch (Exception e) {
+          UserDto userDto = new UserDto();
+          userDto.setName(response.getName());
+          userDto.setEmail(response.getEmail());
+          userDto.setPhone(response.getPhone());
+          userDto.setSurname(response.getSurname());
+          userDto.setCpr(response.getCpr());
+
+          return userDto;
+        } catch (StatusRuntimeException e) {
             e.printStackTrace();
             throw new RuntimeException("Error logging in", e);
+        }catch (Exception e) {
+          e.printStackTrace();
+          throw new RuntimeException("Error logging in", e);
         }
     }
-
-
 }

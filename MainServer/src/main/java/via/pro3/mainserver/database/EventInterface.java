@@ -18,6 +18,6 @@ public interface EventInterface
   Doctor getDoctorById(String id);
   Patient getPatientByCpr(String cpr);
   Clinic getClinicByDoctorId(String id);
-  String loginUser(LoginDto request);
   String loginDoctor(LoginDto request);
+  boolean loginUser(LoginDto request);
 }

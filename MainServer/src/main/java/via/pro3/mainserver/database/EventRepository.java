@@ -135,14 +135,14 @@ public class EventRepository implements EventInterface {
         }
     }
 
-    public synchronized String loginUser(LoginDto request) {
+    public synchronized boolean loginUser(LoginDto request) {
         String sql = "SELECT * FROM patient WHERE CPR_number = ? AND password =?";
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, request.getcpr());
             statement.setString(2, request.getPassword());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return "Patient logged in successfully";
+                    return true;
                 } else {
                     throw new RuntimeException("Invalid credentials provided");
                 }

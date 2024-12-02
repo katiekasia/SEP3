@@ -8,12 +8,52 @@ public interface LoginResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
-  java.lang.String getConfirmation();
+  java.lang.String getName();
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
   com.google.protobuf.ByteString
-      getConfirmationBytes();
+      getNameBytes();
+
+  /**
+   * <code>string surname = 2;</code>
+   */
+  java.lang.String getSurname();
+  /**
+   * <code>string surname = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getSurnameBytes();
+
+  /**
+   * <code>string email = 3;</code>
+   */
+  java.lang.String getEmail();
+  /**
+   * <code>string email = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getEmailBytes();
+
+  /**
+   * <code>string phone = 4;</code>
+   */
+  java.lang.String getPhone();
+  /**
+   * <code>string phone = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getPhoneBytes();
+
+  /**
+   * <code>string cpr = 5;</code>
+   */
+  java.lang.String getCpr();
+  /**
+   * <code>string cpr = 5;</code>
+   */
+  com.google.protobuf.ByteString
+      getCprBytes();
 }

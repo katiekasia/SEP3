@@ -1,9 +1,11 @@
 package via.pro3.mainserver.Model;
 
+
 import registerPatient.grpc.Response;
 import via.pro3.mainserver.DTOs.CreateAppointmentDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.RegisterDto;
+import via.pro3.mainserver.DTOs.UserDto;
 import via.pro3.mainserver.database.DatabaseInterface;
 import via.pro3.mainserver.database.DatabaseSingleton;
 import via.pro3.mainserver.database.EventInterface;
@@ -78,12 +80,29 @@ public class ModelManager implements Model
         .build();
   }
 
-  @Override public String loginPatient(LoginDto loginDto)
+  @Override public UserDto loginPatient(LoginDto loginDto)
   {
-    System.out.println("HERE");
-    System.out.println(loginDto.getcpr());
-    System.out.println(loginDto.getPassword());
-   return eventRepository.loginUser(loginDto);
+    try
+    {
+      if (eventRepository.loginUser(loginDto)){
+        Patient patient = getPatientByCpr(loginDto.getcpr());
+
+        //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
+          UserDto userDto = new UserDto(patient.getName(),
+              patient.getSurname(),
+              patient.getEmail(),
+              patient.getPhone(),
+              patient.getCPRNo());
+          return userDto;
+       // }else {
+       //   throw new RuntimeException("Invalid login credentials");
+      //  }
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+    return null;
   }
 
   @Override

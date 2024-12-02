@@ -34,11 +34,12 @@ public final class LoginPatientOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022loginPatient.proto\"-\n\014LoginRequest\022\013\n\003" +
-      "cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"%\n\rLoginResp" +
-      "onse\022\024\n\014confirmation\030\001 \001(\t2?\n\014LoginPatie" +
-      "nt\022/\n\014loginPatient\022\r.LoginRequest\032\016.Logi" +
-      "nResponse\"\000B\025\n\021loginPatient.grpcP\001b\006prot" +
-      "o3"
+      "cpr\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"Y\n\rLoginResp" +
+      "onse\022\014\n\004name\030\001 \001(\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005e" +
+      "mail\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\013\n\003cpr\030\005 \001(\t2?" +
+      "\n\014LoginPatient\022/\n\014loginPatient\022\r.LoginRe" +
+      "quest\032\016.LoginResponse\"\000B\025\n\021loginPatient." +
+      "grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -63,7 +64,7 @@ public final class LoginPatientOuterClass {
     internal_static_LoginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginResponse_descriptor,
-        new java.lang.String[] { "Confirmation", });
+        new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Cpr", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

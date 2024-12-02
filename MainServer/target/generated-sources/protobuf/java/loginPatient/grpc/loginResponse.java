@@ -15,7 +15,11 @@ public  final class LoginResponse extends
     super(builder);
   }
   private LoginResponse() {
-    confirmation_ = "";
+    name_ = "";
+    surname_ = "";
+    email_ = "";
+    phone_ = "";
+    cpr_ = "";
   }
 
   @java.lang.Override
@@ -46,7 +50,31 @@ public  final class LoginResponse extends
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            confirmation_ = s;
+            name_ = s;
+            break;
+          }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            surname_ = s;
+            break;
+          }
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            email_ = s;
+            break;
+          }
+          case 34: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            phone_ = s;
+            break;
+          }
+          case 42: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            cpr_ = s;
             break;
           }
         }
@@ -72,34 +100,170 @@ public  final class LoginResponse extends
             loginPatient.grpc.LoginResponse.class, loginPatient.grpc.LoginResponse.Builder.class);
   }
 
-  public static final int CONFIRMATION_FIELD_NUMBER = 1;
-  private volatile java.lang.Object confirmation_;
+  public static final int NAME_FIELD_NUMBER = 1;
+  private volatile java.lang.Object name_;
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
-  public java.lang.String getConfirmation() {
-    java.lang.Object ref = confirmation_;
+  public java.lang.String getName() {
+    java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      confirmation_ = s;
+      name_ = s;
       return s;
     }
   }
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getConfirmationBytes() {
-    java.lang.Object ref = confirmation_;
+      getNameBytes() {
+    java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      confirmation_ = b;
+      name_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int SURNAME_FIELD_NUMBER = 2;
+  private volatile java.lang.Object surname_;
+  /**
+   * <code>string surname = 2;</code>
+   */
+  public java.lang.String getSurname() {
+    java.lang.Object ref = surname_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      surname_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string surname = 2;</code>
+   */
+  public com.google.protobuf.ByteString
+      getSurnameBytes() {
+    java.lang.Object ref = surname_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      surname_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int EMAIL_FIELD_NUMBER = 3;
+  private volatile java.lang.Object email_;
+  /**
+   * <code>string email = 3;</code>
+   */
+  public java.lang.String getEmail() {
+    java.lang.Object ref = email_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      email_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string email = 3;</code>
+   */
+  public com.google.protobuf.ByteString
+      getEmailBytes() {
+    java.lang.Object ref = email_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      email_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PHONE_FIELD_NUMBER = 4;
+  private volatile java.lang.Object phone_;
+  /**
+   * <code>string phone = 4;</code>
+   */
+  public java.lang.String getPhone() {
+    java.lang.Object ref = phone_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      phone_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string phone = 4;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPhoneBytes() {
+    java.lang.Object ref = phone_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      phone_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int CPR_FIELD_NUMBER = 5;
+  private volatile java.lang.Object cpr_;
+  /**
+   * <code>string cpr = 5;</code>
+   */
+  public java.lang.String getCpr() {
+    java.lang.Object ref = cpr_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      cpr_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string cpr = 5;</code>
+   */
+  public com.google.protobuf.ByteString
+      getCprBytes() {
+    java.lang.Object ref = cpr_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      cpr_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -118,8 +282,20 @@ public  final class LoginResponse extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getConfirmationBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, confirmation_);
+    if (!getNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+    }
+    if (!getSurnameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, surname_);
+    }
+    if (!getEmailBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, email_);
+    }
+    if (!getPhoneBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, phone_);
+    }
+    if (!getCprBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, cpr_);
     }
   }
 
@@ -128,8 +304,20 @@ public  final class LoginResponse extends
     if (size != -1) return size;
 
     size = 0;
-    if (!getConfirmationBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, confirmation_);
+    if (!getNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+    }
+    if (!getSurnameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, surname_);
+    }
+    if (!getEmailBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, email_);
+    }
+    if (!getPhoneBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, phone_);
+    }
+    if (!getCprBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, cpr_);
     }
     memoizedSize = size;
     return size;
@@ -147,8 +335,16 @@ public  final class LoginResponse extends
     loginPatient.grpc.LoginResponse other = (loginPatient.grpc.LoginResponse) obj;
 
     boolean result = true;
-    result = result && getConfirmation()
-        .equals(other.getConfirmation());
+    result = result && getName()
+        .equals(other.getName());
+    result = result && getSurname()
+        .equals(other.getSurname());
+    result = result && getEmail()
+        .equals(other.getEmail());
+    result = result && getPhone()
+        .equals(other.getPhone());
+    result = result && getCpr()
+        .equals(other.getCpr());
     return result;
   }
 
@@ -159,8 +355,16 @@ public  final class LoginResponse extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CONFIRMATION_FIELD_NUMBER;
-    hash = (53 * hash) + getConfirmation().hashCode();
+    hash = (37 * hash) + NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getName().hashCode();
+    hash = (37 * hash) + SURNAME_FIELD_NUMBER;
+    hash = (53 * hash) + getSurname().hashCode();
+    hash = (37 * hash) + EMAIL_FIELD_NUMBER;
+    hash = (53 * hash) + getEmail().hashCode();
+    hash = (37 * hash) + PHONE_FIELD_NUMBER;
+    hash = (53 * hash) + getPhone().hashCode();
+    hash = (37 * hash) + CPR_FIELD_NUMBER;
+    hash = (53 * hash) + getCpr().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -290,7 +494,15 @@ public  final class LoginResponse extends
     }
     public Builder clear() {
       super.clear();
-      confirmation_ = "";
+      name_ = "";
+
+      surname_ = "";
+
+      email_ = "";
+
+      phone_ = "";
+
+      cpr_ = "";
 
       return this;
     }
@@ -314,7 +526,11 @@ public  final class LoginResponse extends
 
     public loginPatient.grpc.LoginResponse buildPartial() {
       loginPatient.grpc.LoginResponse result = new loginPatient.grpc.LoginResponse(this);
-      result.confirmation_ = confirmation_;
+      result.name_ = name_;
+      result.surname_ = surname_;
+      result.email_ = email_;
+      result.phone_ = phone_;
+      result.cpr_ = cpr_;
       onBuilt();
       return result;
     }
@@ -356,8 +572,24 @@ public  final class LoginResponse extends
 
     public Builder mergeFrom(loginPatient.grpc.LoginResponse other) {
       if (other == loginPatient.grpc.LoginResponse.getDefaultInstance()) return this;
-      if (!other.getConfirmation().isEmpty()) {
-        confirmation_ = other.confirmation_;
+      if (!other.getName().isEmpty()) {
+        name_ = other.name_;
+        onChanged();
+      }
+      if (!other.getSurname().isEmpty()) {
+        surname_ = other.surname_;
+        onChanged();
+      }
+      if (!other.getEmail().isEmpty()) {
+        email_ = other.email_;
+        onChanged();
+      }
+      if (!other.getPhone().isEmpty()) {
+        phone_ = other.phone_;
+        onChanged();
+      }
+      if (!other.getCpr().isEmpty()) {
+        cpr_ = other.cpr_;
         onChanged();
       }
       onChanged();
@@ -386,71 +618,347 @@ public  final class LoginResponse extends
       return this;
     }
 
-    private java.lang.Object confirmation_ = "";
+    private java.lang.Object name_ = "";
     /**
-     * <code>string confirmation = 1;</code>
+     * <code>string name = 1;</code>
      */
-    public java.lang.String getConfirmation() {
-      java.lang.Object ref = confirmation_;
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        confirmation_ = s;
+        name_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string confirmation = 1;</code>
+     * <code>string name = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getConfirmationBytes() {
-      java.lang.Object ref = confirmation_;
+        getNameBytes() {
+      java.lang.Object ref = name_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        confirmation_ = b;
+        name_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string confirmation = 1;</code>
+     * <code>string name = 1;</code>
      */
-    public Builder setConfirmation(
+    public Builder setName(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      confirmation_ = value;
+      name_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string confirmation = 1;</code>
+     * <code>string name = 1;</code>
      */
-    public Builder clearConfirmation() {
+    public Builder clearName() {
       
-      confirmation_ = getDefaultInstance().getConfirmation();
+      name_ = getDefaultInstance().getName();
       onChanged();
       return this;
     }
     /**
-     * <code>string confirmation = 1;</code>
+     * <code>string name = 1;</code>
      */
-    public Builder setConfirmationBytes(
+    public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      confirmation_ = value;
+      name_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object surname_ = "";
+    /**
+     * <code>string surname = 2;</code>
+     */
+    public java.lang.String getSurname() {
+      java.lang.Object ref = surname_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        surname_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string surname = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSurnameBytes() {
+      java.lang.Object ref = surname_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        surname_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string surname = 2;</code>
+     */
+    public Builder setSurname(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      surname_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string surname = 2;</code>
+     */
+    public Builder clearSurname() {
+      
+      surname_ = getDefaultInstance().getSurname();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string surname = 2;</code>
+     */
+    public Builder setSurnameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      surname_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object email_ = "";
+    /**
+     * <code>string email = 3;</code>
+     */
+    public java.lang.String getEmail() {
+      java.lang.Object ref = email_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        email_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string email = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEmailBytes() {
+      java.lang.Object ref = email_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        email_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string email = 3;</code>
+     */
+    public Builder setEmail(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      email_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string email = 3;</code>
+     */
+    public Builder clearEmail() {
+      
+      email_ = getDefaultInstance().getEmail();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string email = 3;</code>
+     */
+    public Builder setEmailBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      email_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object phone_ = "";
+    /**
+     * <code>string phone = 4;</code>
+     */
+    public java.lang.String getPhone() {
+      java.lang.Object ref = phone_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        phone_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string phone = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPhoneBytes() {
+      java.lang.Object ref = phone_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        phone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string phone = 4;</code>
+     */
+    public Builder setPhone(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      phone_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string phone = 4;</code>
+     */
+    public Builder clearPhone() {
+      
+      phone_ = getDefaultInstance().getPhone();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string phone = 4;</code>
+     */
+    public Builder setPhoneBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      phone_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object cpr_ = "";
+    /**
+     * <code>string cpr = 5;</code>
+     */
+    public java.lang.String getCpr() {
+      java.lang.Object ref = cpr_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        cpr_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string cpr = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCprBytes() {
+      java.lang.Object ref = cpr_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        cpr_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string cpr = 5;</code>
+     */
+    public Builder setCpr(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      cpr_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string cpr = 5;</code>
+     */
+    public Builder clearCpr() {
+      
+      cpr_ = getDefaultInstance().getCpr();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string cpr = 5;</code>
+     */
+    public Builder setCprBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      cpr_ = value;
       onChanged();
       return this;
     }

@@ -2,6 +2,8 @@ package via.pro3.mainserver;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import via.pro3.mainserver.Model.Model;
 import via.pro3.mainserver.Model.ModelManager;
 import via.pro3.mainserver.database.DatabaseInterface;
@@ -26,4 +28,6 @@ public class MainServer {
         System.out.println("Server started, listening on " + server.getPort());
         server.awaitTermination();
     }
+
+
 }
