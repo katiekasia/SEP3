@@ -10,6 +10,7 @@ import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.RegisterDto;
 import via.pro3.mainserver.DTOs.UserDto;
 import via.pro3.mainserver.Model.*;
+import via.pro3.mainserver.Model.Patient;
 
 public class PatientImpl extends PatientGrpc.PatientImplBase {
     private final Model model;
@@ -43,19 +44,19 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     }
 
     @Override
-    public void loginPatient(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
+    public void loginPatient(PatientRequest request, StreamObserver<LoginResponse> responseObserver) {
         try {
-            LoginDto loginDto = new LoginDto(request.getCpr(), request.getPassword());
-            System.out.println(loginDto.getcpr() + " in impl");
+            LoginDto loginDto = new LoginDto(request.getCpr(), null);
 
-            UserDto userDto = model.loginPatient(loginDto);
+            Patient patient = model.loginPatient(loginDto);
 
             LoginResponse response = LoginResponse.newBuilder()
-                    .setName(userDto.getName())
-                    .setEmail(userDto.getEmail())
-                    .setPhone(userDto.getPhone())
-                    .setSurname(userDto.getSurname())
-                    .setCpr(userDto.getCpr())
+                    .setName(patient.getName())
+                    .setEmail(patient.getEmail())
+                    .setPhone(patient.getPhone())
+                    .setSurname(patient.getSurname())
+                    .setCpr(patient.getCPRNo())
+                    //.setPassword(patient.getPassword())
                     .build();
 
             responseObserver.onNext(response);

@@ -3,9 +3,9 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "patient.grpc";
 
-service PatientBooking {
+service Patient {
   rpc createAppointment (CreateAppointment) returns (DBresponse) {}
-  rpc loginPatient (LoginRequest) returns (LoginResponse) {}
+  rpc loginPatient (PatientRequest) returns (LoginResponse) {}
   rpc registerPatient (RegisterRequest) returns (DBresponse) {}
 
 }
@@ -33,9 +33,8 @@ message RegisterRequest {
   string CPRNo = 6;
 }
 
-message LoginRequest {
+message PatientRequest {
   string cpr = 1;
-  string password = 2;
 }
 
 message LoginResponse {
@@ -44,4 +43,5 @@ message LoginResponse {
   string email = 3;
   string phone = 4;
   string cpr = 5;
+  string password = 6;
 }

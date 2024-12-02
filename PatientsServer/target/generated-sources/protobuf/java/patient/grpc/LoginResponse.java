@@ -20,6 +20,7 @@ public  final class LoginResponse extends
     email_ = "";
     phone_ = "";
     cpr_ = "";
+    password_ = "";
   }
 
   @java.lang.Override
@@ -75,6 +76,12 @@ public  final class LoginResponse extends
             java.lang.String s = input.readStringRequireUtf8();
 
             cpr_ = s;
+            break;
+          }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            password_ = s;
             break;
           }
         }
@@ -270,6 +277,40 @@ public  final class LoginResponse extends
     }
   }
 
+  public static final int PASSWORD_FIELD_NUMBER = 6;
+  private volatile java.lang.Object password_;
+  /**
+   * <code>string password = 6;</code>
+   */
+  public java.lang.String getPassword() {
+    java.lang.Object ref = password_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      password_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string password = 6;</code>
+   */
+  public com.google.protobuf.ByteString
+      getPasswordBytes() {
+    java.lang.Object ref = password_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      password_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -297,6 +338,9 @@ public  final class LoginResponse extends
     if (!getCprBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, cpr_);
     }
+    if (!getPasswordBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, password_);
+    }
   }
 
   public int getSerializedSize() {
@@ -318,6 +362,9 @@ public  final class LoginResponse extends
     }
     if (!getCprBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, cpr_);
+    }
+    if (!getPasswordBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, password_);
     }
     memoizedSize = size;
     return size;
@@ -345,6 +392,8 @@ public  final class LoginResponse extends
         .equals(other.getPhone());
     result = result && getCpr()
         .equals(other.getCpr());
+    result = result && getPassword()
+        .equals(other.getPassword());
     return result;
   }
 
@@ -365,6 +414,8 @@ public  final class LoginResponse extends
     hash = (53 * hash) + getPhone().hashCode();
     hash = (37 * hash) + CPR_FIELD_NUMBER;
     hash = (53 * hash) + getCpr().hashCode();
+    hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
+    hash = (53 * hash) + getPassword().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -504,6 +555,8 @@ public  final class LoginResponse extends
 
       cpr_ = "";
 
+      password_ = "";
+
       return this;
     }
 
@@ -531,6 +584,7 @@ public  final class LoginResponse extends
       result.email_ = email_;
       result.phone_ = phone_;
       result.cpr_ = cpr_;
+      result.password_ = password_;
       onBuilt();
       return result;
     }
@@ -590,6 +644,10 @@ public  final class LoginResponse extends
       }
       if (!other.getCpr().isEmpty()) {
         cpr_ = other.cpr_;
+        onChanged();
+      }
+      if (!other.getPassword().isEmpty()) {
+        password_ = other.password_;
         onChanged();
       }
       onChanged();
@@ -959,6 +1017,75 @@ public  final class LoginResponse extends
   checkByteStringIsUtf8(value);
       
       cpr_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object password_ = "";
+    /**
+     * <code>string password = 6;</code>
+     */
+    public java.lang.String getPassword() {
+      java.lang.Object ref = password_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        password_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string password = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPasswordBytes() {
+      java.lang.Object ref = password_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        password_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string password = 6;</code>
+     */
+    public Builder setPassword(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      password_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string password = 6;</code>
+     */
+    public Builder clearPassword() {
+      
+      password_ = getDefaultInstance().getPassword();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string password = 6;</code>
+     */
+    public Builder setPasswordBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      password_ = value;
       onChanged();
       return this;
     }

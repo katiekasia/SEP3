@@ -42,7 +42,7 @@ public class MainServerApplication {
             Server server =
                 ServerBuilder.forPort(9090)
                     .addService(new DoctorImpl(model))
-                    .addService(new PatientImpl(model))
+                  //  .addService(new PatientImpl(model))
                     .build().start();
             log.info("Server started, listening on " + server.getPort());
             server.awaitTermination();

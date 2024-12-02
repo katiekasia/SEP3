@@ -40,14 +40,14 @@ public final class PatientBookingGrpc {
               patient.grpc.DBresponse.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<patient.grpc.LoginRequest,
+  public static final io.grpc.MethodDescriptor<patient.grpc.PatientRequest,
       patient.grpc.LoginResponse> METHOD_LOGIN_PATIENT =
-      io.grpc.MethodDescriptor.<patient.grpc.LoginRequest, patient.grpc.LoginResponse>newBuilder()
+      io.grpc.MethodDescriptor.<patient.grpc.PatientRequest, patient.grpc.LoginResponse>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
               "PatientBooking", "loginPatient"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              patient.grpc.LoginRequest.getDefaultInstance()))
+              patient.grpc.PatientRequest.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               patient.grpc.LoginResponse.getDefaultInstance()))
           .build();
@@ -100,7 +100,7 @@ public final class PatientBookingGrpc {
 
     /**
      */
-    public void loginPatient(patient.grpc.LoginRequest request,
+    public void loginPatient(patient.grpc.PatientRequest request,
         io.grpc.stub.StreamObserver<patient.grpc.LoginResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_LOGIN_PATIENT, responseObserver);
     }
@@ -125,7 +125,7 @@ public final class PatientBookingGrpc {
             METHOD_LOGIN_PATIENT,
             asyncUnaryCall(
               new MethodHandlers<
-                patient.grpc.LoginRequest,
+                patient.grpc.PatientRequest,
                 patient.grpc.LoginResponse>(
                   this, METHODID_LOGIN_PATIENT)))
           .addMethod(
@@ -167,7 +167,7 @@ public final class PatientBookingGrpc {
 
     /**
      */
-    public void loginPatient(patient.grpc.LoginRequest request,
+    public void loginPatient(patient.grpc.PatientRequest request,
         io.grpc.stub.StreamObserver<patient.grpc.LoginResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_LOGIN_PATIENT, getCallOptions()), request, responseObserver);
@@ -209,7 +209,7 @@ public final class PatientBookingGrpc {
 
     /**
      */
-    public patient.grpc.LoginResponse loginPatient(patient.grpc.LoginRequest request) {
+    public patient.grpc.LoginResponse loginPatient(patient.grpc.PatientRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_LOGIN_PATIENT, getCallOptions(), request);
     }
@@ -251,7 +251,7 @@ public final class PatientBookingGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<patient.grpc.LoginResponse> loginPatient(
-        patient.grpc.LoginRequest request) {
+        patient.grpc.PatientRequest request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_LOGIN_PATIENT, getCallOptions()), request);
     }
@@ -291,7 +291,7 @@ public final class PatientBookingGrpc {
               (io.grpc.stub.StreamObserver<patient.grpc.DBresponse>) responseObserver);
           break;
         case METHODID_LOGIN_PATIENT:
-          serviceImpl.loginPatient((patient.grpc.LoginRequest) request,
+          serviceImpl.loginPatient((patient.grpc.PatientRequest) request,
               (io.grpc.stub.StreamObserver<patient.grpc.LoginResponse>) responseObserver);
           break;
         case METHODID_REGISTER_PATIENT:

@@ -12,7 +12,7 @@ public interface Model
   Doctor getDoctorById(String id);
   void registerPatient(RegisterDto registerDto);
   String loginDoctor(LoginDto loginDto);
-  UserDto loginPatient(LoginDto loginDto);
+  Patient loginPatient(LoginDto loginDto);
 
 
 }
