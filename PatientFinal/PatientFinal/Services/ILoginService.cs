@@ -4,6 +4,6 @@ namespace PatientFinal.Services;
 
 public interface ILoginService
 {
-    public Task<ResponseDto> LoginPatient(LoginDto request);
+    public Task<UserDto> LoginPatient(LoginDto request);
 
 }
