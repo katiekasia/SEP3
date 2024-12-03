@@ -84,7 +84,7 @@
             
             if (responseMessage.IsSuccessStatusCode)
             {
-                serverResponse = "Patient registered successfully " + registerDto.cprno;
+                serverResponse = await responseMessage.Content.ReadAsStringAsync();
             }
             else
             {
