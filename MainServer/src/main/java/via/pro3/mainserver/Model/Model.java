@@ -8,7 +8,7 @@ public interface Model
    Patient getPatientByCpr(String cpr);
   Doctor getDoctorById(String id);
   void registerPatient(RegisterDto registerDto);
-  String loginDoctor(LoginDto loginDto);
+  Doctor loginDoctor(LoginDto loginDto);
   Patient loginPatient(LoginDto loginDto);
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
 

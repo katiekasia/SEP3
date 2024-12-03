@@ -18,21 +18,11 @@ public interface ChangePasswordRequestOrBuilder extends
       getIdBytes();
 
   /**
-   * <code>string currentPassword = 2;</code>
-   */
-  java.lang.String getCurrentPassword();
-  /**
-   * <code>string currentPassword = 2;</code>
-   */
-  com.google.protobuf.ByteString
-      getCurrentPasswordBytes();
-
-  /**
-   * <code>string newPassword = 3;</code>
+   * <code>string newPassword = 2;</code>
    */
   java.lang.String getNewPassword();
   /**
-   * <code>string newPassword = 3;</code>
+   * <code>string newPassword = 2;</code>
    */
   com.google.protobuf.ByteString
       getNewPasswordBytes();

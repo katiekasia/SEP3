@@ -83,7 +83,7 @@ public class Server {
                     .build();
 
             LoginResponse response = blockingStub.loginPatient(request);
-          System.out.println("Got here");
+
             if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
             {
               UserDto userDto = new UserDto();
@@ -95,7 +95,6 @@ public class Server {
 
               return userDto;
             }else {
-              System.out.println("this no work");
               throw new RuntimeException("Invalid credentials");
             }
         } catch (StatusRuntimeException e) {
