@@ -1,10 +1,11 @@
 package via.pro3.mainserver.service;
 
-import doctor.grpc.DoctorGrpc;
-import doctor.grpc.LoginDoctorRequest;
-import doctor.grpc.LoginDoctorResponse;
+import doctor.grpc.*;
 import io.grpc.stub.StreamObserver;
+import org.apache.juli.logging.Log;
+import via.pro3.mainserver.DTOs.DoctorDto;
 import via.pro3.mainserver.DTOs.LoginDto;
+import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.Model;
 
 public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
@@ -30,6 +31,47 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
             LoginDoctorResponse loginDoctorResponse = LoginDoctorResponse.newBuilder()
                     .setConfirmation("Failed").build();
             responseObserver.onNext(loginDoctorResponse);
+        }
+        finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request, StreamObserver<LoginDoctorResponse> responseObserver){
+        try{
+            ResetPasswordDto resetPasswordDto = new ResetPasswordDto(
+                    request.getId(), request.getCurrentPassword(), request.getNewPassword()
+            );
+            LoginDoctorResponse response = LoginDoctorResponse.newBuilder()
+                    .setConfirmation(model.changeDoctorPassword(resetPasswordDto))
+                    .build();
+            responseObserver.onNext(response);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            LoginDoctorResponse loginDoctorResponse = LoginDoctorResponse.newBuilder()
+                    .setConfirmation("Failed").build();
+            responseObserver.onNext(loginDoctorResponse);
+        }
+        finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void getDoctorById(GetDoctorByIdRequest request, StreamObserver<GetDoctorByIdResponse> responseObserver){
+        try{
+            GetDoctorByIdResponse response = GetDoctorByIdResponse.newBuilder()
+                    .setFirstname(model.getDoctorById(request.getId()).getName())
+                    .setLastname(model.getDoctorById(request.getId()).getSurname())
+                    .setSpecialisation(model.getDoctorById(request.getId()).getSpecialisation())
+                    .build();
+            responseObserver.onNext(response);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            responseObserver.onNext(null);
         }
         finally {
             responseObserver.onCompleted();

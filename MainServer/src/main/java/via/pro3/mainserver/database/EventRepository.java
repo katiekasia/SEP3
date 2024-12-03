@@ -1,6 +1,7 @@
 package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
+import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -65,20 +66,23 @@ public class EventRepository implements EventInterface {
     }
     @Override
     public synchronized Doctor getDoctorById(String doctorId) {
-        String sql = "SELECT * FROM Doctor WHERE id = ?";
+        // Remove any surrounding quotes
+        doctorId = doctorId.trim().replaceAll("^\"|\"$", "");
+
+        String sql = "SELECT * FROM doctor WHERE id = ?";
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, doctorId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Doctor(
-                        resultSet.getString("id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getString("password"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("specialisation"),
-                        getClinicByDoctorId(doctorId)
+                            resultSet.getString("id"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("password"),
+                            resultSet.getString("clinic_id"),
+                            resultSet.getString("specialisation"),
+                            getClinicByDoctorId(doctorId)
                     );
                 } else {
                     throw new RuntimeException("No doctor found for doctorId: " + doctorId);
@@ -177,12 +181,17 @@ public class EventRepository implements EventInterface {
     }
 
     @Override
-    public String changePassowrdDoctor(LoginDto request) {
-        String sql = "UPDATE Doctor SET password = ? WHERE password = ?";
+    public String changePassowrdDoctor(ResetPasswordDto request) {
+        System.out.println(request.getId());
+        System.out.println(request.getCurrentPassword());
+        System.out.println(request.getNewPassword());
+        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
-            statement.setString(1, request.getPassword());
-            statement.setString(2, request.getcpr());
+            statement.setString(1, request.getNewPassword());
+            statement.setString(2, request.getCurrentPassword());
+            statement.setString(3, request.getId());
             statement.executeUpdate();
+            System.out.println("Exectued");
             return "PasswordChanged";
         }
         catch (SQLException e) {

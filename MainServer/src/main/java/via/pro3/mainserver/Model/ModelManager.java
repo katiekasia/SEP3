@@ -2,10 +2,7 @@ package via.pro3.mainserver.Model;
 
 
 import patient.grpc.DBresponse;
-import via.pro3.mainserver.DTOs.CreateAppointmentDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.RegisterDto;
-import via.pro3.mainserver.DTOs.UserDto;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.database.DatabaseInterface;
 import via.pro3.mainserver.database.DatabaseSingleton;
 import via.pro3.mainserver.database.EventInterface;
@@ -100,6 +97,11 @@ public class ModelManager implements Model
       throw new RuntimeException(e.getMessage());
     }
     return null;
+  }
+
+  @Override
+  public String changeDoctorPassword(ResetPasswordDto resetPasswordDto) {
+    return eventRepository.changePassowrdDoctor(resetPasswordDto);
   }
 
   @Override

@@ -5,6 +5,8 @@ option java_package = "doctor.grpc";
 
 service Doctor {
   rpc loginDoctor (LoginDoctorRequest) returns (LoginDoctorResponse) {}
+  rpc changePassword (ChangePasswordRequest) returns (LoginDoctorResponse){}
+  rpc getDoctorById(GetDoctorByIdRequest) returns (GetDoctorByIdResponse){}
 }
 
 message LoginDoctorRequest {
@@ -12,6 +14,21 @@ message LoginDoctorRequest {
   string password = 2;
 }
 
+message GetDoctorByIdRequest{
+  string id = 1;
+}
+
+message GetDoctorByIdResponse{
+  string firstname = 1;
+  string lastname = 2;
+  string specialisation = 3;
+}
+
+message ChangePasswordRequest{
+  string id = 1;
+  string currentPassword = 2;
+  string newPassword = 3;
+}
 
 message LoginDoctorResponse {
   string confirmation = 1;

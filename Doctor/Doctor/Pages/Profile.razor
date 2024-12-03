@@ -1,8 +1,10 @@
 @page "/Profile"
+@using System.Security.Claims
 @using Doctor.DTOs
 @using Doctor.Services
 @inject HttpClient Http;
 @inject ILoginService LoginService;
+@inject AuthenticationStateProvider AuthProvider;
 <h3>Profile Overview</h3>
 
 <AuthorizeView>
@@ -14,6 +16,7 @@
         <p>ID: @id</p>
         <p>First name: @firstName</p>
         <p>Last name: @lastName</p>
+        <p>Specialisation: @specialisation</p>
 
         <input @bind="@currentPassword"></input>
         <input @bind="@newPassword"></input>
@@ -34,6 +37,32 @@
     private string newPassword;
     private string currentPassword;
     private string responseMessage;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                var doctor = await LoginService.getDoctorById(id);
+                if (doctor != null)
+                {
+                    firstName = doctor.FirstName;
+                    lastName = doctor.LastName;
+                    specialisation = doctor.Specialisation;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Failed: {e.Message}";
+        }
+    }
 
     private async Task ChangePassword()
     {
@@ -45,14 +74,15 @@
 
         try
         {
-            var changePasswordDto = new LoginDto()
+            var changePasswordDto = new ResetPasswordDto()
             {
-                cpr = currentPassword,
-                password = newPassword
+                id = id,
+                currentPassword = currentPassword,
+                newPassword = newPassword
             };
 
             var response = await LoginService
-                .LoginServiceMethod(changePasswordDto, "/changePassword");
+                .ResetPasswordServiceMethod(changePasswordDto);
             
         }
         catch (Exception e)

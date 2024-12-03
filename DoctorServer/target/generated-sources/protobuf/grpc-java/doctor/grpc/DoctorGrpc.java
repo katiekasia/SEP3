@@ -39,6 +39,30 @@ public final class DoctorGrpc {
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               doctor.grpc.LoginDoctorResponse.getDefaultInstance()))
           .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<doctor.grpc.ChangePasswordRequest,
+      doctor.grpc.LoginDoctorResponse> METHOD_CHANGE_PASSWORD =
+      io.grpc.MethodDescriptor.<doctor.grpc.ChangePasswordRequest, doctor.grpc.LoginDoctorResponse>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "Doctor", "changePassword"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.ChangePasswordRequest.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.LoginDoctorResponse.getDefaultInstance()))
+          .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<doctor.grpc.GetDoctorByIdRequest,
+      doctor.grpc.GetDoctorByIdResponse> METHOD_GET_DOCTOR_BY_ID =
+      io.grpc.MethodDescriptor.<doctor.grpc.GetDoctorByIdRequest, doctor.grpc.GetDoctorByIdResponse>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "Doctor", "getDoctorById"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.GetDoctorByIdRequest.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.GetDoctorByIdResponse.getDefaultInstance()))
+          .build();
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -74,6 +98,20 @@ public final class DoctorGrpc {
       asyncUnimplementedUnaryCall(METHOD_LOGIN_DOCTOR, responseObserver);
     }
 
+    /**
+     */
+    public void changePassword(doctor.grpc.ChangePasswordRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.LoginDoctorResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_CHANGE_PASSWORD, responseObserver);
+    }
+
+    /**
+     */
+    public void getDoctorById(doctor.grpc.GetDoctorByIdRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.GetDoctorByIdResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_GET_DOCTOR_BY_ID, responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -83,6 +121,20 @@ public final class DoctorGrpc {
                 doctor.grpc.LoginDoctorRequest,
                 doctor.grpc.LoginDoctorResponse>(
                   this, METHODID_LOGIN_DOCTOR)))
+          .addMethod(
+            METHOD_CHANGE_PASSWORD,
+            asyncUnaryCall(
+              new MethodHandlers<
+                doctor.grpc.ChangePasswordRequest,
+                doctor.grpc.LoginDoctorResponse>(
+                  this, METHODID_CHANGE_PASSWORD)))
+          .addMethod(
+            METHOD_GET_DOCTOR_BY_ID,
+            asyncUnaryCall(
+              new MethodHandlers<
+                doctor.grpc.GetDoctorByIdRequest,
+                doctor.grpc.GetDoctorByIdResponse>(
+                  this, METHODID_GET_DOCTOR_BY_ID)))
           .build();
     }
   }
@@ -112,6 +164,22 @@ public final class DoctorGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_LOGIN_DOCTOR, getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void changePassword(doctor.grpc.ChangePasswordRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.LoginDoctorResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_CHANGE_PASSWORD, getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getDoctorById(doctor.grpc.GetDoctorByIdRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.GetDoctorByIdResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_GET_DOCTOR_BY_ID, getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -137,6 +205,20 @@ public final class DoctorGrpc {
     public doctor.grpc.LoginDoctorResponse loginDoctor(doctor.grpc.LoginDoctorRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_LOGIN_DOCTOR, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public doctor.grpc.LoginDoctorResponse changePassword(doctor.grpc.ChangePasswordRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_CHANGE_PASSWORD, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public doctor.grpc.GetDoctorByIdResponse getDoctorById(doctor.grpc.GetDoctorByIdRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_GET_DOCTOR_BY_ID, getCallOptions(), request);
     }
   }
 
@@ -165,9 +247,27 @@ public final class DoctorGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_LOGIN_DOCTOR, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<doctor.grpc.LoginDoctorResponse> changePassword(
+        doctor.grpc.ChangePasswordRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_CHANGE_PASSWORD, getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<doctor.grpc.GetDoctorByIdResponse> getDoctorById(
+        doctor.grpc.GetDoctorByIdRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_GET_DOCTOR_BY_ID, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_LOGIN_DOCTOR = 0;
+  private static final int METHODID_CHANGE_PASSWORD = 1;
+  private static final int METHODID_GET_DOCTOR_BY_ID = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -189,6 +289,14 @@ public final class DoctorGrpc {
         case METHODID_LOGIN_DOCTOR:
           serviceImpl.loginDoctor((doctor.grpc.LoginDoctorRequest) request,
               (io.grpc.stub.StreamObserver<doctor.grpc.LoginDoctorResponse>) responseObserver);
+          break;
+        case METHODID_CHANGE_PASSWORD:
+          serviceImpl.changePassword((doctor.grpc.ChangePasswordRequest) request,
+              (io.grpc.stub.StreamObserver<doctor.grpc.LoginDoctorResponse>) responseObserver);
+          break;
+        case METHODID_GET_DOCTOR_BY_ID:
+          serviceImpl.getDoctorById((doctor.grpc.GetDoctorByIdRequest) request,
+              (io.grpc.stub.StreamObserver<doctor.grpc.GetDoctorByIdResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -224,6 +332,8 @@ public final class DoctorGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new DoctorDescriptorSupplier())
               .addMethod(METHOD_LOGIN_DOCTOR)
+              .addMethod(METHOD_CHANGE_PASSWORD)
+              .addMethod(METHOD_GET_DOCTOR_BY_ID)
               .build();
         }
       }

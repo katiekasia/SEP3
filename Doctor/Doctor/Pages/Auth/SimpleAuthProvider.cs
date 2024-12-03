@@ -40,7 +40,6 @@ public class SimpleAuthProvider : AuthenticationStateProvider
             });
 
             if (response.IsSuccessStatusCode && loginResponse?.response == "LoggedIn"){
-                Console.WriteLine("yes");
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, id),

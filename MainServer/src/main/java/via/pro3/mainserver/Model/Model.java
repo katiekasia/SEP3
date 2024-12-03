@@ -1,9 +1,6 @@
 package via.pro3.mainserver.Model;
 
-import via.pro3.mainserver.DTOs.CreateAppointmentDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.RegisterDto;
-import via.pro3.mainserver.DTOs.UserDto;
+import via.pro3.mainserver.DTOs.*;
 
 public interface Model
 {
@@ -13,6 +10,7 @@ public interface Model
   void registerPatient(RegisterDto registerDto);
   String loginDoctor(LoginDto loginDto);
   Patient loginPatient(LoginDto loginDto);
+  String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
 
 
 }

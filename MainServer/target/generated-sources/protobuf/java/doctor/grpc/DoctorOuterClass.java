@@ -20,6 +20,21 @@ public final class DoctorOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LoginDoctorRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetDoctorByIdRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetDoctorByIdRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetDoctorByIdResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetDoctorByIdResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ChangePasswordRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ChangePasswordRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginDoctorResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -34,11 +49,19 @@ public final class DoctorOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\014doctor.proto\"2\n\022LoginDoctorRequest\022\n\n\002" +
-      "id\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"+\n\023LoginDocto" +
-      "rResponse\022\024\n\014confirmation\030\001 \001(\t2D\n\006Docto" +
-      "r\022:\n\013loginDoctor\022\023.LoginDoctorRequest\032\024." +
-      "LoginDoctorResponse\"\000B\017\n\013doctor.grpcP\001b\006" +
-      "proto3"
+      "id\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"\"\n\024GetDoctorB" +
+      "yIdRequest\022\n\n\002id\030\001 \001(\t\"T\n\025GetDoctorByIdR" +
+      "esponse\022\021\n\tfirstname\030\001 \001(\t\022\020\n\010lastname\030\002" +
+      " \001(\t\022\026\n\016specialisation\030\003 \001(\t\"Q\n\025ChangePa" +
+      "sswordRequest\022\n\n\002id\030\001 \001(\t\022\027\n\017currentPass" +
+      "word\030\002 \001(\t\022\023\n\013newPassword\030\003 \001(\t\"+\n\023Login" +
+      "DoctorResponse\022\024\n\014confirmation\030\001 \001(\t2\310\001\n" +
+      "\006Doctor\022:\n\013loginDoctor\022\023.LoginDoctorRequ" +
+      "est\032\024.LoginDoctorResponse\"\000\022@\n\016changePas",
+      "sword\022\026.ChangePasswordRequest\032\024.LoginDoc" +
+      "torResponse\"\000\022@\n\rgetDoctorById\022\025.GetDoct" +
+      "orByIdRequest\032\026.GetDoctorByIdResponse\"\000B" +
+      "\017\n\013doctor.grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -58,8 +81,26 @@ public final class DoctorOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginDoctorRequest_descriptor,
         new java.lang.String[] { "Id", "Password", });
-    internal_static_LoginDoctorResponse_descriptor =
+    internal_static_GetDoctorByIdRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_GetDoctorByIdRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetDoctorByIdRequest_descriptor,
+        new java.lang.String[] { "Id", });
+    internal_static_GetDoctorByIdResponse_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_GetDoctorByIdResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetDoctorByIdResponse_descriptor,
+        new java.lang.String[] { "Firstname", "Lastname", "Specialisation", });
+    internal_static_ChangePasswordRequest_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_ChangePasswordRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ChangePasswordRequest_descriptor,
+        new java.lang.String[] { "Id", "CurrentPassword", "NewPassword", });
+    internal_static_LoginDoctorResponse_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_LoginDoctorResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginDoctorResponse_descriptor,
