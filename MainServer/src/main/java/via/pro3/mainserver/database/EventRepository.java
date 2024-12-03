@@ -85,7 +85,8 @@ public class EventRepository implements EventInterface {
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                             resultSet.getString("password"),
-                            resultSet.getString("clinic_id"),
+                            //resultSet.getString("email"),
+                        "ss",
                             resultSet.getString("specialisation"),
                             getClinicByDoctorId(doctorId)
                     );
@@ -164,17 +165,16 @@ public class EventRepository implements EventInterface {
     }
 
     @Override
-    public String loginDoctor(LoginDto request) {
-        String sql = "SELECT * FROM doctor WHERE id = ? AND password =?";
+    public boolean loginDoctor(LoginDto request) {
+        String sql = "SELECT * FROM doctor WHERE id = ?";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, request.getcpr());
-            statement.setString(2, request.getPassword());
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next() ? "LoggedIn" : "Nope";
+                return resultSet.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor from SQL: " + e.getMessage(), e);

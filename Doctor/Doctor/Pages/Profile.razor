@@ -52,8 +52,9 @@
                 var doctor = await LoginService.getDoctorById(id);
                 if (doctor != null)
                 {
-                    firstName = doctor.FirstName;
-                    lastName = doctor.LastName;
+                    
+                    firstName = doctor.Name;
+                    lastName = doctor.Surname;
                     specialisation = doctor.Specialisation;
                 }
             }

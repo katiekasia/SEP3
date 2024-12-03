@@ -4,18 +4,17 @@ option java_multiple_files = true;
 option java_package = "doctor.grpc";
 
 service Doctor {
-  rpc loginDoctor (LoginDoctorRequest) returns (LoginDoctorResponse) {}
-  rpc changePassword (ChangePasswordRequest) returns (LoginDoctorResponse){}
+  rpc loginDoctor (GetDoctorByIdRequest) returns (LoginDoctorResponse) {}
+  rpc changePassword (ChangePasswordRequest) returns (UniResponse){}
   rpc getDoctorById(GetDoctorByIdRequest) returns (GetDoctorByIdResponse){}
 }
 
-message LoginDoctorRequest {
-  string id = 1;
-  string password = 2;
-}
 
 message GetDoctorByIdRequest{
   string id = 1;
+}
+message UniResponse{
+  string info = 1;
 }
 
 message GetDoctorByIdResponse{
@@ -26,10 +25,13 @@ message GetDoctorByIdResponse{
 
 message ChangePasswordRequest{
   string id = 1;
-  string currentPassword = 2;
-  string newPassword = 3;
+  string newPassword = 2;
 }
 
 message LoginDoctorResponse {
-  string confirmation = 1;
+  string name = 1;
+  string surname = 2;
+  string specialisation = 3;
+  string id = 4;
+  string password = 5;
 }

@@ -8,12 +8,52 @@ public interface LoginDoctorResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
-  java.lang.String getConfirmation();
+  java.lang.String getName();
   /**
-   * <code>string confirmation = 1;</code>
+   * <code>string name = 1;</code>
    */
   com.google.protobuf.ByteString
-      getConfirmationBytes();
+      getNameBytes();
+
+  /**
+   * <code>string surname = 2;</code>
+   */
+  java.lang.String getSurname();
+  /**
+   * <code>string surname = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getSurnameBytes();
+
+  /**
+   * <code>string specialisation = 3;</code>
+   */
+  java.lang.String getSpecialisation();
+  /**
+   * <code>string specialisation = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getSpecialisationBytes();
+
+  /**
+   * <code>string id = 4;</code>
+   */
+  java.lang.String getId();
+  /**
+   * <code>string id = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getIdBytes();
+
+  /**
+   * <code>string password = 5;</code>
+   */
+  java.lang.String getPassword();
+  /**
+   * <code>string password = 5;</code>
+   */
+  com.google.protobuf.ByteString
+      getPasswordBytes();
 }

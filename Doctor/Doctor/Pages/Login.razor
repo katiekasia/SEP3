@@ -4,7 +4,8 @@
 @using Doctor.Services
 @inject AuthenticationStateProvider AuthProvider
 @inject HttpClient Http
-@inject ILoginService LoginService
+@inject AuthenticationStateProvider LoginService
+@inject NavigationManager navMgr
 
 <h3>Doctor Login</h3>
 
@@ -34,13 +35,14 @@
 
         try
         {
-            bool success = await ((SimpleAuthProvider)AuthProvider).Login(id, password);
-            if (success == false)
-                responseMessage = "Invalid Credentials";
+            await ((SimpleAuthProvider)LoginService).Login(id, password);
+            navMgr.NavigateTo("/");
+            
         }
         catch (Exception e)
         {
-            responseMessage = $"Login failed: {e.Message}";
+            Console.WriteLine($"Inner Error: {e.InnerException.Message}");
+            responseMessage = $"Login failed: {e.Message} ";
         }
     }
 
