@@ -1,0 +1,47 @@
+﻿@page "/"
+@using Doctor.DTOs
+@using Doctor.Pages.Auth
+@using Doctor.Services
+@inject AuthenticationStateProvider AuthProvider
+@inject HttpClient Http
+@inject ILoginService LoginService
+
+<h3>Doctor Login</h3>
+
+<p>Enter your ID:</p>
+<input @bind="id" placeholder="Enter your ID"/>
+<p>Enter your Password:</p>
+<input @bind="password" type="password" placeholder="Enter your password"/>
+<button @onclick="LoginDoctor">Login</button>
+
+@if (!string.IsNullOrEmpty(responseMessage))
+{
+    <p>Server Response: @responseMessage</p>
+}
+
+@code {
+    private string id;
+    private string password;
+    private string responseMessage;
+
+    private async Task LoginDoctor()
+    {
+        if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(password))
+        {
+            responseMessage = "Both ID and Password are required";
+            return;
+        }
+
+        try
+        {
+            bool success = await ((SimpleAuthProvider)AuthProvider).Login(id, password);
+            if (success == false)
+                responseMessage = "Invalid Credentials";
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Login failed: {e.Message}";
+        }
+    }
+
+}

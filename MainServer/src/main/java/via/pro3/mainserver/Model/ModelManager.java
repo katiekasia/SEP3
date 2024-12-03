@@ -1,9 +1,8 @@
 package via.pro3.mainserver.Model;
 
-import registerPatient.grpc.Response;
-import via.pro3.mainserver.DTOs.CreateAppointmentDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.RegisterDto;
+
+import patient.grpc.DBresponse;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.database.DatabaseInterface;
 import via.pro3.mainserver.database.DatabaseSingleton;
 import via.pro3.mainserver.database.EventInterface;
@@ -64,25 +63,49 @@ public class ModelManager implements Model
 
   @Override
   public void registerPatient(RegisterDto registerDto) {
-    Patient patient = new Patient(registerDto.getName(),
-        registerDto.getSurname(),
-        registerDto.getPassword(),
-        registerDto.getCprNo(),
-        registerDto.getPhone(),
-        registerDto.getEmail());
+    Patient patient = new Patient(registerDto.getCprNo(),registerDto.getName(),registerDto.getSurname(),registerDto.getPhone(),registerDto.getEmail(),registerDto.getPassword());
 
-    eventRepository.createUser(patient);
+    try
+    {
+      eventRepository.createUser(patient);
+      System.out.println("manager");
+      DBresponse response = DBresponse.newBuilder()
+          .setConfirmation("Patient registered successfully")
+          .build();
+    }catch (Exception e){
+      throw new RuntimeException("Something went wrong");
+    }
 
-    Response response = Response.newBuilder()
-        .setConfirmation("Patient registered successfully")
-        .build();
   }
 
-  @Override public String loginPatient(LoginDto loginDto)
+  @Override public Patient loginPatient(LoginDto loginDto)
   {
-    System.out.println("HERE");
-    System.out.println(loginDto.getcpr());
-    System.out.println(loginDto.getPassword());
-   return eventRepository.loginUser(loginDto);
+    try
+    {
+      if (eventRepository.loginUser(loginDto)){
+        Patient patient = getPatientByCpr(loginDto.getcpr());
+
+        //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
+
+          return patient;
+       // }else {
+       //   throw new RuntimeException("Invalid login credentials");
+      //  }
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+    return null;
+  }
+
+  @Override
+  public String changeDoctorPassword(ResetPasswordDto resetPasswordDto) {
+    return eventRepository.changePassowrdDoctor(resetPasswordDto);
+  }
+
+  @Override
+  public String loginDoctor(LoginDto loginDto) {
+    return eventRepository.loginDoctor(loginDto);
   }
 }

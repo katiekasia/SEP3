@@ -78,3 +78,4 @@ node_modules/
 /PatientFinal/PatientFinal/obj/Debug
 /MainServer/target/protoc-dependencies
 /MainServer/target/protoc-dependencies
+MainServer/src/main/java/via/pro3/mainserver/database/DatabaseSingleton.java
