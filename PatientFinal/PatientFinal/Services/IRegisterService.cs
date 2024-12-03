@@ -4,5 +4,5 @@ namespace PatientFinal.Services;
 
 public interface IRegisterService
 {
-    public Task<RegisterDto> RegisterPatient(RegisterDto request);
+    public Task<ResponseDto> RegisterPatient(RegisterDto request);
 }

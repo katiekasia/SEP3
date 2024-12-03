@@ -13,7 +13,7 @@ namespace PatientFinal.Services
             this.client = client;
         }
 
-        public async Task<RegisterDto> RegisterPatient(RegisterDto request)
+        public async Task<ResponseDto> RegisterPatient(RegisterDto request)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace PatientFinal.Services
                 if (!httpResponseMessage.IsSuccessStatusCode)
                     throw new ApplicationException(response);
 
-                return JsonSerializer.Deserialize<RegisterDto>(response, new JsonSerializerOptions
+                return JsonSerializer.Deserialize<ResponseDto>(response, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
