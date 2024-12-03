@@ -40,6 +40,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.0</version> <!-- Or latest version -->
+        </dependency>
+
+        <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-server-spring-boot-starter</artifactId>
             <version>3.1.0.RELEASE</version>
