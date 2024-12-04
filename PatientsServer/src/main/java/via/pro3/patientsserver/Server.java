@@ -111,8 +111,8 @@ public class Server {
   @GetMapping("/appointments")
   public ResponseDto getAppointments(@RequestParam String cpr) {
     try {
-      GetAppointmentsRequest request = GetAppointmentsRequest.newBuilder()
-          .setPatientCpr(cpr)
+      PatientRequest request = PatientRequest.newBuilder()
+          .setCpr(cpr)
           .build();
 
       GetAppointmentsResponse response = blockingStub.getAppointmentsByPatientCpr(request);
@@ -143,7 +143,7 @@ public class Server {
       return responseDto;
     } catch (Exception e) {
       e.printStackTrace();
-      throw new RuntimeException("Error fetching appointments", e);
+      throw new RuntimeException("Error fetching appointments: ", e);
     }
   }
     @PostMapping("/update")

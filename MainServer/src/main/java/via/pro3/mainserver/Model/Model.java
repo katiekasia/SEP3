@@ -17,6 +17,8 @@ public interface Model
   String getDoctorByClinicName(String clinicName);
   String updatePatient(UpdatePatientDto updatePatientDto);
 
+  List<Appointment> getDoctorAppointments(String id);
+  Patient getPatientByAppointmentId(int appointmentId);
 
 
 }

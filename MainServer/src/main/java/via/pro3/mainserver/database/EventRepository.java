@@ -275,6 +275,73 @@ public class EventRepository implements EventInterface {
         return appointments;
     }
 
+    @Override public List<Appointment> getAppointmentsByDoctorId(
+        String doctorId)
+    {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = """
+                SELECT\s
+                a.id,\s
+                a.description,\s
+                a.type,\s
+                a.date,\s
+                a.time,\s
+                a.status,
+                p.CPR_number AS cpr,
+                p.first_name AS patient_first_name,
+                p.last_name AS patient_last_name,
+                p.phone_number AS patient_phone,
+                p.email AS patient_email, 
+                c.name AS clinic_name,\s
+                c.street AS clinic_street,\s
+                c.street_number AS clinic_street_number,
+                city.city_name AS clinic_city
+            FROM appointment a
+            INNER JOIN patient p ON a.patient_CPR = p.CPR_number
+            INNER JOIN doctor d ON a.doctor_id = d.id
+            INNER JOIN clinic c ON d.clinic_id = c.id
+            INNER JOIN city ON c.city_PO_code = city.postal_code
+            WHERE a.doctor_id = ?
+            ORDER BY a.date DESC, a.time ASC;
+            """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            System.out.println("DATABASE called");
+
+            statement.setString(1, doctorId);
+    try (ResultSet rs = statement.executeQuery())
+    {
+        System.out.println("DATABASE executed");
+        while (rs.next())
+        {
+            System.out.println("found");
+            Clinic clinic = new Clinic(rs.getString("clinic_name"),
+                rs.getString("clinic_city"), rs.getString("clinic_street"),
+                rs.getString("clinic_street_number"));
+
+            Patient patient = new Patient(rs.getString("cpr"),
+                rs.getString("patient_first_name"),
+                rs.getString("patient_last_name"), rs.getString("patient_phone"),
+                rs.getString("patient_email"),null // password not needed
+            );
+
+            MyDateAndTime dateAndTime = new MyDateAndTime(
+                rs.getDate("date").toLocalDate(),
+                rs.getTime("time").toLocalTime());
+
+            Appointment appointment = new Appointment(rs.getInt("id"), clinic,
+                rs.getString("type"), dateAndTime, rs.getString("description"),
+                rs.getString("status"));
+
+            appointments.add(appointment);
+        }
+    }
+    } catch (SQLException e) {
+        throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
+    }
+        return appointments;
+    }
 
     @Override
     public String getDoctorByClinicName(String clinicName) {
@@ -344,6 +411,33 @@ public class EventRepository implements EventInterface {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
+        }
+    }
+
+    @Override public Patient getPatientByAppointmentId(int appointmentId)
+    {
+        String sql = """
+        SELECT p.CPR_number AS cpr
+        FROM patient p
+        INNER JOIN appointment a ON p.CPR_number = a.patient_CPR
+        WHERE a.id = ?
+        LIMIT 1""";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, appointmentId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("patient success");
+                 return  getPatientByCpr(resultSet.getString("cpr"));
+
+                }
+                throw new RuntimeException("No patient found for appointment: " + appointmentId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch patient : " + e.getMessage(), e);
         }
     }
 }
