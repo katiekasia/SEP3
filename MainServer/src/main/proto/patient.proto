@@ -7,7 +7,7 @@ service Patient {
   rpc createAppointment (CreateAppointment) returns (DBresponse) {}
   rpc loginPatient (PatientRequest) returns (LoginResponse) {}
   rpc registerPatient (RegisterRequest) returns (DBresponse) {}
-  rpc getAppointmentsByPatientCpr(GetAppointmentsRequest) returns (GetAppointmentsResponse) {}
+  rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
 
 }
 message CreateAppointment {
@@ -63,10 +63,6 @@ message AppointmentInfo {
   string clinicStreetNumber = 13;
   string clinicCity = 14;
 }
-
-message GetAppointmentsRequest {
-  string patientCpr = 1;}
-
 message GetAppointmentsResponse {
   repeated AppointmentInfo appointments = 1;
 }

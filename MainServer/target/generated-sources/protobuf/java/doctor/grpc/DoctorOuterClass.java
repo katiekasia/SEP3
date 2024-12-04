@@ -15,6 +15,16 @@ public final class DoctorOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAppointmentsResponseD_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetAppointmentsResponseD_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppointmentInfoD_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AppointmentInfoD_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetDoctorByIdRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -48,20 +58,30 @@ public final class DoctorOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014doctor.proto\"\"\n\024GetDoctorByIdRequest\022\n" +
-      "\n\002id\030\001 \001(\t\"\033\n\013UniResponse\022\014\n\004info\030\001 \001(\t\"" +
-      "T\n\025GetDoctorByIdResponse\022\021\n\tfirstname\030\001 " +
-      "\001(\t\022\020\n\010lastname\030\002 \001(\t\022\026\n\016specialisation\030" +
-      "\003 \001(\t\"8\n\025ChangePasswordRequest\022\n\n\002id\030\001 \001" +
-      "(\t\022\023\n\013newPassword\030\002 \001(\t\"j\n\023LoginDoctorRe" +
-      "sponse\022\014\n\004name\030\001 \001(\t\022\017\n\007surname\030\002 \001(\t\022\026\n" +
-      "\016specialisation\030\003 \001(\t\022\n\n\002id\030\004 \001(\t\022\020\n\010pas" +
-      "sword\030\005 \001(\t2\302\001\n\006Doctor\022<\n\013loginDoctor\022\025." +
-      "GetDoctorByIdRequest\032\024.LoginDoctorRespon",
-      "se\"\000\0228\n\016changePassword\022\026.ChangePasswordR" +
-      "equest\032\014.UniResponse\"\000\022@\n\rgetDoctorById\022" +
-      "\025.GetDoctorByIdRequest\032\026.GetDoctorByIdRe" +
-      "sponse\"\000B\017\n\013doctor.grpcP\001b\006proto3"
+      "\n\014doctor.proto\"C\n\030GetAppointmentsRespons" +
+      "eD\022\'\n\014appointments\030\001 \003(\0132\021.AppointmentIn" +
+      "foD\"\340\001\n\020AppointmentInfoD\022\n\n\002id\030\001 \001(\005\022\023\n\013" +
+      "description\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\014\n\004date\030" +
+      "\004 \001(\t\022\014\n\004time\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\022\n\np" +
+      "atientCpr\030\007 \001(\t\022\030\n\020patientFirstName\030\010 \001(" +
+      "\t\022\027\n\017patientLastName\030\t \001(\t\022\024\n\014patientEma" +
+      "il\030\n \001(\t\022\024\n\014patientPhone\030\013 \001(\t\"\"\n\024GetDoc" +
+      "torByIdRequest\022\n\n\002id\030\001 \001(\t\"\033\n\013UniRespons" +
+      "e\022\014\n\004info\030\001 \001(\t\"T\n\025GetDoctorByIdResponse",
+      "\022\021\n\tfirstname\030\001 \001(\t\022\020\n\010lastname\030\002 \001(\t\022\026\n" +
+      "\016specialisation\030\003 \001(\t\"8\n\025ChangePasswordR" +
+      "equest\022\n\n\002id\030\001 \001(\t\022\023\n\013newPassword\030\002 \001(\t\"" +
+      "j\n\023LoginDoctorResponse\022\014\n\004name\030\001 \001(\t\022\017\n\007" +
+      "surname\030\002 \001(\t\022\026\n\016specialisation\030\003 \001(\t\022\n\n" +
+      "\002id\030\004 \001(\t\022\020\n\010password\030\005 \001(\t2\223\002\n\006Doctor\022<" +
+      "\n\013loginDoctor\022\025.GetDoctorByIdRequest\032\024.L" +
+      "oginDoctorResponse\"\000\0228\n\016changePassword\022\026" +
+      ".ChangePasswordRequest\032\014.UniResponse\"\000\022@" +
+      "\n\rgetDoctorById\022\025.GetDoctorByIdRequest\032\026",
+      ".GetDoctorByIdResponse\"\000\022O\n\031getAppointme" +
+      "ntsByDoctorId\022\025.GetDoctorByIdRequest\032\031.G" +
+      "etAppointmentsResponseD\"\000B\017\n\013doctor.grpc" +
+      "P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -75,32 +95,44 @@ public final class DoctorOuterClass {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_GetDoctorByIdRequest_descriptor =
+    internal_static_GetAppointmentsResponseD_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_GetAppointmentsResponseD_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetAppointmentsResponseD_descriptor,
+        new java.lang.String[] { "Appointments", });
+    internal_static_AppointmentInfoD_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_AppointmentInfoD_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AppointmentInfoD_descriptor,
+        new java.lang.String[] { "Id", "Description", "Type", "Date", "Time", "Status", "PatientCpr", "PatientFirstName", "PatientLastName", "PatientEmail", "PatientPhone", });
+    internal_static_GetDoctorByIdRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_GetDoctorByIdRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetDoctorByIdRequest_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_UniResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_UniResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UniResponse_descriptor,
         new java.lang.String[] { "Info", });
     internal_static_GetDoctorByIdResponse_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_GetDoctorByIdResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetDoctorByIdResponse_descriptor,
         new java.lang.String[] { "Firstname", "Lastname", "Specialisation", });
     internal_static_ChangePasswordRequest_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_ChangePasswordRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChangePasswordRequest_descriptor,
         new java.lang.String[] { "Id", "NewPassword", });
     internal_static_LoginDoctorResponse_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_LoginDoctorResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginDoctorResponse_descriptor,

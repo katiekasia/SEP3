@@ -23,6 +23,8 @@ public interface EventInterface
   boolean loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
-  List<Appointment> getAppointmentsByPatientCpr(String PatientCpr);
+  List<Appointment> getAppointmentsByPatientCpr(String patientCpr);
+  List<Appointment> getAppointmentsByDoctorId(String doctorId);
   String getDoctorByClinicName(String clinicName);
+  Patient getPatientByAppointmentId(int appointmentId);
 }

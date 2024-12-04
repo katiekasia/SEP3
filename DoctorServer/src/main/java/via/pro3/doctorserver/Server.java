@@ -1,14 +1,13 @@
 package via.pro3.doctorserver;
 
 import Auth.PasswordHasher;
-import DTOs.DoctorDto;
-import DTOs.LoginDto;
-import DTOs.ResetPasswordDto;
-import DTOs.ResponseDto;
+import DTOs.*;
 import doctor.grpc.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -116,6 +115,46 @@ public class Server
     {
       e.printStackTrace();
       throw new RuntimeException("Get doctor failed: " + e.getMessage());
+    }
+  }
+
+  @GetMapping("/appointments")
+  public ResponseDto getAppointments(@RequestParam String id){
+    try
+    {
+      System.out.println("request");
+      GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
+          .setId(id)
+          .build();
+
+      GetAppointmentsResponseD response = blockingStub.getAppointmentsByDoctorId(request);
+      List<GetAppointmentsDto> appointmentsDtoList = new ArrayList<>();
+
+      for(AppointmentInfoD info : response.getAppointmentsList()){
+        GetAppointmentsDto dto = new GetAppointmentsDto();
+        dto.setId(info.getId());
+        dto.setDescription(info.getDescription());
+        dto.setType(info.getType());
+        dto.setDate(info.getDate());
+        dto.setTime(info.getTime());
+        dto.setStatus(info.getStatus());
+        dto.setPatientCpr(info.getPatientCpr());
+        dto.setPatientEmail(info.getPatientEmail());
+        dto.setPatientFirstName(info.getPatientFirstName());
+        dto.setPatientLastName(info.getPatientLastName());
+        dto.setPatientPhone(info.getPatientPhone());
+
+        System.out.println(dto.toString());
+        appointmentsDtoList.add(dto);
+      }
+
+      System.out.println("SEENT");
+      ResponseDto responseDto = new ResponseDto();
+      responseDto.setAppointments(appointmentsDtoList);
+      return responseDto;
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException("Error fetching appointments: " + e.getMessage());
     }
   }
 }

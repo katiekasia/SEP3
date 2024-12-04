@@ -152,6 +152,37 @@ public class ModelManager implements Model
   }
   @Override
   public String getDoctorByClinicName(String clinicName) {
-    return eventRepository.getDoctorByClinicName(clinicName);
+    try
+    {
+      return eventRepository.getDoctorByClinicName(clinicName);
+    }catch (Exception e) {
+      throw new RuntimeException("Error retrieving doctor by clinic: " + e.getMessage(), e);
+    }
+  }
+
+  @Override public List<Appointment> getDoctorAppointments(String id)
+  {
+    try
+    {
+      System.out.println("MODEL called");
+      List<Appointment> appointments = eventRepository.getAppointmentsByDoctorId(id);
+      if (appointments == null || appointments.isEmpty()) {
+        return new ArrayList<>();
+      }
+      return appointments;
+    }catch (Exception e) {
+      throw new RuntimeException("Error retrieving doctor appointments: " + e.getMessage(), e);
+    }
+  }
+
+  @Override public Patient getPatientByAppointmentId(int appointmentId)
+  {
+    try
+    {
+      Patient patient = eventRepository.getPatientByAppointmentId(appointmentId);
+      return patient;
+    }catch (Exception e) {
+      throw new RuntimeException("Error retrieving patient : " + e.getMessage(), e);
+    }
   }
 }

@@ -99,9 +99,9 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     }
 
         @Override
-        public void getAppointmentsByPatientCpr(GetAppointmentsRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
+        public void getAppointmentsByPatientCpr(PatientRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
             try {
-                List<Appointment> appointments = model.getPatientAppointments(request.getPatientCpr());
+                List<Appointment> appointments = model.getPatientAppointments(request.getCpr());
                 GetAppointmentsResponse.Builder responseBuilder = GetAppointmentsResponse.newBuilder();
 
                 for (Appointment appointment : appointments) {
