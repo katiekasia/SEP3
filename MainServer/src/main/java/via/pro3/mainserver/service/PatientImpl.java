@@ -8,7 +8,7 @@ import patient.grpc.*;
 import via.pro3.mainserver.DTOs.CreateAppointmentDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.RegisterDto;
-import via.pro3.mainserver.DTOs.UserDto;
+import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.Model.*;
 import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.database.EventRepository;
@@ -137,6 +137,39 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .asRuntimeException());
             }
         }
+
+
+    @Override
+    public void updateUser(UpdateUserRequest request, StreamObserver<DBresponse> responseObserver) {
+        try {
+            UpdatePatientDto updatePatientDto = new UpdatePatientDto(
+                    request.getCPR(),
+                    request.getSurname(),
+                    request.getPhone(),
+                    request.getEmail(),
+                    request.getNewPassword()
+            );
+
+            String result = model.updatePatient(updatePatientDto);
+
+            DBresponse response = DBresponse.newBuilder()
+                    .setConfirmation(result)
+                    .build();
+
+            responseObserver.onNext(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(
+                    Status.INTERNAL
+                            .withDescription(e.getMessage())
+                            .withCause(e)
+                            .asRuntimeException()
+            );
+        } finally {
+            responseObserver.onCompleted();
+        }
     }
+
+}
 
 

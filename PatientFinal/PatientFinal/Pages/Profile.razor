@@ -1,0 +1,96 @@
+﻿    @page "/Profile"
+    @using System.Security.Claims
+    @using PatientFinal.DTOs
+    @using PatientFinal.Services
+    @inject HttpClient Http;
+    @inject ILoginService LoginService;
+    @inject IUpdateService UpdateService;
+    @inject AuthenticationStateProvider AuthProvider;
+
+    <h3>Profile Overview</h3>
+
+    @* <AuthorizeView> *@
+    @*     <NotAuthorized> *@
+    @*         You need to login first *@
+    @*     </NotAuthorized> *@
+    @* *@
+    @*     <Authorized> *@
+            @* <p>CPR: @CPR</p> *@
+
+
+            <input @bind=@lastName>
+            <input @bind=@phoneNumber>
+            <input @bind=@Email>
+            <input @bind="@newPassword">
+            <button @onclick="EditAccount">Edit account</button>
+
+            @if (!string.IsNullOrEmpty(responseMessage))
+            {
+                <p>Server Response: @responseMessage</p>
+            }
+    @*     </Authorized> *@
+    @* </AuthorizeView> *@
+
+    @code {
+        private string CPR;
+        private string firstName;
+        private string lastName;
+        private string Email;
+        private string phoneNumber;
+        private string newPassword;
+        private string responseMessage;
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var authState = await AuthProvider.GetAuthenticationStateAsync();
+                var user = authState.User;
+        
+                // CPR = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                CPR = "1234567890";
+                
+
+                // if (!string.IsNullOrEmpty(CPR))
+                // {
+                //     var patient = await LoginService.getUser(CPR);
+                //
+                // }
+            }
+            catch (Exception e)
+            {
+                responseMessage = $"Failed: {e.Message}";
+            }
+        }
+        private async Task EditAccount()
+        {
+            if (string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phoneNumber)|| string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(newPassword))
+            {
+                responseMessage = "Fields cannot be emtpy";
+                return;
+            }
+
+            try
+            {
+                var updatePatient = new UpdatePatientDto()
+                {
+                    cpr = CPR,
+                    surname = lastName,
+                    phone = phoneNumber,
+                    email = Email,
+                    newPassword = newPassword
+
+                };
+
+                Console.WriteLine(updatePatient.newPassword);
+
+                var response = await UpdateService.UpdatePatient(updatePatient);
+        
+
+            }
+            catch (Exception e)
+            {
+                responseMessage = $"Changing password failed: {e.Message}";
+            }
+        }
+    }

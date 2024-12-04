@@ -2,6 +2,11 @@ package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
+import via.pro3.mainserver.DTOs.UpdatePatientDto;
+import via.pro3.mainserver.Model.Appointment;
+import via.pro3.mainserver.Model.Clinic;
+import via.pro3.mainserver.Model.Doctor;
+import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.Model.*;
 
 import java.sql.*;
@@ -84,8 +89,7 @@ public class EventRepository implements EventInterface {
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                             resultSet.getString("password"),
-                            //resultSet.getString("email"),
-                        "ss",
+                            resultSet.getString("clinic_id"),
                             resultSet.getString("specialisation"),
                             getClinicByDoctorId(doctorId)
                     );
@@ -183,13 +187,11 @@ public class EventRepository implements EventInterface {
     @Override
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
-        System.out.println(request.getCurrentPassword());
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
+        String sql = "UPDATE doctor SET password = ? id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
-            statement.setString(2, request.getCurrentPassword());
-            statement.setString(3, request.getId());
+            statement.setString(2, request.getId());
             statement.executeUpdate();
             System.out.println("Exectued");
             return "PasswordChanged";
@@ -361,6 +363,26 @@ public class EventRepository implements EventInterface {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor ID: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public String updateUser(UpdatePatientDto request) {
+        String updateSql = "UPDATE patient SET last_name = ?, phone_number = ?, email = ?, password = ? WHERE CPR_number = ?";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
+
+            updateStmt.setString(1, request.getSurname());
+            updateStmt.setString(2, request.getPhone());
+            updateStmt.setString(3, request.getEmail());
+            updateStmt.setString(4, request.getNewPassword());
+            updateStmt.setString(5, request.getCPR());
+
+            int rowsAffected = updateStmt.executeUpdate();
+            return rowsAffected > 0 ? "User details updated successfully!" : "Failed to update user details!";
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
         }
     }
 
