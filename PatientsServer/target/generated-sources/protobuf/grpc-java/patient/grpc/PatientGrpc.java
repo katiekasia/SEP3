@@ -75,6 +75,18 @@ public final class PatientGrpc {
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               patient.grpc.GetAppointmentsResponse.getDefaultInstance()))
           .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<patient.grpc.UpdateUserRequest,
+      patient.grpc.DBresponse> METHOD_UPDATE_USER =
+      io.grpc.MethodDescriptor.<patient.grpc.UpdateUserRequest, patient.grpc.DBresponse>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "Patient", "updateUser"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              patient.grpc.UpdateUserRequest.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              patient.grpc.DBresponse.getDefaultInstance()))
+          .build();
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -126,6 +138,13 @@ public final class PatientGrpc {
 
     /**
      */
+    public void updateUser(patient.grpc.UpdateUserRequest request,
+        io.grpc.stub.StreamObserver<patient.grpc.DBresponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_UPDATE_USER, responseObserver);
+    }
+
+    /**
+     */
     public void getAppointmentsByPatientCpr(patient.grpc.GetAppointmentsRequest request,
         io.grpc.stub.StreamObserver<patient.grpc.GetAppointmentsResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, responseObserver);
@@ -161,6 +180,13 @@ public final class PatientGrpc {
                 patient.grpc.GetAppointmentsRequest,
                 patient.grpc.GetAppointmentsResponse>(
                   this, METHODID_GET_APPOINTMENTS_BY_PATIENT_CPR)))
+          .addMethod(
+            METHOD_UPDATE_USER,
+            asyncUnaryCall(
+              new MethodHandlers<
+                patient.grpc.UpdateUserRequest,
+                patient.grpc.DBresponse>(
+                  this, METHODID_UPDATE_USER)))
           .build();
     }
   }
@@ -214,6 +240,14 @@ public final class PatientGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void updateUser(patient.grpc.UpdateUserRequest request,
+        io.grpc.stub.StreamObserver<patient.grpc.DBresponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_USER, getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -260,6 +294,13 @@ public final class PatientGrpc {
     public patient.grpc.GetAppointmentsResponse getAppointmentsByPatientCpr(patient.grpc.GetAppointmentsRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public patient.grpc.DBresponse updateUser(patient.grpc.UpdateUserRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_UPDATE_USER, getCallOptions(), request);
     }
   }
 
@@ -312,12 +353,21 @@ public final class PatientGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<patient.grpc.DBresponse> updateUser(
+        patient.grpc.UpdateUserRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_USER, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_CREATE_APPOINTMENT = 0;
   private static final int METHODID_LOGIN_PATIENT = 1;
   private static final int METHODID_REGISTER_PATIENT = 2;
   private static final int METHODID_GET_APPOINTMENTS_BY_PATIENT_CPR = 3;
+  private static final int METHODID_UPDATE_USER = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -351,6 +401,10 @@ public final class PatientGrpc {
         case METHODID_GET_APPOINTMENTS_BY_PATIENT_CPR:
           serviceImpl.getAppointmentsByPatientCpr((patient.grpc.GetAppointmentsRequest) request,
               (io.grpc.stub.StreamObserver<patient.grpc.GetAppointmentsResponse>) responseObserver);
+          break;
+        case METHODID_UPDATE_USER:
+          serviceImpl.updateUser((patient.grpc.UpdateUserRequest) request,
+              (io.grpc.stub.StreamObserver<patient.grpc.DBresponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -389,6 +443,7 @@ public final class PatientGrpc {
               .addMethod(METHOD_LOGIN_PATIENT)
               .addMethod(METHOD_REGISTER_PATIENT)
               .addMethod(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR)
+              .addMethod(METHOD_UPDATE_USER)
               .build();
         }
       }

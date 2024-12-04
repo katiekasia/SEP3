@@ -78,10 +78,9 @@ public class ModelManager implements Model
       eventRepository.createUser(patient);
       System.out.println("manager");
       DBresponse response = DBresponse.newBuilder()
-          .setConfirmation("Patient registered successfully").build();
-    }
-    catch (Exception e)
-    {
+          .setConfirmation("Patient registered successfully")
+          .build();
+    }catch (Exception e){
       throw new RuntimeException("Something went wrong");
     }
 
