@@ -2,6 +2,8 @@ package via.pro3.mainserver.Model;
 
 import via.pro3.mainserver.DTOs.*;
 
+import java.util.List;
+
 public interface Model
 {
    String createAppointment(CreateAppointmentDto createAppointmentDto);
@@ -11,6 +13,8 @@ public interface Model
   Doctor loginDoctor(LoginDto loginDto);
   Patient loginPatient(LoginDto loginDto);
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
+  List<Appointment> getPatientAppointments(String cpr);
+  String getDoctorByClinicName(String clinicName);
 
 
 }
