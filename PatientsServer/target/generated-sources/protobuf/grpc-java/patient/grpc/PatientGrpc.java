@@ -138,16 +138,16 @@ public final class PatientGrpc {
 
     /**
      */
-    public void updateUser(patient.grpc.UpdateUserRequest request,
-        io.grpc.stub.StreamObserver<patient.grpc.DBresponse> responseObserver) {
-      asyncUnimplementedUnaryCall(METHOD_UPDATE_USER, responseObserver);
+    public void getAppointmentsByPatientCpr(patient.grpc.GetAppointmentsRequest request,
+        io.grpc.stub.StreamObserver<patient.grpc.GetAppointmentsResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, responseObserver);
     }
 
     /**
      */
-    public void getAppointmentsByPatientCpr(patient.grpc.GetAppointmentsRequest request,
-        io.grpc.stub.StreamObserver<patient.grpc.GetAppointmentsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(METHOD_GET_APPOINTMENTS_BY_PATIENT_CPR, responseObserver);
+    public void updateUser(patient.grpc.UpdateUserRequest request,
+        io.grpc.stub.StreamObserver<patient.grpc.DBresponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_UPDATE_USER, responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -367,7 +367,7 @@ public final class PatientGrpc {
   private static final int METHODID_LOGIN_PATIENT = 1;
   private static final int METHODID_REGISTER_PATIENT = 2;
   private static final int METHODID_GET_APPOINTMENTS_BY_PATIENT_CPR = 3;
-  private static final int METHODID_UPDATE_USER = 3;
+  private static final int METHODID_UPDATE_USER = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,

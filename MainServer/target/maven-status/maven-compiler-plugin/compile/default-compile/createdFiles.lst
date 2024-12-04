@@ -4,6 +4,7 @@ patient\grpc\RegisterRequest.class
 doctor\grpc\ChangePasswordRequest$Builder.class
 via\pro3\mainserver\DTOs\ResetPasswordDto.class
 via\pro3\mainserver\Model\ModelManager.class
+patient\grpc\UpdateUserRequest$1.class
 patient\grpc\GetAppointmentsRequest$Builder.class
 patient\grpc\CreateAppointment.class
 doctor\grpc\DoctorGrpc$DoctorDescriptorSupplier.class
@@ -21,11 +22,9 @@ via\pro3\mainserver\Model\ActiveAppointment.class
 via\pro3\mainserver\database\EventRepository.class
 patient\grpc\PatientGrpc$PatientDescriptorSupplier.class
 doctor\grpc\DoctorOuterClass$1.class
-doctor\grpc\LoginDoctorRequest$Builder.class
 doctor\grpc\ChangePasswordRequest$1.class
 doctor\grpc\GetDoctorByIdResponse$1.class
 via\pro3\mainserver\database\EventRepositoryTest.class
-doctor\grpc\LoginDoctorRequestOrBuilder.class
 patient\grpc\GetAppointmentsResponseOrBuilder.class
 patient\grpc\CreateAppointmentOrBuilder.class
 via\pro3\mainserver\Model\ExpiredAppointment.class
@@ -45,8 +44,11 @@ doctor\grpc\ChangePasswordRequestOrBuilder.class
 via\pro3\mainserver\DTOs\UserDto.class
 patient\grpc\CreateAppointment$1.class
 patient\grpc\PatientGrpc$PatientImplBase.class
+doctor\grpc\UniResponseOrBuilder.class
+patient\grpc\UpdateUserRequest$Builder.class
 doctor\grpc\DoctorGrpc$DoctorImplBase.class
 patient\grpc\AppointmentInfo.class
+patient\grpc\UpdateUserRequest.class
 patient\grpc\PatientGrpc$PatientStub.class
 doctor\grpc\DoctorGrpc$DoctorFutureStub.class
 patient\grpc\DBresponse$Builder.class
@@ -60,7 +62,6 @@ doctor\grpc\DoctorGrpc$DoctorStub.class
 patient\grpc\DBresponseOrBuilder.class
 patient\grpc\RegisterRequest$Builder.class
 doctor\grpc\DoctorOuterClass.class
-doctor\grpc\LoginDoctorRequest.class
 via\pro3\mainserver\Model\Prescription.class
 patient\grpc\LoginResponseOrBuilder.class
 patient\grpc\RegisterRequest$1.class
@@ -74,9 +75,10 @@ patient\grpc\GetAppointmentsResponse$1.class
 via\pro3\mainserver\Model\GeneratorInterface.class
 doctor\grpc\LoginDoctorResponse$Builder.class
 patient\grpc\RegisterRequestOrBuilder.class
+doctor\grpc\UniResponse.class
 patient\grpc\PatientRequestOrBuilder.class
-doctor\grpc\LoginDoctorRequest$1.class
 via\pro3\mainserver\DTOs\GetAppointmentsDto.class
+via\pro3\mainserver\DTOs\UpdatePatientDto.class
 patient\grpc\AppointmentInfoOrBuilder.class
 doctor\grpc\ChangePasswordRequest.class
 patient\grpc\PatientOuterClass.class
@@ -86,6 +88,7 @@ via\pro3\mainserver\database\EventInterface.class
 via\pro3\mainserver\Model\CancelledAppointment.class
 patient\grpc\PatientRequest$1.class
 via\pro3\mainserver\database\DatabaseInterface.class
+patient\grpc\UpdateUserRequestOrBuilder.class
 doctor\grpc\DoctorGrpc.class
 doctor\grpc\GetDoctorByIdRequest$1.class
 via\pro3\mainserver\DTOs\CreateAppointmentDto.class
@@ -94,8 +97,10 @@ via\pro3\mainserver\DTOs\RegisterDto.class
 doctor\grpc\DoctorGrpc$MethodHandlers.class
 via\pro3\mainserver\Model\Model.class
 doctor\grpc\GetDoctorByIdRequest.class
+doctor\grpc\UniResponse$1.class
 doctor\grpc\LoginDoctorResponse$1.class
 patient\grpc\LoginResponse$Builder.class
 via\pro3\mainserver\service\PatientImplTest$1.class
+doctor\grpc\UniResponse$Builder.class
 patient\grpc\LoginResponse$1.class
 patient\grpc\PatientGrpc$MethodHandlers.class

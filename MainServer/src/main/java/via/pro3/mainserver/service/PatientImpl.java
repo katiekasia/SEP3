@@ -137,7 +137,7 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .asRuntimeException());
             }
         }
-    }
+
 
     @Override
     public void updateUser(UpdateUserRequest request, StreamObserver<DBresponse> responseObserver) {

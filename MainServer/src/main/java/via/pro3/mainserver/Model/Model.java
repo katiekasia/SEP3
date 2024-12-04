@@ -15,6 +15,8 @@ public interface Model
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
   List<Appointment> getPatientAppointments(String cpr);
   String getDoctorByClinicName(String clinicName);
+  String updatePatient(UpdatePatientDto updatePatientDto);
+
 
 
 }

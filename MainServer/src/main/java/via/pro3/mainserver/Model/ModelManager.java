@@ -153,4 +153,10 @@ public class ModelManager implements Model
   public String getDoctorByClinicName(String clinicName) {
     return eventRepository.getDoctorByClinicName(clinicName);
   }
+  @Override
+  public String updatePatient(UpdatePatientDto updatePatientDto)
+  {
+    return eventRepository.updateUser(updatePatientDto);
+  }
+
 }
