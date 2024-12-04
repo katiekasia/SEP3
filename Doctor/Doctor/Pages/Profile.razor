@@ -18,8 +18,8 @@
         <p>Last name: @lastName</p>
         <p>Specialisation: @specialisation</p>
 
-        <input @bind="@currentPassword"></input>
-        <input @bind="@newPassword"></input>
+        <input @bind="@currentPassword">
+        <input @bind="@newPassword">
         <button @onclick="ChangePassword">Change password</button>
 
         @if (!string.IsNullOrEmpty(responseMessage))
@@ -83,7 +83,6 @@
 
             var response = await LoginService
                 .ResetPasswordServiceMethod(changePasswordDto);
-            
         }
         catch (Exception e)
         {

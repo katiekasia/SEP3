@@ -2,6 +2,7 @@ package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
+import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -196,6 +197,52 @@ public class EventRepository implements EventInterface {
             return "PasswordChanged";
         } catch (SQLException e) {
             throw new RuntimeException("Failed to change doctor password: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public String updateUser(UpdatePatientDto request) {
+        System.out.println(request.getCPR());
+        System.out.println(request.getSurname());
+        System.out.println(request.getPhone());
+        System.out.println(request.getEmail());
+        System.out.println(request.getOldPassword());
+        System.out.println(request.getNewPassword());
+
+        String validatePasswordSql = "SELECT password FROM patient WHERE CPR_number = ?";
+
+        String updateSql = "UPDATE patient SET last_name = ?, phone_number = ?, email = ?, password = ? WHERE CPR_number = ?";
+
+        try (PreparedStatement validateStmt = database.getConnection().prepareStatement(validatePasswordSql)) {
+            validateStmt.setString(1, request.getCPR());
+            ResultSet rs = validateStmt.executeQuery();
+
+            if (rs.next()) {
+                String currentPassword = rs.getString("password");
+                if (!currentPassword.equals(request.getOldPassword())) {
+                    return "Old password does not match!";
+                }
+            } else {
+                return "User not found!";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error validating old password: " + e.getMessage(), e);
+        }
+        try (PreparedStatement updateStmt = database.getConnection().prepareStatement(updateSql)) {
+            updateStmt.setString(1, request.getSurname());
+            updateStmt.setString(2, request.getPhone());
+            updateStmt.setString(3, request.getEmail());
+            updateStmt.setString(4, request.getNewPassword());
+            updateStmt.setString(5, request.getCPR());
+
+            int rowsAffected = updateStmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return "User details updated successfully!";
+            } else {
+                return "Failed to update user details!";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
         }
     }
 }

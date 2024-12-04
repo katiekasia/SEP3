@@ -104,6 +104,11 @@ public class ModelManager implements Model
     return eventRepository.changePassowrdDoctor(resetPasswordDto);
   }
 
+  public String updatePatient(UpdatePatientDto updatePatientDto)
+  {
+    return eventRepository.updateUser(updatePatientDto);
+  }
+
   @Override
   public String loginDoctor(LoginDto loginDto) {
     return eventRepository.loginDoctor(loginDto);

@@ -8,68 +8,78 @@
 <PageTitle>Book Appointment</PageTitle>
 <h3>Book an Appointment</h3>
 
-@if (!showConfirmation)
-{
-    <div id="appointment-form" class="form-container">
-        <div class="form-group">
-            <label for="location">Choose a location:</label>
-            <select id="location" class="dropdown" @onchange="HandleLocationChange">
-                <option value="">Select a location</option>
-                @foreach (var location in locations)
-                {
-                    <option value="@location.Detail">@location.Name</option>
-                }
-            </select>
-        </div>
+<AuthorizeView>
+    <NotAuthorized>
+        Please log in with your patient credentials
+    </NotAuthorized>
+    <Authorized>
+        @if (!showConfirmation)
+        {
+            <div id="appointment-form" class="form-container">
+                <div class="form-group">
+                    <label for="location">Choose a location:</label>
+                    <select id="location" class="dropdown" @onchange="HandleLocationChange">
+                        <option value="">Select a location</option>
+                        @foreach (var location in locations)
+                        {
+                            <option value="@location.Detail">@location.Name</option>
+                        }
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label for="specialization">Choose a type of visit:</label>
-            <select id="specialization" class="dropdown" @onchange="HandleSpecializationChange">
-                <option value="">Select a specialization</option>
-                @foreach (var type in types)
-                {
-                    <option value="@type">@type</option>
-                }
-            </select>
-        </div>
+                <div class="form-group">
+                    <label for="specialization">Choose a type of visit:</label>
+                    <select id="specialization" class="dropdown" @onchange="HandleSpecializationChange">
+                        <option value="">Select a specialization</option>
+                        @foreach (var type in types)
+                        {
+                            <option value="@type">@type</option>
+                        }
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label for="description">Describe your symptoms:</label>
-            <textarea id="description" class="textarea" rows="5" @bind="writtenDescription"></textarea>
-        </div>
+                <div class="form-group">
+                    <label for="description">Describe your symptoms:</label>
+                    <textarea id="description" class="textarea" rows="5" @bind="writtenDescription"></textarea>
+                </div>
 
-        <div class="form-group">
-            <label for="date">Select Date:</label>
-            <input type="date" id="date" class="input" @bind="selectedDate" />
-        </div>
+                <div class="form-group">
+                    <label for="date">Select Date:</label>
+                    <input type="date" id="date" class="input" @bind="selectedDate" />
+                </div>
 
-        <div class="form-group">
-            <label for="time">Select Time:</label>
-            <input type="time" id="time" class="input" step="900" @bind="selectedTime" />
-        </div>
+                <div class="form-group">
+                    <label for="time">Select Time:</label>
+                    <input type="time" id="time" class="input" step="900" @bind="selectedTime" />
+                </div>
 
-        <button class="btn-confirm" @onclick="ConfirmDetails">Confirm Details</button>
-    </div>
-}
+                <button class="btn-confirm" @onclick="ConfirmDetails">Confirm Details</button>
+            </div>
+        }
 
-@if (showConfirmation)
-{
-    <div id="confirmation-review" class="confirmation-container">
-        <h4>Review and Confirm Your Appointment</h4>
-        <p><strong>Location:</strong> @selectedLocation</p>
-        <p><strong>Specialization:</strong> @selectedTypes</p>
-        <p><strong>Description:</strong> @writtenDescription</p>
-        <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
-        <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
+        @if (showConfirmation)
+        {
+            <div id="confirmation-review" class="confirmation-container">
+                <h4>Review and Confirm Your Appointment</h4>
+                <p><strong>Location:</strong> @selectedLocation</p>
+                <p><strong>Specialization:</strong> @selectedTypes</p>
+                <p><strong>Description:</strong> @writtenDescription</p>
+                <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
+                <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
 
-        <button class="btn-book" @onclick="CreateAppointment">Book</button>
-    </div>
-}
+                <button class="btn-book" @onclick="CreateAppointment">Book</button>
+            </div>
+        }
 
-@if (!string.IsNullOrEmpty(serverResponse))
-{
-    <div id="server-response" class="response-container">@serverResponse</div>
-}
+        @if (!string.IsNullOrEmpty(serverResponse))
+        {
+            <div id="server-response" class="response-container">@serverResponse</div>
+        }
+    </Authorized>
+</AuthorizeView>
+
+
+
 
 @code {
     private List<(string Name, string Detail)> locations = new()

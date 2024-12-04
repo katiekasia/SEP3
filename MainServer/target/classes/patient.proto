@@ -7,6 +7,7 @@ service Patient {
   rpc createAppointment (CreateAppointment) returns (DBresponse) {}
   rpc loginPatient (PatientRequest) returns (LoginResponse) {}
   rpc registerPatient (RegisterRequest) returns (DBresponse) {}
+  rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
 
 }
 message CreateAppointment {
@@ -44,4 +45,14 @@ message LoginResponse {
   string phone = 4;
   string cpr = 5;
   string password = 6;
+}
+
+message UpdateUserRequest
+{
+  string CPR = 1;
+  string surname = 2;
+  string phone = 3;
+  string email = 4;
+  string oldPassword = 5;
+  string newPassword = 6;
 }

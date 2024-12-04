@@ -11,6 +11,7 @@ public interface Model
   String loginDoctor(LoginDto loginDto);
   Patient loginPatient(LoginDto loginDto);
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
+  String updatePatient(UpdatePatientDto updatePatientDto);
 
 
 }

@@ -106,4 +106,40 @@ public class Server {
           throw new RuntimeException("Error logging in", e);
         }
     }
+
+    @PostMapping("/update")
+    public ResponseDto updatePatient(@RequestBody UpdatePatientDto updatePatientDto) {
+        try {
+            System.out.println("CPR: " + updatePatientDto.getCPR());
+            System.out.println("Surname: " + updatePatientDto.getSurname());
+            System.out.println("Phone: " + updatePatientDto.getPhone());
+            System.out.println("Email: " + updatePatientDto.getEmail());
+            System.out.println("Old Password: " + updatePatientDto.getOldPassword());
+            System.out.println("New Password: " + updatePatientDto.getNewPassword());
+
+            UpdateUserRequest request = UpdateUserRequest.newBuilder()
+                    .setCPR(updatePatientDto.getCPR())
+                    .setSurname(updatePatientDto.getSurname())
+                    .setPhone(updatePatientDto.getPhone())
+                    .setEmail(updatePatientDto.getEmail())
+                    .setOldPassword(updatePatientDto.getOldPassword())
+                    .setNewPassword(updatePatientDto.getNewPassword())
+                    .build();
+
+            DBresponse response = blockingStub.updateUser(request);
+
+            if (response.getConfirmation() == null || response.getConfirmation().isEmpty()) {
+                throw new RuntimeException("Patient update failed: " + response.getConfirmation());
+            }
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getConfirmation());
+            return responseDto;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error updating patient details", e);
+        }
+
+    }
 }
