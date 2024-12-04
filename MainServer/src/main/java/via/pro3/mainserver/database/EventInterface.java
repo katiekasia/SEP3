@@ -10,6 +10,7 @@ import via.pro3.mainserver.Model.Patient;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface EventInterface
 {
@@ -22,4 +23,6 @@ public interface EventInterface
   String loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
+  List<Appointment> getAppointmentsByPatientCpr(String PatientCpr);
+  String getDoctorByClinicName(String clinicName);
 }
