@@ -147,7 +147,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     request.getSurname(),
                     request.getPhone(),
                     request.getEmail(),
-                    request.getOldPassword(),
                     request.getNewPassword()
             );
 

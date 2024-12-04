@@ -21,7 +21,6 @@
             <input @bind=@lastName>
             <input @bind=@phoneNumber>
             <input @bind=@Email>
-            <input @bind="@oldPassword">
             <input @bind="@newPassword">
             <button @onclick="EditAccount">Edit account</button>
 
@@ -39,7 +38,6 @@
         private string Email;
         private string phoneNumber;
         private string newPassword;
-        private string oldPassword;
         private string responseMessage;
 
         protected override async Task OnInitializedAsync()
@@ -66,7 +64,7 @@
         }
         private async Task EditAccount()
         {
-            if (string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phoneNumber)|| string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(oldPassword)|| string.IsNullOrEmpty(newPassword))
+            if (string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phoneNumber)|| string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(newPassword))
             {
                 responseMessage = "Fields cannot be emtpy";
                 return;
@@ -80,7 +78,6 @@
                     surname = lastName,
                     phone = phoneNumber,
                     email = Email,
-                    oldPassword = oldPassword,
                     newPassword = newPassword
 
                 };

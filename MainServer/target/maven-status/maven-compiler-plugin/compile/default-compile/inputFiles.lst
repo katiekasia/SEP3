@@ -9,6 +9,7 @@ C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\LoginDto.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\RegisterDto.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\ResetPasswordDto.java
+C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\UpdatePatientDto.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\UserDto.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\MainServer.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\MainServerApplication.java
@@ -60,3 +61,5 @@ C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf
 C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf\java\patient\grpc\PatientRequestOrBuilder.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf\java\patient\grpc\RegisterRequest.java
 C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf\java\patient\grpc\RegisterRequestOrBuilder.java
+C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf\java\patient\grpc\UpdateUserRequest.java
+C:\Users\user\Documents\GitHub\SEP3\MainServer\target\generated-sources\protobuf\java\patient\grpc\UpdateUserRequestOrBuilder.java

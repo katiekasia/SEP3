@@ -153,7 +153,6 @@ public class Server {
             System.out.println("Surname: " + updatePatientDto.getSurname());
             System.out.println("Phone: " + updatePatientDto.getPhone());
             System.out.println("Email: " + updatePatientDto.getEmail());
-            System.out.println("Old Password: " + updatePatientDto.getOldPassword());
             System.out.println("New Password: " + updatePatientDto.getNewPassword());
 
             UpdateUserRequest request = UpdateUserRequest.newBuilder()
@@ -161,7 +160,6 @@ public class Server {
                     .setSurname(updatePatientDto.getSurname())
                     .setPhone(updatePatientDto.getPhone())
                     .setEmail(updatePatientDto.getEmail())
-                    .setOldPassword(updatePatientDto.getOldPassword())
                     .setNewPassword(updatePatientDto.getNewPassword())
                     .build();
 

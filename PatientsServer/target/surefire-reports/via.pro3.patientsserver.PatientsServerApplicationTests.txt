@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: via.pro3.patientsserver.PatientsServerApplicationTests
 -------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.545 s -- in via.pro3.patientsserver.PatientsServerApplicationTests
-=======
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.174 s -- in via.pro3.patientsserver.PatientsServerApplicationTests
->>>>>>> michał
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.309 s -- in via.pro3.patientsserver.PatientsServerApplicationTests

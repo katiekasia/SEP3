@@ -187,13 +187,11 @@ public class EventRepository implements EventInterface {
     @Override
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
-        System.out.println(request.getCurrentPassword());
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
+        String sql = "UPDATE doctor SET password = ? id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
-            statement.setString(2, request.getCurrentPassword());
-            statement.setString(3, request.getId());
+            statement.setString(2, request.getId());
             statement.executeUpdate();
             System.out.println("Exectued");
             return "PasswordChanged";
@@ -370,33 +368,11 @@ public class EventRepository implements EventInterface {
 
     @Override
     public String updateUser(UpdatePatientDto request) {
-        System.out.println(request.getCPR());
-        System.out.println(request.getSurname());
-        System.out.println(request.getPhone());
-        System.out.println(request.getEmail());
-        System.out.println(request.getOldPassword());
-        System.out.println(request.getNewPassword());
-
-        String validatePasswordSql = "SELECT password FROM patient WHERE CPR_number = ?";
-
         String updateSql = "UPDATE patient SET last_name = ?, phone_number = ?, email = ?, password = ? WHERE CPR_number = ?";
 
-        try (PreparedStatement validateStmt = database.getConnection().prepareStatement(validatePasswordSql)) {
-            validateStmt.setString(1, request.getCPR());
-            ResultSet rs = validateStmt.executeQuery();
+        try (Connection connection = database.getConnection();
+            PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
 
-            if (rs.next()) {
-                String currentPassword = rs.getString("password");
-                if (!currentPassword.equals(request.getOldPassword())) {
-                    return "Old password does not match!";
-                }
-            } else {
-                return "User not found!";
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error validating old password: " + e.getMessage(), e);
-        }
-        try (PreparedStatement updateStmt = database.getConnection().prepareStatement(updateSql)) {
             updateStmt.setString(1, request.getSurname());
             updateStmt.setString(2, request.getPhone());
             updateStmt.setString(3, request.getEmail());
@@ -404,11 +380,7 @@ public class EventRepository implements EventInterface {
             updateStmt.setString(5, request.getCPR());
 
             int rowsAffected = updateStmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return "User details updated successfully!";
-            } else {
-                return "Failed to update user details!";
-            }
+            return rowsAffected > 0 ? "User details updated successfully!" : "Failed to update user details!";
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
         }
