@@ -1,6 +1,7 @@
 package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
+import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
@@ -27,4 +28,5 @@ public interface EventInterface
   List<Appointment> getAppointmentsByDoctorId(String doctorId);
   String getDoctorByClinicName(String clinicName);
   Patient getPatientByAppointmentId(int appointmentId);
+  String updateUser(UpdatePatientDto request);
 }

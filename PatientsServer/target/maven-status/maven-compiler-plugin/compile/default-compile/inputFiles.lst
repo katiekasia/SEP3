@@ -4,6 +4,7 @@ C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\GetAppoint
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\LoginDto.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\RegisterDto.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\ResponseDto.java
+C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UpdatePatientDto.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UserDto.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\via\pro3\patientsserver\PatientsServerApplication.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\src\main\java\via\pro3\patientsserver\Server.java
@@ -23,3 +24,5 @@ C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\prot
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\PatientRequestOrBuilder.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\RegisterRequest.java
 C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\RegisterRequestOrBuilder.java
+C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\UpdateUserRequest.java
+C:\Users\user\Documents\GitHub\SEP3\PatientsServer\target\generated-sources\protobuf\java\patient\grpc\UpdateUserRequestOrBuilder.java
