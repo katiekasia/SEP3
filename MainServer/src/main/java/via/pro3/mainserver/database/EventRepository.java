@@ -183,13 +183,12 @@ public class EventRepository implements EventInterface {
     @Override
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
-        System.out.println(request.getCurrentPassword());
+
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
+        String sql = "UPDATE doctor SET password = ? WHERE  id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
-            statement.setString(2, request.getCurrentPassword());
-            statement.setString(3, request.getId());
+            statement.setString(2, request.getId());
             statement.executeUpdate();
             System.out.println("Exectued");
             return "PasswordChanged";
