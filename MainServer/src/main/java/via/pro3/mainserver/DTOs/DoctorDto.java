@@ -1,21 +1,23 @@
 package via.pro3.mainserver.DTOs;
 
 public class DoctorDto {
-    public String firstname;
-    public String lastname;
+    public String id;
+    public String name;
+    public String surname;
     public String specialisation;
-    public DoctorDto(String firstname, String lastname, String specialisation) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public DoctorDto(String firstname, String lastname, String specialisation, String id) {
+        this.name = firstname;
+        this.surname = lastname;
         this.specialisation = specialisation;
+        this.id = id;
     }
 
     public String getFirstname() {
-        return firstname;
+        return name;
     }
 
     public String getLastname() {
-        return lastname;
+        return surname;
     }
 
     public String getSpecialisation() {
@@ -23,11 +25,11 @@ public class DoctorDto {
     }
 
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+        this.name = firstname;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.surname = lastname;
     }
     public void setSpecialisation(String specialisation) {
         this.specialisation = specialisation;

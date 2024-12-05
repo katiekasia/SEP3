@@ -7,8 +7,11 @@ import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
+import via.pro3.mainserver.Model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventRepository implements EventInterface {
     private final DatabaseInterface database;
@@ -165,17 +168,16 @@ public class EventRepository implements EventInterface {
     }
 
     @Override
-    public String loginDoctor(LoginDto request) {
-        String sql = "SELECT * FROM doctor WHERE id = ? AND password =?";
+    public boolean loginDoctor(LoginDto request) {
+        String sql = "SELECT * FROM doctor WHERE id = ?";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, request.getcpr());
-            statement.setString(2, request.getPassword());
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next() ? "LoggedIn" : "Nope";
+                return resultSet.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor from SQL: " + e.getMessage(), e);
@@ -185,13 +187,11 @@ public class EventRepository implements EventInterface {
     @Override
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
-        System.out.println(request.getCurrentPassword());
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
+        String sql = "UPDATE doctor SET password = ? id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
-            statement.setString(2, request.getCurrentPassword());
-            statement.setString(3, request.getId());
+            statement.setString(2, request.getId());
             statement.executeUpdate();
             System.out.println("Exectued");
             return "PasswordChanged";
@@ -199,36 +199,180 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Failed to change doctor password: " + e.getMessage(), e);
         }
     }
+    @Override
+    public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = """
+        SELECT 
+            a.id, 
+            a.description, 
+            a.type, 
+            a.date, 
+            a.time, 
+            a.status,
+            d.id AS doctor_id,
+            d.first_name AS doctor_first_name,
+            d.last_name AS doctor_last_name,
+            d.specialisation AS doctor_specialisation,
+            c.name AS clinic_name, 
+            c.street AS clinic_street, 
+            c.street_number AS clinic_street_number,
+            city.city_name AS clinic_city
+        FROM appointment a
+        INNER JOIN doctor d ON a.doctor_id = d.id
+        INNER JOIN clinic c ON d.clinic_id = c.id
+        INNER JOIN city ON c.city_PO_code = city.postal_code
+        WHERE a.patient_CPR = ?
+        ORDER BY a.date DESC, a.time ASC
+    """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, patientCpr);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Clinic clinic = new Clinic(
+                        rs.getString("clinic_name"),
+                        rs.getString("clinic_city"),
+                        rs.getString("clinic_street"),
+                        rs.getString("clinic_street_number")
+                    );
+
+                    Doctor doctor = new Doctor(
+                        rs.getString("doctor_id"),
+                        rs.getString("doctor_first_name"),
+                        rs.getString("doctor_last_name"),
+                        null, // password not needed
+                        null, // email not needed
+                        rs.getString("doctor_specialisation"),
+                        clinic
+                    );
+
+                    MyDateAndTime dateAndTime = new MyDateAndTime(
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("time").toLocalTime()
+                    );
+
+                    Appointment appointment = new Appointment(
+                        rs.getInt("id"),
+                        clinic,
+                        rs.getString("type"),
+                        dateAndTime,
+                        rs.getString("description"),
+                        rs.getString("status")
+                    );
+
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
+        }
+        return appointments;
+    }
+
+    @Override public List<Appointment> getAppointmentsByDoctorId(
+        String doctorId)
+    {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = """
+                SELECT\s
+                a.id,\s
+                a.description,\s
+                a.type,\s
+                a.date,\s
+                a.time,\s
+                a.status,
+                p.CPR_number AS cpr,
+                p.first_name AS patient_first_name,
+                p.last_name AS patient_last_name,
+                p.phone_number AS patient_phone,
+                p.email AS patient_email, 
+                c.name AS clinic_name,\s
+                c.street AS clinic_street,\s
+                c.street_number AS clinic_street_number,
+                city.city_name AS clinic_city
+            FROM appointment a
+            INNER JOIN patient p ON a.patient_CPR = p.CPR_number
+            INNER JOIN doctor d ON a.doctor_id = d.id
+            INNER JOIN clinic c ON d.clinic_id = c.id
+            INNER JOIN city ON c.city_PO_code = city.postal_code
+            WHERE a.doctor_id = ?
+            ORDER BY a.date DESC, a.time ASC;
+            """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            System.out.println("DATABASE called");
+
+            statement.setString(1, doctorId);
+    try (ResultSet rs = statement.executeQuery())
+    {
+        System.out.println("DATABASE executed");
+        while (rs.next())
+        {
+            System.out.println("found");
+            Clinic clinic = new Clinic(rs.getString("clinic_name"),
+                rs.getString("clinic_city"), rs.getString("clinic_street"),
+                rs.getString("clinic_street_number"));
+
+            Patient patient = new Patient(rs.getString("cpr"),
+                rs.getString("patient_first_name"),
+                rs.getString("patient_last_name"), rs.getString("patient_phone"),
+                rs.getString("patient_email"),null // password not needed
+            );
+
+            MyDateAndTime dateAndTime = new MyDateAndTime(
+                rs.getDate("date").toLocalDate(),
+                rs.getTime("time").toLocalTime());
+
+            Appointment appointment = new Appointment(rs.getInt("id"), clinic,
+                rs.getString("type"), dateAndTime, rs.getString("description"),
+                rs.getString("status"));
+
+            appointments.add(appointment);
+        }
+    }
+    } catch (SQLException e) {
+        throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
+    }
+        return appointments;
+    }
+
+    @Override
+    public String getDoctorByClinicName(String clinicName) {
+        String sql = """
+        SELECT d.id 
+        FROM doctor d
+        INNER JOIN clinic c ON d.clinic_id = c.id
+        WHERE c.name = ?
+        LIMIT 1""";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, clinicName);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("id");
+                }
+                throw new RuntimeException("No doctor found for clinic: " + clinicName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch doctor ID: " + e.getMessage(), e);
+        }
+    }
 
     @Override
     public String updateUser(UpdatePatientDto request) {
-        System.out.println(request.getCPR());
-        System.out.println(request.getSurname());
-        System.out.println(request.getPhone());
-        System.out.println(request.getEmail());
-        System.out.println(request.getOldPassword());
-        System.out.println(request.getNewPassword());
-
-        String validatePasswordSql = "SELECT password FROM patient WHERE CPR_number = ?";
-
         String updateSql = "UPDATE patient SET last_name = ?, phone_number = ?, email = ?, password = ? WHERE CPR_number = ?";
 
-        try (PreparedStatement validateStmt = database.getConnection().prepareStatement(validatePasswordSql)) {
-            validateStmt.setString(1, request.getCPR());
-            ResultSet rs = validateStmt.executeQuery();
+        try (Connection connection = database.getConnection();
+            PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
 
-            if (rs.next()) {
-                String currentPassword = rs.getString("password");
-                if (!currentPassword.equals(request.getOldPassword())) {
-                    return "Old password does not match!";
-                }
-            } else {
-                return "User not found!";
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error validating old password: " + e.getMessage(), e);
-        }
-        try (PreparedStatement updateStmt = database.getConnection().prepareStatement(updateSql)) {
             updateStmt.setString(1, request.getSurname());
             updateStmt.setString(2, request.getPhone());
             updateStmt.setString(3, request.getEmail());
@@ -236,13 +380,36 @@ public class EventRepository implements EventInterface {
             updateStmt.setString(5, request.getCPR());
 
             int rowsAffected = updateStmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return "User details updated successfully!";
-            } else {
-                return "Failed to update user details!";
-            }
+            return rowsAffected > 0 ? "User details updated successfully!" : "Failed to update user details!";
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
+        }
+    }
+
+    @Override public Patient getPatientByAppointmentId(int appointmentId)
+    {
+        String sql = """
+        SELECT p.CPR_number AS cpr
+        FROM patient p
+        INNER JOIN appointment a ON p.CPR_number = a.patient_CPR
+        WHERE a.id = ?
+        LIMIT 1""";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, appointmentId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("patient success");
+                 return  getPatientByCpr(resultSet.getString("cpr"));
+
+                }
+                throw new RuntimeException("No patient found for appointment: " + appointmentId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch patient : " + e.getMessage(), e);
         }
     }
 }

@@ -40,6 +40,16 @@ public final class PatientOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LoginResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppointmentInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AppointmentInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAppointmentsResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetAppointmentsResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_UpdateUserRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -64,16 +74,27 @@ public final class PatientOuterClass {
       "\006 \001(\t\"\035\n\016PatientRequest\022\013\n\003cpr\030\001 \001(\t\"k\n\r" +
       "LoginResponse\022\014\n\004name\030\001 \001(\t\022\017\n\007surname\030\002",
       " \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\013\n\003cp" +
-      "r\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\"y\n\021UpdateUserR" +
-      "equest\022\013\n\003CPR\030\001 \001(\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005" +
-      "phone\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\023\n\013oldPasswor" +
-      "d\030\005 \001(\t\022\023\n\013newPassword\030\006 \001(\t2\331\001\n\007Patient" +
-      "\0226\n\021createAppointment\022\022.CreateAppointmen" +
-      "t\032\013.DBresponse\"\000\0221\n\014loginPatient\022\017.Patie" +
-      "ntRequest\032\016.LoginResponse\"\000\0222\n\017registerP" +
-      "atient\022\020.RegisterRequest\032\013.DBresponse\"\000\022" +
-      "/\n\nupdateUser\022\022.UpdateUserRequest\032\013.DBre",
-      "sponse\"\000B\020\n\014patient.grpcP\001b\006proto3"
+      "r\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\"\247\002\n\017Appointmen" +
+      "tInfo\022\n\n\002id\030\001 \001(\005\022\023\n\013description\030\002 \001(\t\022\014" +
+      "\n\004type\030\003 \001(\t\022\014\n\004date\030\004 \001(\t\022\014\n\004time\030\005 \001(\t" +
+      "\022\016\n\006status\030\006 \001(\t\022\020\n\010doctorId\030\007 \001(\t\022\027\n\017do" +
+      "ctorFirstName\030\010 \001(\t\022\026\n\016doctorLastName\030\t " +
+      "\001(\t\022\034\n\024doctorSpecialization\030\n \001(\t\022\022\n\ncli" +
+      "nicName\030\013 \001(\t\022\024\n\014clinicStreet\030\014 \001(\t\022\032\n\022c" +
+      "linicStreetNumber\030\r \001(\t\022\022\n\nclinicCity\030\016 " +
+      "\001(\t\"A\n\027GetAppointmentsResponse\022&\n\014appoin",
+      "tments\030\001 \003(\0132\020.AppointmentInfo\"y\n\021Update" +
+      "UserRequest\022\013\n\003CPR\030\001 \001(\t\022\017\n\007surname\030\002 \001(" +
+      "\t\022\r\n\005phone\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\023\n\013oldPa" +
+      "ssword\030\005 \001(\t\022\023\n\013newPassword\030\006 \001(\t2\245\002\n\007Pa" +
+      "tient\0226\n\021createAppointment\022\022.CreateAppoi" +
+      "ntment\032\013.DBresponse\"\000\0221\n\014loginPatient\022\017." +
+      "PatientRequest\032\016.LoginResponse\"\000\0222\n\017regi" +
+      "sterPatient\022\020.RegisterRequest\032\013.DBrespon" +
+      "se\"\000\022/\n\nupdateUser\022\022.UpdateUserRequest\032\013" +
+      ".DBresponse\"\000\022J\n\033getAppointmentsByPatien",
+      "tCpr\022\017.PatientRequest\032\030.GetAppointmentsR" +
+      "esponse\"\000B\020\n\014patient.grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -117,8 +138,20 @@ public final class PatientOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginResponse_descriptor,
         new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Cpr", "Password", });
-    internal_static_UpdateUserRequest_descriptor =
+    internal_static_AppointmentInfo_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_AppointmentInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AppointmentInfo_descriptor,
+        new java.lang.String[] { "Id", "Description", "Type", "Date", "Time", "Status", "DoctorId", "DoctorFirstName", "DoctorLastName", "DoctorSpecialization", "ClinicName", "ClinicStreet", "ClinicStreetNumber", "ClinicCity", });
+    internal_static_GetAppointmentsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_GetAppointmentsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetAppointmentsResponse_descriptor,
+        new java.lang.String[] { "Appointments", });
+    internal_static_UpdateUserRequest_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_UpdateUserRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UpdateUserRequest_descriptor,

@@ -11,6 +11,7 @@ import via.pro3.mainserver.Model.Patient;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface EventInterface
 {
@@ -20,8 +21,12 @@ public interface EventInterface
   Doctor getDoctorById(String id);
   Patient getPatientByCpr(String cpr);
   Clinic getClinicByDoctorId(String id);
-  String loginDoctor(LoginDto request);
+  boolean loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
+  List<Appointment> getAppointmentsByPatientCpr(String patientCpr);
+  List<Appointment> getAppointmentsByDoctorId(String doctorId);
+  String getDoctorByClinicName(String clinicName);
+  Patient getPatientByAppointmentId(int appointmentId);
   String updateUser(UpdatePatientDto request);
 }

@@ -8,6 +8,7 @@ service Patient {
   rpc loginPatient (PatientRequest) returns (LoginResponse) {}
   rpc registerPatient (RegisterRequest) returns (DBresponse) {}
   rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
+  rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
 
 }
 message CreateAppointment {
@@ -45,6 +46,26 @@ message LoginResponse {
   string phone = 4;
   string cpr = 5;
   string password = 6;
+}
+
+message AppointmentInfo {
+  int32 id = 1;
+  string description = 2;
+  string type = 3;
+  string date = 4;
+  string time = 5;
+  string status = 6;
+  string doctorId = 7;
+  string doctorFirstName = 8;
+  string doctorLastName = 9;
+  string doctorSpecialization = 10;
+  string clinicName = 11;
+  string clinicStreet = 12;
+  string clinicStreetNumber = 13;
+  string clinicCity = 14;
+}
+message GetAppointmentsResponse {
+  repeated AppointmentInfo appointments = 1;
 }
 
 message UpdateUserRequest

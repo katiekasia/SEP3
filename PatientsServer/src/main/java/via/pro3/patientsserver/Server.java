@@ -8,6 +8,9 @@ import io.grpc.StatusRuntimeException;
 import org.springframework.web.bind.annotation.*;
 import patient.grpc.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/Demo")
 @CrossOrigin(origins = "*")
@@ -83,7 +86,7 @@ public class Server {
                     .build();
 
             LoginResponse response = blockingStub.loginPatient(request);
-          System.out.println("Got here");
+
             if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
             {
               UserDto userDto = new UserDto();
@@ -95,7 +98,6 @@ public class Server {
 
               return userDto;
             }else {
-              System.out.println("this no work");
               throw new RuntimeException("Invalid credentials");
             }
         } catch (StatusRuntimeException e) {
@@ -106,7 +108,44 @@ public class Server {
           throw new RuntimeException("Error logging in", e);
         }
     }
+  @GetMapping("/appointments")
+  public ResponseDto getAppointments(@RequestParam String cpr) {
+    try {
+      PatientRequest request = PatientRequest.newBuilder()
+          .setCpr(cpr)
+          .build();
 
+      GetAppointmentsResponse response = blockingStub.getAppointmentsByPatientCpr(request);
+      List<GetAppointmentsDto> appointmentsList = new ArrayList<>();
+
+      for (AppointmentInfo appointment : response.getAppointmentsList()) {
+        GetAppointmentsDto dto = new GetAppointmentsDto();
+        dto.setId(appointment.getId());
+        dto.setDescription(appointment.getDescription());
+        dto.setType(appointment.getType());
+        dto.setDate(appointment.getDate());
+        dto.setTime(appointment.getTime());
+        dto.setStatus(appointment.getStatus());
+        dto.setDoctorId(appointment.getDoctorId());
+        dto.setDoctorFirstName(appointment.getDoctorFirstName());
+        dto.setDoctorLastName(appointment.getDoctorLastName());
+        dto.setDoctorSpecialization(appointment.getDoctorSpecialization());
+        dto.setClinicName(appointment.getClinicName());
+        dto.setClinicStreet(appointment.getClinicStreet());
+        dto.setClinicStreetNumber(appointment.getClinicStreetNumber());
+        dto.setClinicCity(appointment.getClinicCity());
+
+        appointmentsList.add(dto);
+      }
+
+      ResponseDto responseDto = new ResponseDto();
+      responseDto.setAppointments(appointmentsList);
+      return responseDto;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("Error fetching appointments: ", e);
+    }
+  }
     @PostMapping("/update")
     public ResponseDto updatePatient(@RequestBody UpdatePatientDto updatePatientDto) {
         try {
@@ -114,7 +153,6 @@ public class Server {
             System.out.println("Surname: " + updatePatientDto.getSurname());
             System.out.println("Phone: " + updatePatientDto.getPhone());
             System.out.println("Email: " + updatePatientDto.getEmail());
-            System.out.println("Old Password: " + updatePatientDto.getOldPassword());
             System.out.println("New Password: " + updatePatientDto.getNewPassword());
 
             UpdateUserRequest request = UpdateUserRequest.newBuilder()
@@ -122,7 +160,6 @@ public class Server {
                     .setSurname(updatePatientDto.getSurname())
                     .setPhone(updatePatientDto.getPhone())
                     .setEmail(updatePatientDto.getEmail())
-                    .setOldPassword(updatePatientDto.getOldPassword())
                     .setNewPassword(updatePatientDto.getNewPassword())
                     .build();
 
@@ -141,5 +178,5 @@ public class Server {
             throw new RuntimeException("Error updating patient details", e);
         }
 
-    }
+    }   
 }

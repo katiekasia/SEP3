@@ -18,63 +18,32 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         this.navigationManager = navigationManager;
     }
 
-    public async Task<bool> Login(string id, string password)
+    public async Task Login(string id, string password)
     {
-        LoginDto loginDto = new LoginDto()
+        HttpResponseMessage response =
+            await httpClient.PostAsJsonAsync("http://localhost:8080/Doctor/login",
+                new LoginDto(id, password));
+        string content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(content);
+        if (!response.IsSuccessStatusCode)
         {
-            cpr = id,
-            password = password
+            throw new Exception(content);
+        }
+        DoctorDto doctor = JsonSerializer.Deserialize<DoctorDto>(content,new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        List<Claim> claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name, doctor.Name),
+            new Claim(ClaimTypes.Surname, doctor.Surname),
+            new Claim(ClaimTypes.NameIdentifier, doctor.Id),
+            new Claim("Specialisation", doctor.Specialisation)
         };
-    
-        try 
-        {
-            HttpResponseMessage response = 
-                await httpClient.PostAsJsonAsync("http://localhost:8080/Doctor/login", loginDto);
         
-            string content = await response.Content.ReadAsStringAsync();
-
-            Console.WriteLine(content);
-            var loginResponse = JsonSerializer.Deserialize<ResponseDto>(content, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            if (response.IsSuccessStatusCode && loginResponse?.response == "LoggedIn"){
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, id),
-                    new Claim(ClaimTypes.AuthenticationMethod, "apiauth")
-                };
-
-                var identity = new ClaimsIdentity(claims, "apiauth");
-                currentUser = new ClaimsPrincipal(identity);
-
-                NotifyAuthenticationStateChanged(
-                    Task.FromResult(new AuthenticationState(currentUser))
-                );
-                
-                navigationManager.NavigateTo("/Appointments");
-
-                return true;
-            }
-            else 
-            {
-                Console.WriteLine("No");
-                // Clear any existing user
-                currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-                NotifyAuthenticationStateChanged(
-                    Task.FromResult(new AuthenticationState(currentUser))
-                );
-
-                return false;
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            // Handle network-related errors
-            Console.Error.WriteLine($"Login failed: {ex.Message}");
-            return false;
-        }
+        ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
+        currentUser = new ClaimsPrincipal(identity);
+        NotifyAuthenticationStateChanged(
+            Task.FromResult(new AuthenticationState(new ClaimsPrincipal(currentUser))));
+        
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()

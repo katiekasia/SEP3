@@ -11,6 +11,9 @@ import via.pro3.mainserver.DTOs.RegisterDto;
 import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.Model.*;
 import via.pro3.mainserver.Model.Patient;
+import via.pro3.mainserver.database.EventRepository;
+
+import java.util.List;
 
 public class PatientImpl extends PatientGrpc.PatientImplBase {
     private final Model model;
@@ -95,6 +98,47 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
 
+        @Override
+        public void getAppointmentsByPatientCpr(PatientRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
+            try {
+                List<Appointment> appointments = model.getPatientAppointments(request.getCpr());
+                GetAppointmentsResponse.Builder responseBuilder = GetAppointmentsResponse.newBuilder();
+
+                for (Appointment appointment : appointments) {
+                    Clinic clinic = appointment.getClinic();
+                    Doctor doctor = model.getDoctorById(model.getDoctorByClinicName(clinic.getName()));
+
+                    AppointmentInfo appointmentInfo = AppointmentInfo.newBuilder()
+                        .setId(appointment.getAppointmentId())
+                        .setDescription(appointment.getDescription())
+                        .setType(appointment.getType())
+                        .setDate(appointment.getDate().toString())
+                        .setTime(appointment.getTime().toString())
+                        .setStatus(appointment.getStatus())
+                        .setDoctorId(doctor.getId())
+                        .setDoctorFirstName(doctor.getName())
+                        .setDoctorLastName(doctor.getSurname())
+                        .setDoctorSpecialization(doctor.getSpecialisation())
+                        .setClinicName(clinic.getName())
+                        .setClinicStreet(clinic.getStreet())
+                        .setClinicStreetNumber(clinic.getStreetNo())
+                        .setClinicCity(clinic.getCity())
+                        .build();
+
+                    responseBuilder.addAppointments(appointmentInfo);
+                }
+
+                responseObserver.onNext(responseBuilder.build());
+                responseObserver.onCompleted();
+            } catch (Exception e) {
+                responseObserver.onError(Status.INTERNAL
+                    .withDescription("Error fetching appointments: " + e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException());
+            }
+        }
+
+
     @Override
     public void updateUser(UpdateUserRequest request, StreamObserver<DBresponse> responseObserver) {
         try {
@@ -103,7 +147,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     request.getSurname(),
                     request.getPhone(),
                     request.getEmail(),
-                    request.getOldPassword(),
                     request.getNewPassword()
             );
 
@@ -128,4 +171,5 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     }
 
 }
+
 
