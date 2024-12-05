@@ -127,8 +127,19 @@ public class ModelManager implements Model
   }
 
   @Override
-  public String loginDoctor(LoginDto loginDto) {
-    return eventRepository.loginDoctor(loginDto);
+  public Doctor loginDoctor(LoginDto loginDto) {
+    try{
+      if(eventRepository.loginDoctor(loginDto)){
+        Doctor doctor = getDoctorById(loginDto.getcpr());
+
+        return doctor;
+      }
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+    return null;
   }
   @Override
   public List<Appointment> getPatientAppointments(String cpr) {

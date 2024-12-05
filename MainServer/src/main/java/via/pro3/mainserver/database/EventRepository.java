@@ -11,6 +11,11 @@ import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.Model.*;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventRepository implements EventInterface {
     private final DatabaseInterface database;
@@ -242,7 +247,7 @@ public class EventRepository implements EventInterface {
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
+        String sql = "UPDATE doctor SET password = ? WHERE id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
             statement.setString(2, request.getId());

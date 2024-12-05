@@ -59,7 +59,7 @@ message LoginDoctorResponse {
   string specialisation = 3;
   string id = 4;
   string password = 5;
-  string confirmation = 1;
+  string confirmation = 6;
 }
 
 message PatientDtoMessage{
