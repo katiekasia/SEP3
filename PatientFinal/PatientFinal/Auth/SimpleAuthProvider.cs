@@ -30,15 +30,15 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         
         UserDto userDto = JsonSerializer.Deserialize<UserDto>(content,new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
-        List<Claim> claims = new List<Claim>()
-        {
-            new Claim("Name", userDto.name),
-            new Claim(ClaimTypes.Surname, userDto.surname),
-            new Claim(ClaimTypes.Email, userDto.email),
-            new Claim(ClaimTypes.MobilePhone, userDto.phone),
-            new Claim(ClaimTypes.Name, userDto.cpr)
-        };
-        ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, userDto.name),
+                new Claim(ClaimTypes.Surname, userDto.surname),
+                new Claim(ClaimTypes.Email, userDto.email),
+                new Claim(ClaimTypes.MobilePhone, userDto.phone),
+                new Claim(ClaimTypes.NameIdentifier, userDto.cpr)
+            };
+            ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
 
         user = new ClaimsPrincipal(identity);
         NotifyAuthenticationStateChanged(
