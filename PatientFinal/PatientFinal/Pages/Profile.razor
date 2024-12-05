@@ -1,99 +1,112 @@
-﻿    @page "/Profile"
-    @using System.Security.Claims
-    @using PatientFinal.DTOs
-    @using PatientFinal.Services
-    @inject HttpClient Http;
-    @inject ILoginService LoginService;
-    @inject IUpdateService UpdateService;
-    @inject AuthenticationStateProvider AuthProvider;
+﻿<AuthorizeView>
+    <NotAuthorized>
+        <p>Please log in with your patient credentials</p>
+    </NotAuthorized>
 
-    <h3>Profile Overview</h3>
+    <Authorized>
+        @page "/Profile"
+        @using System.Security.Claims
+        @using PatientFinal.DTOs
+        @using PatientFinal.Services
 
-    @* <AuthorizeView> *@
-    @*     <NotAuthorized> *@
-    @*         You need to login first *@
-    @*     </NotAuthorized> *@
-    @* *@
-    @*     <Authorized> *@
-            @* <p>CPR: @CPR</p> *@
+        @inject HttpClient Http; 
+        @inject ILoginService LoginService; 
+        @inject IUpdateService UpdateService; 
+        @inject AuthenticationStateProvider AuthProvider; 
 
+        <h3>Profile Overview</h3>
 
-            <input @bind=@lastName>
-            <input @bind=@phoneNumber>
-            <input @bind=@Email>
-            <input @bind =@oldPassword>
-            <input @bind="@newPassword">
-            <button @onclick="EditAccount">Edit account</button>
+        <p>Logged in patient: <strong>@firstName</strong></p>
+        <p>CPR: <strong>@CPR</strong></p>
 
-            @if (!string.IsNullOrEmpty(responseMessage))
-            {
-                <p>Server Response: @responseMessage</p>
-            }
-    @*     </Authorized> *@
-    @* </AuthorizeView> *@
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input id="lastName" @bind=@lastName>
+        </div>
 
-    @code {
-        private string CPR;
-        private string firstName;
-        private string lastName;
-        private string Email;
-        private string phoneNumber;
-        private string newPassword;
-        private string oldPassword;
-        private string responseMessage;
+        <div>
+            <label for="phoneNumber">Phone Number:</label>
+            <input id="phoneNumber" @bind=@phoneNumber>
+        </div>
 
-        protected override async Task OnInitializedAsync()
+        <div>
+            <label for="Email">Email:</label>
+            <input id="Email" @bind=@Email>
+        </div>
+
+        <div>
+            <label for="newPassword">New Password:</label>
+            <input id="newPassword" type="password" @bind="@newPassword">
+        </div>
+
+        <button @onclick="EditAccount">Edit Account</button>
+
+        @if (!string.IsNullOrEmpty(responseMessage))
         {
-            try
-            {
-                var authState = await AuthProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
-        
-                // CPR = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                CPR = "1234567890";
-                
-
-                // if (!string.IsNullOrEmpty(CPR))
-                // {
-                //     var patient = await LoginService.getUser(CPR);
-                //
-                // }
-            }
-            catch (Exception e)
-            {
-                responseMessage = $"Failed: {e.Message}";
-            }
+            <p>Server Response: @responseMessage</p>
         }
-        private async Task EditAccount()
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string CPR;
+    private string firstName;
+    private string lastName;
+    private string Email;
+    private string phoneNumber;
+    private string newPassword;
+    private string responseMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
         {
-            if (string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(phoneNumber)|| string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(oldPassword))
-            {
-                responseMessage = "Fields cannot be emtpy";
-                return;
-            }
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            CPR = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            firstName = user.FindFirst(ClaimTypes.Name)?.Value;
+            lastName = user.FindFirst(ClaimTypes.Surname)?.Value;
+            Email = user.FindFirst(ClaimTypes.Email)?.Value;
+            phoneNumber = user.FindFirst(ClaimTypes.MobilePhone)?.Value;
 
-            try
-            {
-                var updatePatient = new UpdatePatientDto()
-                {
-                    cpr = CPR,
-                    surname = lastName,
-                    phone = phoneNumber,
-                    email = Email,
-                    oldPassword = oldPassword,
-                    newPassword = newPassword
-
-                };
-
-                Console.WriteLine(updatePatient.newPassword);
-
-                var response = await UpdateService.UpdatePatient(updatePatient);
-        
-
-            }
-            catch (Exception e)
-            {
-                responseMessage = $"Changing password failed: {e.Message}";
-            }
+            Console.WriteLine($"CPR fetched: {CPR}");
+            Console.WriteLine($"Patient: {firstName} {lastName}");
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Failed: {e.Message}";
         }
     }
+
+    private async Task EditAccount()
+    {
+        try
+        {
+            var updatePatient = new UpdatePatientDto()
+            {
+                cpr = CPR,
+                surname = string.IsNullOrEmpty(lastName) ? null : lastName,
+                phone = string.IsNullOrEmpty(phoneNumber) ? null : phoneNumber,
+                email = string.IsNullOrEmpty(Email) ? null : Email,
+                newPassword = string.IsNullOrEmpty(newPassword) ? null : newPassword
+            };
+
+            Console.WriteLine($"Updated fields: {updatePatient.surname}, {updatePatient.phone}, {updatePatient.email}, {updatePatient.newPassword}");
+
+            var response = await UpdateService.UpdatePatient(updatePatient);
+
+            if (response != null)
+            {
+                responseMessage = "Account updated successfully";
+            }
+            else
+            {
+                responseMessage = "Failed to update account.";
+            }
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Changing account failed: {e.Message}";
+        }
+    }
+}
