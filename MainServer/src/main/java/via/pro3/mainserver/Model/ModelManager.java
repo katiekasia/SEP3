@@ -10,6 +10,7 @@ import via.pro3.mainserver.database.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ModelManager implements Model
 {
@@ -54,6 +55,11 @@ public class ModelManager implements Model
   @Override public Patient getPatientByCpr(String cpr)
   {
     return eventRepository.getPatientByCpr(cpr);
+  }
+
+  @Override
+  public List<Patient> getPatientsByDoctorId(String doctorid) {
+    return eventRepository.getPatientsByDoctorId(doctorid);
   }
 
   @Override public Doctor getDoctorById(String id)
@@ -102,6 +108,11 @@ public class ModelManager implements Model
   @Override
   public String changeDoctorPassword(ResetPasswordDto resetPasswordDto) {
     return eventRepository.changePassowrdDoctor(resetPasswordDto);
+  }
+
+  @Override
+  public void addPrescription(PrescriptionDto prescriptionDto) {
+    eventRepository.addPrescription(prescriptionDto);
   }
 
   @Override

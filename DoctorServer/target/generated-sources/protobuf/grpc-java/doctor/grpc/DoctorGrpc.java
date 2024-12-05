@@ -63,6 +63,30 @@ public final class DoctorGrpc {
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               doctor.grpc.GetDoctorByIdResponse.getDefaultInstance()))
           .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<doctor.grpc.GetPatientsRequest,
+      doctor.grpc.GetPatientsResponse> METHOD_GET_PATIENTS_BY_DOCTOR_ID =
+      io.grpc.MethodDescriptor.<doctor.grpc.GetPatientsRequest, doctor.grpc.GetPatientsResponse>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "Doctor", "getPatientsByDoctorId"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.GetPatientsRequest.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.GetPatientsResponse.getDefaultInstance()))
+          .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<doctor.grpc.AddPrescriptionRequest,
+      doctor.grpc.Response> METHOD_ADD_PRESCRIPTION =
+      io.grpc.MethodDescriptor.<doctor.grpc.AddPrescriptionRequest, doctor.grpc.Response>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "Doctor", "addPrescription"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.AddPrescriptionRequest.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              doctor.grpc.Response.getDefaultInstance()))
+          .build();
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -112,6 +136,20 @@ public final class DoctorGrpc {
       asyncUnimplementedUnaryCall(METHOD_GET_DOCTOR_BY_ID, responseObserver);
     }
 
+    /**
+     */
+    public void getPatientsByDoctorId(doctor.grpc.GetPatientsRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.GetPatientsResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_GET_PATIENTS_BY_DOCTOR_ID, responseObserver);
+    }
+
+    /**
+     */
+    public void addPrescription(doctor.grpc.AddPrescriptionRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.Response> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_ADD_PRESCRIPTION, responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -135,6 +173,20 @@ public final class DoctorGrpc {
                 doctor.grpc.GetDoctorByIdRequest,
                 doctor.grpc.GetDoctorByIdResponse>(
                   this, METHODID_GET_DOCTOR_BY_ID)))
+          .addMethod(
+            METHOD_GET_PATIENTS_BY_DOCTOR_ID,
+            asyncUnaryCall(
+              new MethodHandlers<
+                doctor.grpc.GetPatientsRequest,
+                doctor.grpc.GetPatientsResponse>(
+                  this, METHODID_GET_PATIENTS_BY_DOCTOR_ID)))
+          .addMethod(
+            METHOD_ADD_PRESCRIPTION,
+            asyncUnaryCall(
+              new MethodHandlers<
+                doctor.grpc.AddPrescriptionRequest,
+                doctor.grpc.Response>(
+                  this, METHODID_ADD_PRESCRIPTION)))
           .build();
     }
   }
@@ -180,6 +232,22 @@ public final class DoctorGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_GET_DOCTOR_BY_ID, getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getPatientsByDoctorId(doctor.grpc.GetPatientsRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.GetPatientsResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_GET_PATIENTS_BY_DOCTOR_ID, getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void addPrescription(doctor.grpc.AddPrescriptionRequest request,
+        io.grpc.stub.StreamObserver<doctor.grpc.Response> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_ADD_PRESCRIPTION, getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -219,6 +287,20 @@ public final class DoctorGrpc {
     public doctor.grpc.GetDoctorByIdResponse getDoctorById(doctor.grpc.GetDoctorByIdRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_GET_DOCTOR_BY_ID, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public doctor.grpc.GetPatientsResponse getPatientsByDoctorId(doctor.grpc.GetPatientsRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_GET_PATIENTS_BY_DOCTOR_ID, getCallOptions(), request);
+    }
+
+    /**
+     */
+    public doctor.grpc.Response addPrescription(doctor.grpc.AddPrescriptionRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_ADD_PRESCRIPTION, getCallOptions(), request);
     }
   }
 
@@ -263,11 +345,29 @@ public final class DoctorGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_GET_DOCTOR_BY_ID, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<doctor.grpc.GetPatientsResponse> getPatientsByDoctorId(
+        doctor.grpc.GetPatientsRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_GET_PATIENTS_BY_DOCTOR_ID, getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<doctor.grpc.Response> addPrescription(
+        doctor.grpc.AddPrescriptionRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_ADD_PRESCRIPTION, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_LOGIN_DOCTOR = 0;
   private static final int METHODID_CHANGE_PASSWORD = 1;
   private static final int METHODID_GET_DOCTOR_BY_ID = 2;
+  private static final int METHODID_GET_PATIENTS_BY_DOCTOR_ID = 3;
+  private static final int METHODID_ADD_PRESCRIPTION = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -297,6 +397,14 @@ public final class DoctorGrpc {
         case METHODID_GET_DOCTOR_BY_ID:
           serviceImpl.getDoctorById((doctor.grpc.GetDoctorByIdRequest) request,
               (io.grpc.stub.StreamObserver<doctor.grpc.GetDoctorByIdResponse>) responseObserver);
+          break;
+        case METHODID_GET_PATIENTS_BY_DOCTOR_ID:
+          serviceImpl.getPatientsByDoctorId((doctor.grpc.GetPatientsRequest) request,
+              (io.grpc.stub.StreamObserver<doctor.grpc.GetPatientsResponse>) responseObserver);
+          break;
+        case METHODID_ADD_PRESCRIPTION:
+          serviceImpl.addPrescription((doctor.grpc.AddPrescriptionRequest) request,
+              (io.grpc.stub.StreamObserver<doctor.grpc.Response>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -334,6 +442,8 @@ public final class DoctorGrpc {
               .addMethod(METHOD_LOGIN_DOCTOR)
               .addMethod(METHOD_CHANGE_PASSWORD)
               .addMethod(METHOD_GET_DOCTOR_BY_ID)
+              .addMethod(METHOD_GET_PATIENTS_BY_DOCTOR_ID)
+              .addMethod(METHOD_ADD_PRESCRIPTION)
               .build();
         }
       }

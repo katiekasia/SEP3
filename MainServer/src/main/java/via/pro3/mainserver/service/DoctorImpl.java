@@ -3,10 +3,12 @@ package via.pro3.mainserver.service;
 import doctor.grpc.*;
 import io.grpc.stub.StreamObserver;
 import org.apache.juli.logging.Log;
-import via.pro3.mainserver.DTOs.DoctorDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.ResetPasswordDto;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.Model.Model;
+import via.pro3.mainserver.Model.Patient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
     private final Model model;
@@ -72,6 +74,68 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
         catch (Exception e){
             e.printStackTrace();
             responseObserver.onNext(null);
+        }
+        finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void getPatientsByDoctorId(GetPatientsRequest request, StreamObserver<GetPatientsResponse> responseObserver) {
+        try {
+            List<Patient> allPatients = model.getPatientsByDoctorId(request.getDoctorid());
+
+            List<PatientDtoMessage> patientDtos = new ArrayList<>();
+            for (Patient patient : allPatients) {
+                System.out.println(patient.getCPRNo());
+                System.out.println(patient.getName());
+                System.out.println(patient.getSurname());
+                System.out.println(patient.getEmail());
+                System.out.println(patient.getPhone());
+                PatientDtoMessage patientDto = PatientDtoMessage.newBuilder()
+                        .setCpr(patient.getCPRNo())
+                        .setFirstName(patient.getName())
+                        .setLastName(patient.getSurname())
+                        .setEmail(patient.getEmail())
+                        .setPhoneNumber(patient.getPhone())
+                        .build();
+
+                patientDtos.add(patientDto);
+            }
+
+            GetPatientsResponse response = GetPatientsResponse.newBuilder()
+                    .addAllPatients(patientDtos)
+                    .build();
+
+            responseObserver.onNext(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(new RuntimeException("Failed to fetch patients: " + e.getMessage()));
+        } finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void addPrescription(AddPrescriptionRequest request, StreamObserver<Response> responseObserver){
+        try{
+            PrescriptionDto prescriptionDto = new PrescriptionDto(
+                    request.getId(), request.getDiagnosis(), request.getMedication(),
+                    request.getRecommendations(), request.getDate(), request.getTime(),
+                    request.getPatientcpr(), request.getDoctorid()
+            );
+
+            model.addPrescription(prescriptionDto);
+
+            Response response = Response.newBuilder()
+                    .setConfirmation("Success")
+                    .build();
+            responseObserver.onNext(response);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Response response = Response.newBuilder().setConfirmation("Failed").build();
+            responseObserver.onNext(response);
         }
         finally {
             responseObserver.onCompleted();

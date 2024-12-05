@@ -21,6 +21,7 @@ public class Patient {
         this.email = email;
         appointments = new HashMap<Integer, Appointment>();
     }
+    public Patient(){}
     public void addAppointment(Appointment appointment){
         appointments.put(appointment.getAppointmentId(), appointment);
     }

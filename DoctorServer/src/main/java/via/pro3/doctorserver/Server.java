@@ -1,12 +1,15 @@
 package via.pro3.doctorserver;
 
-import DTOs.DoctorDto;
-import DTOs.LoginDto;
-import DTOs.ResetPasswordDto;
-import DTOs.ResponseDto;
+import DTOs.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import doctor.grpc.*;
+import doctor.grpc.PatientDtoMessage;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -95,6 +98,62 @@ public class Server {
         catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException("Get doctor failed: " + e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/Prescriptions/getPatients")
+    public List<PatientDto> getPatients(@RequestParam String doctorid) {
+        try {
+            GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
+
+            GetPatientsResponse response = blockingStub.getPatientsByDoctorId(request);
+
+            List<PatientDto> patientDtos = new ArrayList<>();
+
+            for (PatientDtoMessage patientDto : response.getPatientsList()) {
+                PatientDto dto = new PatientDto(
+                        patientDto.getCpr(),
+                        patientDto.getFirstName(),
+                        patientDto.getLastName(),
+                        patientDto.getEmail(),
+                        patientDto.getPhoneNumber()
+                );
+
+                patientDtos.add(dto);
+            }
+
+            return patientDtos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Get patients failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/Prescriptions/addPrescription")
+    public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
+        try{
+            AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
+                    .setId(prescriptionDto.getId())
+                    .setDiagnosis(prescriptionDto.getDiagnosis())
+                    .setMedication(prescriptionDto.getMedication())
+                    .setRecommendations(prescriptionDto.getRecommendations())
+                    .setDate(prescriptionDto.getDate())
+                    .setTime(prescriptionDto.getTime())
+                    .setPatientcpr(prescriptionDto.getPatientCpr())
+                    .setDoctorid(prescriptionDto.getDoctorId())
+                    .build();
+
+            ResponseDto responseDto = new ResponseDto();
+
+            Response response = blockingStub.addPrescription(request);
+            responseDto.setResponse(response.getConfirmation());
+
+            return responseDto;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Add prescription failed: " + e.getMessage());
         }
     }
 }
