@@ -1,6 +1,7 @@
 package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
+import via.pro3.mainserver.DTOs.PrescriptionDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.Model.Appointment;
@@ -10,8 +11,6 @@ import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.Model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EventRepository implements EventInterface {
     private final DatabaseInterface database;
@@ -25,7 +24,7 @@ public class EventRepository implements EventInterface {
         String sql = "INSERT INTO Appointment (id, description, type, date, time, status, patient_CPR, doctor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, appointment.getAppointmentId());
             statement.setString(2, appointment.getDescription());
@@ -45,24 +44,25 @@ public class EventRepository implements EventInterface {
     @Override
     public Clinic getClinicByDoctorId(String doctorId) {
         String sql = """
-        SELECT c.id, c.name, c.street, c.street_number, c.city_PO_code, city.city_name
-        FROM clinic c
-        INNER JOIN doctor d ON c.id = d.clinic_id
-        INNER JOIN city ON c.city_PO_code = city.postal_code
-        WHERE d.id = ?""";
+                
+                        SELECT c.id, c.name, c.street, c.street_number, c.city_PO_code, city.city_name
+                FROM clinic c
+                INNER JOIN doctor d ON c.id = d.clinic_id
+                INNER JOIN city ON c.city_PO_code = city.postal_code
+                WHERE d.id = ?""";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, doctorId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Clinic(
-                        resultSet.getString("name"),
-                        resultSet.getString("city_name"),
-                        resultSet.getString("street"),
-                        resultSet.getString("street_number")
+                            resultSet.getString("name"),
+                            resultSet.getString("city_name"),
+                            resultSet.getString("street"),
+                            resultSet.getString("street_number")
                     );
                 } else {
                     throw new RuntimeException("No clinic found for doctorId: " + doctorId);
@@ -106,20 +106,20 @@ public class EventRepository implements EventInterface {
     public Patient getPatientByCpr(String patientCpr) {
         String sql = "SELECT * FROM Patient WHERE CPR_number = ?";
 
-        try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, patientCpr);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Patient(
-                        resultSet.getString("CPR_number"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getString("phone_number"),
-                        resultSet.getString("email"),
-                        resultSet.getString("password")
+                            resultSet.getString("CPR_number"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("phone_number"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password")
                     );
                 } else {
                     throw new RuntimeException("No patient found for CPR number: " + patientCpr);
@@ -130,12 +130,43 @@ public class EventRepository implements EventInterface {
         }
     }
 
+
+    @Override
+    public List<Patient> getPatientsByDoctorId(String doctorId) {
+        List<Patient> patients = new ArrayList<>();
+        String sql = "SELECT DISTINCT p.* FROM patient p " +
+                "JOIN appointment a ON p.cpr_number = a.patient_cpr " +
+                "WHERE a.doctor_id = ?";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, doctorId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Patient patient = new Patient();
+                    patient.setName(resultSet.getString("first_name"));
+                    patient.setSurname(resultSet.getString("last_name"));
+                    patient.setCPRNo(resultSet.getString("cpr_number"));
+                    patient.setEmail(resultSet.getString("email"));
+                    patient.setPhone(resultSet.getString("phone_number"));
+
+                    patients.add(patient);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch patients for doctor", e);
+        }
+        return patients;
+    }
+
     @Override
     public void createUser(Patient patient) {
         String sql = "INSERT INTO patient (cpr_number, first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, patient.getCPRNo());
             statement.setString(2, patient.getName());
@@ -155,7 +186,7 @@ public class EventRepository implements EventInterface {
         String sql = "SELECT * FROM patient WHERE CPR_number = ?";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, request.getcpr());
 
@@ -168,11 +199,34 @@ public class EventRepository implements EventInterface {
     }
 
     @Override
+    public void addPrescription(PrescriptionDto request) {
+        String sql = "INSERT INTO prescription (id, diagnosis, medication, recommendations, date, time, patient_CPR, doctor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(request.getDate(), formatter);
+
+            statement.setString(1, request.getId());
+            statement.setString(2, request.getDiagnosis());
+            statement.setString(3, request.getMedication());
+            statement.setString(4, request.getRecommendations());
+            statement.setDate(5, Date.valueOf(dateTime.toLocalDate()));
+            statement.setTime(6, Time.valueOf(dateTime.toLocalTime()));
+            statement.setString(7, request.getPatientCpr());
+            statement.setString(8, request.getDoctorId());
+            statement.executeUpdate();
+        } catch (DateTimeParseException | SQLException e) {
+            throw new RuntimeException("Failed to create prescription: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public boolean loginDoctor(LoginDto request) {
         String sql = "SELECT * FROM doctor WHERE id = ?";
 
         try (Connection connection = database.getConnection(); // Get connection from pool
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, request.getcpr());
 
@@ -188,7 +242,7 @@ public class EventRepository implements EventInterface {
     public String changePassowrdDoctor(ResetPasswordDto request) {
         System.out.println(request.getId());
         System.out.println(request.getNewPassword());
-        String sql = "UPDATE doctor SET password = ? id = ?";
+        String sql = "UPDATE doctor SET password = ? WHERE password = ? AND id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
             statement.setString(2, request.getId());

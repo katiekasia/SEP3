@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "doctor.grpc";
@@ -8,6 +9,14 @@ service Doctor {
   rpc changePassword (ChangePasswordRequest) returns (UniResponse){}
   rpc getDoctorById(GetDoctorByIdRequest) returns (GetDoctorByIdResponse){}
   rpc getAppointmentsByDoctorId(GetDoctorByIdRequest) returns (GetAppointmentsResponseD){}
+  rpc getPatientsByDoctorId(GetPatientsRequest) returns (GetPatientsResponse){}
+  rpc addPrescription(AddPrescriptionRequest) returns (Response){}
+}
+
+message EmptyRequest{}
+
+message Response{
+  string confirmation = 1;
 }
 
 message GetAppointmentsResponseD {
@@ -50,4 +59,32 @@ message LoginDoctorResponse {
   string specialisation = 3;
   string id = 4;
   string password = 5;
+  string confirmation = 1;
+}
+
+message PatientDtoMessage{
+  string cpr = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phoneNumber = 5;
+}
+
+message GetPatientsRequest{
+  string doctorid = 1;
+}
+
+message GetPatientsResponse{
+  repeated PatientDtoMessage patients = 1;
+}
+
+message AddPrescriptionRequest{
+  string id = 1;
+  string diagnosis = 2;
+  string medication = 3;
+  string recommendations = 4;
+  string date = 5;
+  string time = 6;
+  string patientcpr = 7;
+  string doctorid = 8;
 }
