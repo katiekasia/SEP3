@@ -4,6 +4,8 @@
 @inject IAppointmentService AppointmentService;
 @using System.Security.Claims
 @using Doctor.DTOs
+@inject NavigationManager NavigationManager
+
 
 <h3>Appointments</h3>
 <AuthorizeView>
@@ -38,7 +40,7 @@
                         @* Check if there's an event for this day and hour *@
                         @foreach (var ap in AppointmentsList.Where(a => a.Date == day.Date && a.Time.Hour == hour))
                         {
-                            <div class="appointment">
+                            <div class="appointment" @onclick="() => NavigateToDetails(ap.Id)">
                                 <strong>@ap.status</strong><br />
                                 <span>@ap.type</span>
                                 <span>@ap.Time</span>
@@ -53,6 +55,13 @@
 </Authorized>
 </AuthorizeView>
 @code {
+    
+    private void NavigateToDetails(int appointmentId)
+    {
+        NavigationManager.NavigateTo($"/AppointmentDetails/{appointmentId}");
+    }
+    
+    
     [CascadingParameter] public Task<AuthenticationState> State { get; set; }
     
     private List<AppointmentDisplay> AppointmentsList { get; set; } = new List<AppointmentDisplay>();

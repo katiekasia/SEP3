@@ -1,0 +1,82 @@
+﻿@page "/AppointmentDetails/{appointmentId:int}"
+@using Doctor.DTOs
+@using Doctor.Services
+@inject IAppointmentService AppointmentService
+@inject NavigationManager NavigationManager
+@using System.Security.Claims
+
+<h3>Appointment Details</h3>
+
+<AuthorizeView>
+    <NotAuthorized>
+        You need to login first
+    </NotAuthorized>
+
+    <Authorized>
+        @if (appointment != null)
+        {
+            <div>
+                <p><strong>Status:</strong> @appointment.status</p>
+                <p><strong>Type:</strong> @appointment.type</p>
+                <p><strong>Date:</strong> @appointment.Date.ToString("MMMM d, yyyy")</p>
+                <p><strong>Time:</strong> @appointment.Time.ToString(@"hh\:mm tt")</p>
+
+                <!-- Cancel Appointment Button (No functionality for now) -->
+                <button class="btn btn-danger" @onclick="CancelAppointment">Cancel Appointment</button>
+            </div>
+        }
+        else
+        {
+            <p>Loading appointment details...</p>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] public int AppointmentId { get; set; }
+    private AppointmentDisplay appointment;
+    private string doctorId;
+
+    [CascadingParameter] public Task<AuthenticationState> State { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authenticationState = await State;
+            var claimsPrincipal = authenticationState.User;
+
+            if (claimsPrincipal.Identity == null || !claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return;
+            }
+
+            doctorId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Make sure to use your custom claim type, if different from "doctorId"
+
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                Console.WriteLine("Doctor ID not found in claims.");
+                return;
+            }
+
+            var appointmentsList = await AppointmentService.GetAppointments(doctorId);
+            appointment = appointmentsList.FirstOrDefault(ap => ap.Id == AppointmentId);
+
+            if (appointment == null)
+            {
+                Console.WriteLine($"No appointment found with ID: {AppointmentId}");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error loading appointment details: {e.Message}");
+        }
+    }
+
+    private void CancelAppointment()
+    {
+        
+        // FOR DANIEL / MICHAEL / OR ME
+        Console.WriteLine("Cancel appointment button clicked.");
+    }
+}

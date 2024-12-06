@@ -25,16 +25,16 @@ public class Server
   public Server()
   {
     ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-        .usePlaintext().build();
+            .usePlaintext().build();
 
     blockingStub = DoctorGrpc.newBlockingStub(channel);
   }
 
   @PostMapping("/login") public DoctorDto loginDoctor(
-      @RequestBody LoginDto loginDto)
+          @RequestBody LoginDto loginDto)
   {
     if (loginDto == null || loginDto.getcpr() == null
-        || loginDto.getPassword() == null)
+            || loginDto.getPassword() == null)
     {
       throw new IllegalArgumentException("Invalid login credentials");
     }
@@ -43,7 +43,7 @@ public class Server
     {
       System.out.println("attempt");
       GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
-          .setId(loginDto.getcpr()).build();
+              .setId(loginDto.getcpr()).build();
 
       LoginDoctorResponse response = blockingStub.loginDoctor(request);
       System.out.println("response: " + response);
@@ -51,8 +51,8 @@ public class Server
       {
         System.out.println("success");
         DoctorDto doctorDto = new DoctorDto(response.getName(),
-            response.getSurname(), response.getSpecialisation(),
-            response.getId());
+                response.getSurname(), response.getSpecialisation(),
+                response.getId());
         System.out.println("sent");
         return doctorDto;
       }
@@ -68,7 +68,7 @@ public class Server
   }
 
   @PostMapping("/resetPassword") public ResponseDto changePassword(
-      @RequestBody ResetPasswordDto resetPasswordDto)
+          @RequestBody ResetPasswordDto resetPasswordDto)
   {
     if (resetPasswordDto == null)
     {
@@ -80,9 +80,9 @@ public class Server
       String newPassword = PasswordHasher.hash(resetPasswordDto.getNewPassword());
 
       ChangePasswordRequest request = ChangePasswordRequest.newBuilder()
-          .setId(resetPasswordDto.getId())
-          .setNewPassword(newPassword)
-          .build();
+              .setId(resetPasswordDto.getId())
+              .setNewPassword(newPassword)
+              .build();
 
       UniResponse response = blockingStub.changePassword(request);
 
@@ -98,7 +98,7 @@ public class Server
   }
 
   @PostMapping("/getDoctorById") public DoctorDto getDoctorById(
-      @RequestBody String id)
+          @RequestBody String id)
   {
     if (id == null || id.isEmpty())
     {
@@ -107,12 +107,12 @@ public class Server
     try
     {
       GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder().setId(id)
-          .build();
+              .build();
 
       GetDoctorByIdResponse response = blockingStub.getDoctorById(request);
 
       DoctorDto doctorDto = new DoctorDto(response.getFirstname(),
-          response.getLastname(), response.getSpecialisation(), "");
+              response.getLastname(), response.getSpecialisation(), "");
       return doctorDto;
     }
     catch (Exception e)
@@ -128,8 +128,8 @@ public class Server
     {
       System.out.println("request");
       GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
-          .setId(id)
-          .build();
+              .setId(id)
+              .build();
 
       GetAppointmentsResponseD response = blockingStub.getAppointmentsByDoctorId(request);
       List<GetAppointmentsDto> appointmentsDtoList = new ArrayList<>();
@@ -163,58 +163,58 @@ public class Server
   }
 
 
-    @GetMapping("/Prescriptions/getPatients")
-    public List<PatientDto> getPatients(@RequestParam String doctorid) {
-        try {
-            GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
+  @GetMapping("/Prescriptions/getPatients")
+  public List<PatientDto> getPatients(@RequestParam String doctorid) {
+    try {
+      GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
 
-            GetPatientsResponse response = blockingStub.getPatientsByDoctorId(request);
+      GetPatientsResponse response = blockingStub.getPatientsByDoctorId(request);
 
-            List<PatientDto> patientDtos = new ArrayList<>();
+      List<PatientDto> patientDtos = new ArrayList<>();
 
-            for (PatientDtoMessage patientDto : response.getPatientsList()) {
-                PatientDto dto = new PatientDto(
-                        patientDto.getCpr(),
-                        patientDto.getFirstName(),
-                        patientDto.getLastName(),
-                        patientDto.getEmail(),
-                        patientDto.getPhoneNumber()
-                );
+      for (PatientDtoMessage patientDto : response.getPatientsList()) {
+        PatientDto dto = new PatientDto(
+                patientDto.getCpr(),
+                patientDto.getFirstName(),
+                patientDto.getLastName(),
+                patientDto.getEmail(),
+                patientDto.getPhoneNumber()
+        );
 
-                patientDtos.add(dto);
-            }
+        patientDtos.add(dto);
+      }
 
-            return patientDtos;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Get patients failed: " + e.getMessage());
-        }
+      return patientDtos;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("Get patients failed: " + e.getMessage());
     }
+  }
 
-    @PostMapping("/Prescriptions/addPrescription")
-    public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
-        try{
-            AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
-                    .setId(prescriptionDto.getId())
-                    .setDiagnosis(prescriptionDto.getDiagnosis())
-                    .setMedication(prescriptionDto.getMedication())
-                    .setRecommendations(prescriptionDto.getRecommendations())
-                    .setDate(prescriptionDto.getDate())
-                    .setTime(prescriptionDto.getTime())
-                    .setPatientcpr(prescriptionDto.getPatientCpr())
-                    .setDoctorid(prescriptionDto.getDoctorId())
-                    .build();
+  @PostMapping("/Prescriptions/addPrescription")
+  public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
+    try{
+      AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
+              .setId(prescriptionDto.getId())
+              .setDiagnosis(prescriptionDto.getDiagnosis())
+              .setMedication(prescriptionDto.getMedication())
+              .setRecommendations(prescriptionDto.getRecommendations())
+              .setDate(prescriptionDto.getDate())
+              .setTime(prescriptionDto.getTime())
+              .setPatientcpr(prescriptionDto.getPatientCpr())
+              .setDoctorid(prescriptionDto.getDoctorId())
+              .build();
 
-            ResponseDto responseDto = new ResponseDto();
+      ResponseDto responseDto = new ResponseDto();
 
-            Response response = blockingStub.addPrescription(request);
-            responseDto.setResponse(response.getConfirmation());
+      Response response = blockingStub.addPrescription(request);
+      responseDto.setResponse(response.getConfirmation());
 
-            return responseDto;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            throw new RuntimeException("Add prescription failed: " + e.getMessage());
-        }
+      return responseDto;
     }
+    catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException("Add prescription failed: " + e.getMessage());
+    }
+  }
 }
