@@ -38,4 +38,5 @@ public interface EventInterface
   Patient getPatientByAppointmentId(int appointmentId);
   String updateUser(UpdatePatientDto request);
   void addPrescription(PrescriptionDto request);
+  Appointment getAppointmentByAppointmentId(int appointmentId);
 }

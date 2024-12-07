@@ -4,6 +4,7 @@
 @inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
 @using System.Security.Claims
+@using PatientFinal.DTOs
 
 <h3>Appointment Details</h3>
 
@@ -16,11 +17,21 @@
         @if (appointment != null)
         {
             <div>
-                <p><strong>Status:</strong> @appointment.status</p>
-                <p><strong>Type:</strong> @appointment.type</p>
-                <p><strong>Date:</strong> @appointment.Date.ToString("MMMM d, yyyy")</p>
-                <p><strong>Time:</strong> @appointment.Time.ToString(@"hh\:mm tt")</p>
+                <p><strong>Status:</strong> @appointment.Status</p>
+                <p><strong>Type:</strong> @appointment.Type</p>
+                <p><strong>Description:</strong>@appointment.Description</p>
+                <p><strong>Date:</strong> @appointment.Date.ToString()</p>
+                <p><strong>Time:</strong> @appointment.Time.ToString()</p>
+                <div></div>
+                <p><strong>Patient info:</strong></p>
+                <br/>
+                <p><strong>CPR: </strong>@appointment.patientCpr</p>
+                <p><strong>First name: </strong>@appointment.patientFirstName</p>
+                <p><strong>Surname: </strong>@appointment.patientLastName</p>
+                <p><strong>Email: </strong>@appointment.patientEmail</p>
+                <p><strong>Phone: </strong>@appointment.patientPhone</p>
 
+                <br/>
                 <!-- Cancel Appointment Button (No functionality for now) -->
                 <button class="btn btn-danger" @onclick="CancelAppointment">Cancel Appointment</button>
             </div>
@@ -34,7 +45,7 @@
 
 @code {
     [Parameter] public int AppointmentId { get; set; }
-    private AppointmentDisplay appointment;
+    private GetAppointmentsDto appointment;
     private string doctorId;
 
     [CascadingParameter] public Task<AuthenticationState> State { get; set; }
@@ -59,8 +70,7 @@
                 return;
             }
 
-            var appointmentsList = await AppointmentService.GetAppointments(doctorId);
-            appointment = appointmentsList.FirstOrDefault(ap => ap.Id == AppointmentId);
+            appointment = await AppointmentService.GetAppointmentsDetails(AppointmentId.ToString());
 
             if (appointment == null)
             {

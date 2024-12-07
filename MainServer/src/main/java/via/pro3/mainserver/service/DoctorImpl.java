@@ -205,4 +205,32 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             responseObserver.onCompleted();
         }
     }
+    @Override public void getAppointmentById(GetAppointmentByIdReq request, StreamObserver<AppointmentInfoD> responseObserver){
+      try {
+        Appointment appointment = model.getAppointmentByAppointmentId(Integer.parseInt(request.getId()));
+        Patient patient = model.getPatientByAppointmentId(Integer.parseInt(request.getId()));
+        AppointmentInfoD appointmentInfo = AppointmentInfoD.newBuilder()
+            .setId(appointment.getAppointmentId())
+            .setDescription(appointment.getDescription())
+            .setType(appointment.getType())
+            .setDate(appointment.getDate().toString())
+            .setTime(appointment.getTime().toString())
+            .setStatus(appointment.getStatus())
+            .setPatientCpr(patient.getCPRNo())
+            .setPatientFirstName(patient.getName())
+            .setPatientLastName(patient.getSurname())
+            .setPatientEmail(patient.getEmail())
+            .setPatientPhone(patient.getPhone())
+            .build();
+
+        responseObserver.onNext(appointmentInfo);
+        responseObserver.onCompleted();
+      } catch (Exception e) {
+        e.printStackTrace();
+        responseObserver.onError(Status.INTERNAL
+            .withDescription("Error fetching appointments: " + e.getMessage())
+            .withCause(e)
+            .asRuntimeException());
+      }
+    }
 }

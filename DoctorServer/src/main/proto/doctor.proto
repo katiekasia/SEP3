@@ -11,10 +11,14 @@ service Doctor {
   rpc getAppointmentsByDoctorId(GetDoctorByIdRequest) returns (GetAppointmentsResponseD){}
   rpc getPatientsByDoctorId(GetPatientsRequest) returns (GetPatientsResponse){}
   rpc addPrescription(AddPrescriptionRequest) returns (Response){}
+  rpc getAppointmentById(GetAppointmentByIdReq) returns(AppointmentInfoD){}
 }
 
 message EmptyRequest{}
 
+message GetAppointmentByIdReq{
+  string id =1;
+}
 message Response{
   string confirmation = 1;
 }

@@ -43,6 +43,7 @@
                             <div class="appointment" @onclick="() => NavigateToDetails(ap.Id)">
                                 <strong>@ap.status</strong><br />
                                 <span>@ap.type</span>
+                                <span>@ap.Id</span>
                                 <span>@ap.Time</span>
                             </div>
                         }
@@ -58,6 +59,7 @@
     
     private void NavigateToDetails(int appointmentId)
     {
+        Console.WriteLine(appointmentId);
         NavigationManager.NavigateTo($"/AppointmentDetails/{appointmentId}");
     }
     
@@ -67,6 +69,7 @@
     private List<AppointmentDisplay> AppointmentsList { get; set; } = new List<AppointmentDisplay>();
 
     private string doctorId;
+    
 
     // Days of the week (Mon to Fri)
     private readonly string[] DaysOfWeek = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };

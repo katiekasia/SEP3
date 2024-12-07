@@ -122,6 +122,37 @@ public class Server
     }
   }
 
+  @GetMapping("/appointment") public GetAppointmentsDto getAppointment(@RequestParam String appointmentId)
+  {
+    try
+    {
+      System.out.println("request");
+      GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
+          .setId(appointmentId)
+          .build();
+
+      AppointmentInfoD response = blockingStub.getAppointmentById(request);
+      GetAppointmentsDto dto = new GetAppointmentsDto();
+
+      dto.setId(response.getId());
+      dto.setDescription(response.getDescription());
+      dto.setType(response.getType());
+      dto.setDate(response.getDate());
+      dto.setTime(response.getTime());
+      dto.setStatus(response.getStatus());
+      dto.setPatientCpr(response.getPatientCpr());
+      dto.setPatientEmail(response.getPatientEmail());
+      dto.setPatientFirstName(response.getPatientFirstName());
+      dto.setPatientLastName(response.getPatientLastName());
+      dto.setPatientPhone(response.getPatientPhone());
+
+      System.out.println("sseasesa");
+      return dto;
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+    }
+  }
   @GetMapping("/appointments")
   public ResponseDto getAppointments(@RequestParam String id){
     try

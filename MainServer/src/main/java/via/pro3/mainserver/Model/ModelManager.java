@@ -142,12 +142,38 @@ public class ModelManager implements Model
   @Override public String changeDoctorPassword(
       ResetPasswordDto resetPasswordDto)
   {
-    return eventRepository.changePassowrdDoctor(resetPasswordDto);
+    try
+    {
+      return eventRepository.changePassowrdDoctor(resetPasswordDto);
+    }catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override
   public void addPrescription(PrescriptionDto prescriptionDto) {
-    eventRepository.addPrescription(prescriptionDto);
+    try
+    {
+      eventRepository.addPrescription(prescriptionDto);
+    }catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+
+  }
+
+  @Override public Appointment getAppointmentByAppointmentId(int appointmentId)
+  {
+    try
+    {
+     return eventRepository.getAppointmentByAppointmentId(appointmentId);
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override

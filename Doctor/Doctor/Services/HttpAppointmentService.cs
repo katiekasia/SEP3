@@ -57,4 +57,35 @@ public class HttpAppointmentService : IAppointmentService
             throw;
         }
     }
+
+    public async Task<GetAppointmentsDto> GetAppointmentsDetails(string appointmentId)
+    {
+        try
+        {
+            var httpResponse =
+                await http.GetAsync(
+                    $"{baseUrl}/Doctor/appointment?appointmentId={appointmentId}");
+            var response = await httpResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Raw response: {response}");
+
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new Exception(
+                    $"Failed to get appointments: {response}");
+
+            GetAppointmentsDto display = JsonSerializer.Deserialize<GetAppointmentsDto>(
+                response,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }); 
+            
+            return display;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(
+                $"Error retrieving appointments: {ex.Message}");
+            throw;
+        }
+    }
 }
