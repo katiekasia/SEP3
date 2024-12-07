@@ -226,6 +226,41 @@ public class EventRepository implements EventInterface {
         }
     }
 
+    @Override public Appointment getAppointmentByAppointmentId(int appointmentId)
+    {
+        String sql = "SELECT * FROM appointment WHERE id = ?";
+        System.out.println(appointmentId);
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setInt(1, appointmentId);
+
+            try (ResultSet rs = statement.executeQuery())
+            {
+                if (rs.next())
+                {
+
+                    Clinic clinic = getClinicByDoctorId(
+                        rs.getString("doctor_id"));
+
+                    Appointment appointment = new Appointment(rs.getInt("id"),
+                        clinic, rs.getString("type"),
+                        new MyDateAndTime(rs.getDate("date").toLocalDate(),
+                            rs.getTime("time").toLocalTime()),
+                        rs.getString("description"), rs.getString("status"));
+                    return appointment;
+                }
+            }
+
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(
+                "Failed to fetch doctor from SQL: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
     @Override
     public boolean loginDoctor(LoginDto request) {
         String sql = "SELECT * FROM doctor WHERE id = ?";
@@ -349,8 +384,8 @@ public class EventRepository implements EventInterface {
                 p.last_name AS patient_last_name,
                 p.phone_number AS patient_phone,
                 p.email AS patient_email, 
-                c.name AS clinic_name,\s
-                c.street AS clinic_street,\s
+                c.name AS clinic_name,
+                c.street AS clinic_street,
                 c.street_number AS clinic_street_number,
                 city.city_name AS clinic_city
             FROM appointment a

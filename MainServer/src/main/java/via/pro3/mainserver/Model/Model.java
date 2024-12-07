@@ -23,6 +23,7 @@ public interface Model
   List<Appointment> getDoctorAppointments(String id);
   Patient getPatientByAppointmentId(int appointmentId);
   void addPrescription(PrescriptionDto prescriptionDto);
+  Appointment getAppointmentByAppointmentId(int appointmentId);
 
 
 }

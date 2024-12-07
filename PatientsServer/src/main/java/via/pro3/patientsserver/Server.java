@@ -146,6 +146,7 @@ public class Server {
       throw new RuntimeException("Error fetching appointments: ", e);
     }
   }
+
     @PostMapping("/update")
     public ResponseDto updatePatient(@RequestBody UpdatePatientDto updatePatientDto) {
         try {
