@@ -10,18 +10,20 @@ public class Doctor
   private String password;
   private String email;
   private String id;
-  private String specialisation;
+  private String phone;
+  private String specialization;
   private Map<Integer,Appointment> appointments;
   private Clinic clinic;
 
-  public Doctor(String  id, String name, String surname, String password, String email,  String specialisation,Clinic clinic)
+  public Doctor(String  id, String name, String surname,String phone, String email, String password, String specialization,Clinic clinic)
   {
+    setId(id);
     setName(name);
     setSurname(surname);
     setPassword(password);
     setEmail(email);
-    setId(id);
-    setSpecialisation(specialisation);
+    setPhone(phone);
+    setSpecialization(specialization);
     setClinic(clinic);
     appointments = new HashMap<Integer, Appointment>();
   }
@@ -50,6 +52,8 @@ public Appointment getAppointmentById(int id){
     return clinic;
   }
 
+  public String getPhone() {return phone;}
+
   public String getId()
   {
     return id;
@@ -70,15 +74,15 @@ public Appointment getAppointmentById(int id){
     return surname;
   }
 
-  public String getSpecialisation()
+  public String getSpecialization()
   {
-    return specialisation;
+    return specialization;
   }
   public Map<Integer, Appointment> getAppointments(){
     return appointments;
   }
   @Override public String toString(){
-  return getId() + getName() + " " + getSurname() + " " + getSpecialisation();
+  return getId() + getName() + " " + getSurname() + " " + getSpecialization();
   }
 //SETTERS BELOW*********************************
 
@@ -90,6 +94,11 @@ public Appointment getAppointmentById(int id){
   public void setId(String id)
   {
     this.id = id;
+  }
+
+  public void setPhone(String phone)
+  {
+    this.phone = phone;
   }
 
   public void setClinic(Clinic clinic)
@@ -107,9 +116,9 @@ public Appointment getAppointmentById(int id){
     this.password = password;
   }
 
-  public void setSpecialisation(String specialisation)
+  public void setSpecialization(String specialization)
   {
-    this.specialisation = specialisation;
+    this.specialization = specialization;
   }
 
   public void setSurname(String surname)

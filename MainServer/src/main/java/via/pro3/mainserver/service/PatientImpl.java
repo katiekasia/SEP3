@@ -5,12 +5,13 @@ import io.grpc.stub.StreamObserver;
 
 import patient.grpc.*;
 
-import via.pro3.mainserver.DTOs.CreateAppointmentDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.RegisterDto;
-import via.pro3.mainserver.DTOs.UserDto;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.Model.*;
+import via.pro3.mainserver.Model.Clinic;
+import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
+
+import java.util.List;
 
 public class PatientImpl extends PatientGrpc.PatientImplBase {
     private final Model model;
@@ -94,5 +95,95 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
             responseObserver.onCompleted();
         }
     }
+
+    @Override
+    public void getCities(GetCities request, StreamObserver<CityListResponse> responseObserver) {
+        try {
+            System.out.println("impl is here");
+            List<CityDto> cities = model.getCities();
+
+            CityListResponse.Builder responseBuilder = CityListResponse.newBuilder();
+
+            for (CityDto city : cities) {
+                CityRequest info = CityRequest.newBuilder()
+                    .setName(city.getCity())
+                    .setPostalcode(city.getCode())
+                    .build();
+
+                responseBuilder.addCities(info);
+            }
+            responseObserver.onNext(responseBuilder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(
+                Status.INTERNAL
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
+            );
+        } finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
+    public void getClinics(CityRequest request, StreamObserver<ClinicListResponse> responseObserver) {
+        try {
+            System.out.println("impl code");
+            List<Clinic> clinics = model.getClinicByCity(request.getPostalcode());
+            ClinicListResponse.Builder responseBuilder = ClinicListResponse.newBuilder();
+            for (Clinic clinic : clinics) {
+                patient.grpc.Clinic info = patient.grpc.Clinic.newBuilder()
+                    .setId(clinic.getId())
+                    .setName(clinic.getName())
+                    .setAddress(clinic.getAddress()).build();
+                    responseBuilder.addClinics(info);
+            }
+            responseObserver.onNext(responseBuilder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(
+                Status.INTERNAL
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
+            );
+        } finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+   @Override
+   public void getDoctors(patient.grpc.Clinic request, StreamObserver<DoctorListResponse> responseObserver) {
+        try {
+            System.out.println("PATEINTIMPL DOCTOR");
+            List<Doctor> doctors = model.getDoctorByClinic(request.getId());
+            DoctorListResponse.Builder responseBuilder = DoctorListResponse.newBuilder();
+            for (Doctor doctor : doctors) {
+                patient.grpc.DoctorRequest info = patient.grpc.DoctorRequest.newBuilder()
+                    .setId(doctor.getId())
+                    .setFirstname(doctor.getName())
+                    .setLastname(doctor.getSurname())
+                    .setSpecialisation(doctor.getSpecialization())
+                    .build();
+                System.out.println("specialization" + doctor.getSpecialization());
+                responseBuilder.addDoctor(info);
+            }
+            responseObserver.onNext(responseBuilder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(
+                Status.INTERNAL
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
+            );
+        } finally {
+            responseObserver.onCompleted();
+        }
+    }
+
+
+
 }
 

@@ -1,31 +1,63 @@
 ﻿@page "/Demo"
 @using System.Diagnostics
+@using System.Linq.Expressions
 @using PatientFinal.DTOs
 @using PatientFinal.Services
 @inject HttpClient Http
 @inject IAppointmentService AppointmentService
+@inject NavigationManager Navigation
 
 <PageTitle>Book Appointment</PageTitle>
 <h3>Book an Appointment</h3>
 
 @if (!showConfirmation)
 {
-    <div id="appointment-form" class="form-container">
+     <div id="appointment-form" class="form-container">
+    <div class="form-group">
+        <label for="location">Choose a city:</label>
+        <select id="location" class="dropdown" @onchange="HandleLocationChange">
+            <option value="">Select a location</option>
+            @if (cities != null && cities.Any())
+            {
+            @foreach (CityDto city in cities)
+            {
+            <option value="@city.code">@city.name (@city.code)</option>
+            }
+            }
+            else
+            {
+            <p>No cities available.</p>
+            }
+
+        </select>
+    </div>
+
         <div class="form-group">
-            <label for="location">Choose a location:</label>
-            <select id="location" class="dropdown" @onchange="HandleLocationChange">
-                <option value="">Select a location</option>
-                @foreach (var location in locations)
+            <label for="clinic">Choose a clinic:</label>
+            <select id="clinic" class="dropdown"  @onchange="HandleClinicChange">
+                <option value="">Select a clinic</option>
+                @foreach (ClinicDto clinic in clinics)
                 {
-                    <option value="@location.Detail">@location.Name</option>
+                    <option value="@clinic.id">@clinic.name @clinic.address</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="doctor">Choose a doctor:</label>
+            <select id="doctor" class="dropdown" @onchange="HandleDoctorChange">
+                <option value="">Select a doctor</option>
+                @foreach (var doctor in doctors)
+                {
+                <option value="@doctor.id">@doctor.name @doctor.surname @doctor.specialization</option>
                 }
             </select>
         </div>
 
         <div class="form-group">
             <label for="specialization">Choose a type of visit:</label>
-            <select id="specialization" class="dropdown" @onchange="HandleSpecializationChange">
-                <option value="">Select a specialization</option>
+            <select id="specialization" class="dropdown" @bind="selectedType">
+                <option value="">Select a type of visit</option>
                 @foreach (var type in types)
                 {
                     <option value="@type">@type</option>
@@ -56,8 +88,10 @@
 {
     <div id="confirmation-review" class="confirmation-container">
         <h4>Review and Confirm Your Appointment</h4>
-        <p><strong>Location:</strong> @selectedLocation</p>
-        <p><strong>Specialization:</strong> @selectedTypes</p>
+        <p><strong>City:</strong> @selectedLocation.name</p>
+        <p><strong>Clinic:</strong> @selectedClinic.name @selectedClinic.address</p>
+        <p><strong>Doctor of your choice:</strong> @selectedDoctor.name @selectedDoctor.surname @selectedDoctor.specialization</p>
+        <p><strong>Type of visit:</strong> @selectedType</p>
         <p><strong>Description:</strong> @writtenDescription</p>
         <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
         <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
@@ -72,27 +106,121 @@
 }
 
 @code {
-    private List<(string Name, string Detail)> locations = new()
+   private List<CityDto> cities = new List<CityDto>();
+   private List<ClinicDto> clinics = new List<ClinicDto>();
+   private List<DoctorDto> doctors = new List<DoctorDto>();
+
+    protected override async Task OnInitializedAsync()
     {
-        ("Hospital North", "1234 North St, City A"),
-        ("Clinic Central", "5678 Central Blvd, City B"),
-        ("Health Center South", "91011 South Ave, City C")
-    };
+        try
+        {
+            cities = await AppointmentService.GetCities();
 
-    private List<string> types = new() { "Cardiologist", "Gynecologist", "Family Doctor" };
+        }
+        catch (Exception e)
+        {
+            serverResponse = $"Error fetching cities: {e.Message}";
+            Console.WriteLine("Error: " + e);
+        }
 
+        try
+        {
+            if(selectedLocation!= null)
+            clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
+        try
+        {
+            if(selectedClinic!= null)
+                doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    
+    private List<string> types = new() { "Preventive Visit/Check up", "Consultation Visit", "Urgent Care Visit", "Telemedicine Visit" };
+    
     private string? serverResponse;
-    private string? selectedLocation;
-    private string? selectedTypes;
+    private CityDto? selectedLocation;
+    private DoctorDto? selectedDoctor;
+    private ClinicDto? selectedClinic;
+    private string? selectedType;
     private string? writtenDescription;
     private DateTime? selectedDate;
     private TimeOnly? selectedTime;
     private bool showConfirmation = false;
+    //
+    private async void HandleLocationChange(ChangeEventArgs e)
+    {
+        string selectedCode = e.Value?.ToString();
 
-    private void HandleLocationChange(ChangeEventArgs e) => selectedLocation = e.Value?.ToString();
-    private void HandleSpecializationChange(ChangeEventArgs e) => selectedTypes = e.Value?.ToString();
+        // Match the selected code to the corresponding CityDto
+        selectedLocation = cities.FirstOrDefault(city => city.code == selectedCode);
+
+        // Debug or handle null cases if no city matches
+        if (selectedLocation == null)
+        {
+            Console.WriteLine($"No city found with code: {selectedCode}");
+        }
+        else
+        {
+            Console.WriteLine($"Selected city: , {selectedLocation.name} with:  {selectedLocation.code}");
+            clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
+            Console.WriteLine(clinics.Count);
+            StateHasChanged();
+        }
+    }
+    
+    private async void HandleClinicChange(ChangeEventArgs e)
+    {
+        string selectedClinicId = e.Value?.ToString();
+
+        if (!string.IsNullOrEmpty(selectedClinicId))
+        {
+            // Update the selected clinic (from the clinic list)
+            selectedClinic = clinics.FirstOrDefault(clinic => clinic.id == selectedClinicId);
+
+            // Fetch the list of doctors for the selected clinic
+            if (selectedClinic != null)
+            {
+                try
+                {
+                    doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
+                    Console.WriteLine($"Doctors found: {doctors.Count}");
+                    foreach (var doc in doctors)
+                    {
+                        Console.WriteLine($"Doctor: {doc.name}, ID: {doc.id}, Specialization: {doc.specialization}");
+                    }
+                    StateHasChanged();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error fetching doctors: {ex.Message}");
+                }
+            }
+        }
+    }
+    private void HandleDoctorChange(ChangeEventArgs e)
+    {
+        string selectedDoctorId = e.Value?.ToString();
+        selectedDoctor = doctors.FirstOrDefault(d => d.id == selectedDoctorId);
+        Console.WriteLine($"Selected doctor: {selectedDoctor?.name} {selectedDoctor?.specialization}");
+        StateHasChanged();
+    }
+    
     private void ConfirmDetails() => showConfirmation = true;
-
+    
     private async Task CreateAppointment()
     {
         Console.WriteLine(selectedDate.ToString());
@@ -102,18 +230,18 @@
             serverResponse = "Please select a valid date and time.";
             return;
         }
-
+    
         var createAppointmentDto = new CreateAppointmentDto()
         {
             status = "Active",
             description = writtenDescription,
-            type = selectedTypes,
-            doctorId = "1",
+            type = selectedType,
+            doctorId = selectedDoctor.id,
             patientCpr = "1234567890",
             date = selectedDate?.ToString("yyyy-MM-dd"),
             time = selectedTime?.ToString("HH:mm")
         };
-
+    
         try
         {
             
@@ -121,6 +249,8 @@
             serverResponse = response.response != null
                 ? response.response
                 :" response";
+            Navigation.NavigateTo("/appointments");
+            
         }
         catch (Exception e)
         {
@@ -131,6 +261,7 @@
           
         }
     }
+    
 }
 
 

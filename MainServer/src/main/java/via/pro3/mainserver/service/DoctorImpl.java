@@ -65,7 +65,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase {
             GetDoctorByIdResponse response = GetDoctorByIdResponse.newBuilder()
                     .setFirstname(model.getDoctorById(request.getId()).getName())
                     .setLastname(model.getDoctorById(request.getId()).getSurname())
-                    .setSpecialisation(model.getDoctorById(request.getId()).getSpecialisation())
+                    .setSpecialisation(model.getDoctorById(request.getId()).getSpecialization())
                     .build();
             responseObserver.onNext(response);
         }

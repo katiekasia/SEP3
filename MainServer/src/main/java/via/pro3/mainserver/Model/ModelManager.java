@@ -10,6 +10,7 @@ import via.pro3.mainserver.database.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ModelManager implements Model
 {
@@ -60,6 +61,26 @@ public class ModelManager implements Model
   {
     return eventRepository.getDoctorById(id);
   }
+
+  @Override public List<CityDto> getCities()
+  {
+    System.out.println("Model manager Cities");
+    return eventRepository.getCities();
+  }
+
+  @Override public List<Clinic> getClinicByCity(String code)
+  {
+    System.out.println("Model manager Clinics");
+    return eventRepository.getClinicByCity(code);
+  }
+
+  @Override public List<Doctor> getDoctorByClinic(String id_clinic)
+  {
+    System.out.println("Model manager Doctors");
+    return eventRepository.getDoctorsByClinic(id_clinic);
+  }
+
+
 
   @Override
   public void registerPatient(RegisterDto registerDto) {

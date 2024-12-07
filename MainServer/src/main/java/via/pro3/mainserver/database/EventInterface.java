@@ -1,5 +1,7 @@
 package via.pro3.mainserver.database;
 
+import via.pro3.mainserver.DTOs.CityDto;
+import via.pro3.mainserver.DTOs.DoctorDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.Appointment;
@@ -10,6 +12,7 @@ import via.pro3.mainserver.Model.Patient;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface EventInterface
 {
@@ -22,4 +25,8 @@ public interface EventInterface
   String loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
+  List<Doctor> getDoctors();
+  List<CityDto> getCities();
+  List<Clinic> getClinicByCity(String code);
+  List<Doctor> getDoctorsByClinic(String id_clinic);
 }
