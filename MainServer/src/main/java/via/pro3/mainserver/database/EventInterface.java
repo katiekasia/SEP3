@@ -2,6 +2,7 @@ package via.pro3.mainserver.database;
 
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.UpdatePatientDto;
+import via.pro3.mainserver.DTOs.PrescriptionDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
@@ -20,6 +21,7 @@ public interface EventInterface
   void createUser(Patient patient);
   Doctor getDoctorById(String id);
   Patient getPatientByCpr(String cpr);
+  List<Patient> getPatientsByDoctorId(String doctorid);
   Clinic getClinicByDoctorId(String id);
   boolean loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
@@ -29,4 +31,5 @@ public interface EventInterface
   String getDoctorByClinicName(String clinicName);
   Patient getPatientByAppointmentId(int appointmentId);
   String updateUser(UpdatePatientDto request);
+  void addPrescription(PrescriptionDto request);
 }

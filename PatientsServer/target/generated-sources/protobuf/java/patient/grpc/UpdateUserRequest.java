@@ -19,7 +19,6 @@ public  final class UpdateUserRequest extends
     surname_ = "";
     phone_ = "";
     email_ = "";
-    oldPassword_ = "";
     newPassword_ = "";
   }
 
@@ -73,12 +72,6 @@ public  final class UpdateUserRequest extends
             break;
           }
           case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            oldPassword_ = s;
-            break;
-          }
-          case 50: {
             java.lang.String s = input.readStringRequireUtf8();
 
             newPassword_ = s;
@@ -243,44 +236,10 @@ public  final class UpdateUserRequest extends
     }
   }
 
-  public static final int OLDPASSWORD_FIELD_NUMBER = 5;
-  private volatile java.lang.Object oldPassword_;
-  /**
-   * <code>string oldPassword = 5;</code>
-   */
-  public java.lang.String getOldPassword() {
-    java.lang.Object ref = oldPassword_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      oldPassword_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string oldPassword = 5;</code>
-   */
-  public com.google.protobuf.ByteString
-      getOldPasswordBytes() {
-    java.lang.Object ref = oldPassword_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      oldPassword_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int NEWPASSWORD_FIELD_NUMBER = 6;
+  public static final int NEWPASSWORD_FIELD_NUMBER = 5;
   private volatile java.lang.Object newPassword_;
   /**
-   * <code>string newPassword = 6;</code>
+   * <code>string newPassword = 5;</code>
    */
   public java.lang.String getNewPassword() {
     java.lang.Object ref = newPassword_;
@@ -295,7 +254,7 @@ public  final class UpdateUserRequest extends
     }
   }
   /**
-   * <code>string newPassword = 6;</code>
+   * <code>string newPassword = 5;</code>
    */
   public com.google.protobuf.ByteString
       getNewPasswordBytes() {
@@ -335,11 +294,8 @@ public  final class UpdateUserRequest extends
     if (!getEmailBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, email_);
     }
-    if (!getOldPasswordBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, oldPassword_);
-    }
     if (!getNewPasswordBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, newPassword_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, newPassword_);
     }
   }
 
@@ -360,11 +316,8 @@ public  final class UpdateUserRequest extends
     if (!getEmailBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, email_);
     }
-    if (!getOldPasswordBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, oldPassword_);
-    }
     if (!getNewPasswordBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, newPassword_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, newPassword_);
     }
     memoizedSize = size;
     return size;
@@ -390,8 +343,6 @@ public  final class UpdateUserRequest extends
         .equals(other.getPhone());
     result = result && getEmail()
         .equals(other.getEmail());
-    result = result && getOldPassword()
-        .equals(other.getOldPassword());
     result = result && getNewPassword()
         .equals(other.getNewPassword());
     return result;
@@ -412,8 +363,6 @@ public  final class UpdateUserRequest extends
     hash = (53 * hash) + getPhone().hashCode();
     hash = (37 * hash) + EMAIL_FIELD_NUMBER;
     hash = (53 * hash) + getEmail().hashCode();
-    hash = (37 * hash) + OLDPASSWORD_FIELD_NUMBER;
-    hash = (53 * hash) + getOldPassword().hashCode();
     hash = (37 * hash) + NEWPASSWORD_FIELD_NUMBER;
     hash = (53 * hash) + getNewPassword().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -553,8 +502,6 @@ public  final class UpdateUserRequest extends
 
       email_ = "";
 
-      oldPassword_ = "";
-
       newPassword_ = "";
 
       return this;
@@ -583,7 +530,6 @@ public  final class UpdateUserRequest extends
       result.surname_ = surname_;
       result.phone_ = phone_;
       result.email_ = email_;
-      result.oldPassword_ = oldPassword_;
       result.newPassword_ = newPassword_;
       onBuilt();
       return result;
@@ -640,10 +586,6 @@ public  final class UpdateUserRequest extends
       }
       if (!other.getEmail().isEmpty()) {
         email_ = other.email_;
-        onChanged();
-      }
-      if (!other.getOldPassword().isEmpty()) {
-        oldPassword_ = other.oldPassword_;
         onChanged();
       }
       if (!other.getNewPassword().isEmpty()) {
@@ -952,78 +894,9 @@ public  final class UpdateUserRequest extends
       return this;
     }
 
-    private java.lang.Object oldPassword_ = "";
-    /**
-     * <code>string oldPassword = 5;</code>
-     */
-    public java.lang.String getOldPassword() {
-      java.lang.Object ref = oldPassword_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        oldPassword_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string oldPassword = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getOldPasswordBytes() {
-      java.lang.Object ref = oldPassword_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        oldPassword_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string oldPassword = 5;</code>
-     */
-    public Builder setOldPassword(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      oldPassword_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string oldPassword = 5;</code>
-     */
-    public Builder clearOldPassword() {
-      
-      oldPassword_ = getDefaultInstance().getOldPassword();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string oldPassword = 5;</code>
-     */
-    public Builder setOldPasswordBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      oldPassword_ = value;
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object newPassword_ = "";
     /**
-     * <code>string newPassword = 6;</code>
+     * <code>string newPassword = 5;</code>
      */
     public java.lang.String getNewPassword() {
       java.lang.Object ref = newPassword_;
@@ -1038,7 +911,7 @@ public  final class UpdateUserRequest extends
       }
     }
     /**
-     * <code>string newPassword = 6;</code>
+     * <code>string newPassword = 5;</code>
      */
     public com.google.protobuf.ByteString
         getNewPasswordBytes() {
@@ -1054,7 +927,7 @@ public  final class UpdateUserRequest extends
       }
     }
     /**
-     * <code>string newPassword = 6;</code>
+     * <code>string newPassword = 5;</code>
      */
     public Builder setNewPassword(
         java.lang.String value) {
@@ -1067,7 +940,7 @@ public  final class UpdateUserRequest extends
       return this;
     }
     /**
-     * <code>string newPassword = 6;</code>
+     * <code>string newPassword = 5;</code>
      */
     public Builder clearNewPassword() {
       
@@ -1076,7 +949,7 @@ public  final class UpdateUserRequest extends
       return this;
     }
     /**
-     * <code>string newPassword = 6;</code>
+     * <code>string newPassword = 5;</code>
      */
     public Builder setNewPasswordBytes(
         com.google.protobuf.ByteString value) {

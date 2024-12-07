@@ -56,4 +56,14 @@ public interface LoginDoctorResponseOrBuilder extends
    */
   com.google.protobuf.ByteString
       getPasswordBytes();
+
+  /**
+   * <code>string confirmation = 6;</code>
+   */
+  java.lang.String getConfirmation();
+  /**
+   * <code>string confirmation = 6;</code>
+   */
+  com.google.protobuf.ByteString
+      getConfirmationBytes();
 }

@@ -33,7 +33,7 @@ public class HttpAppointmentService : IAppointmentService
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                });
+                }); 
 
             List<AppointmentDisplay> displays = new List<AppointmentDisplay>();
             foreach (var appointment in responseDto.Appointments)

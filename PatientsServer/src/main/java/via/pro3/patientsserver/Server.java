@@ -149,18 +149,13 @@ public class Server {
     @PostMapping("/update")
     public ResponseDto updatePatient(@RequestBody UpdatePatientDto updatePatientDto) {
         try {
-            System.out.println("CPR: " + updatePatientDto.getCPR());
-            System.out.println("Surname: " + updatePatientDto.getSurname());
-            System.out.println("Phone: " + updatePatientDto.getPhone());
-            System.out.println("Email: " + updatePatientDto.getEmail());
-            System.out.println("New Password: " + updatePatientDto.getNewPassword());
-
+            String newPassword = PasswordHasher.hash(updatePatientDto.getNewPassword());
             UpdateUserRequest request = UpdateUserRequest.newBuilder()
                     .setCPR(updatePatientDto.getCPR())
                     .setSurname(updatePatientDto.getSurname())
                     .setPhone(updatePatientDto.getPhone())
                     .setEmail(updatePatientDto.getEmail())
-                    .setNewPassword(updatePatientDto.getNewPassword())
+                    .setNewPassword(newPassword)
                     .build();
 
             DBresponse response = blockingStub.updateUser(request);

@@ -62,6 +62,11 @@ public class ModelManager implements Model
     return eventRepository.getPatientByCpr(cpr);
   }
 
+  @Override
+  public List<Patient> getPatientsByDoctorId(String doctorid) {
+    return eventRepository.getPatientsByDoctorId(doctorid);
+  }
+
   @Override public Doctor getDoctorById(String id)
   {
     return eventRepository.getDoctorById(id);
@@ -116,19 +121,21 @@ public class ModelManager implements Model
     return eventRepository.changePassowrdDoctor(resetPasswordDto);
   }
 
-  @Override public Doctor loginDoctor(LoginDto loginDto)
-  {
-    try
-    {
-      if (eventRepository.loginDoctor(loginDto))
-      {
+  @Override
+  public void addPrescription(PrescriptionDto prescriptionDto) {
+    eventRepository.addPrescription(prescriptionDto);
+  }
+
+  @Override
+  public Doctor loginDoctor(LoginDto loginDto) {
+    try{
+      if(eventRepository.loginDoctor(loginDto)){
         Doctor doctor = getDoctorById(loginDto.getcpr());
 
         return doctor;
       }
     }
-    catch (Exception e)
-    {
+    catch (Exception e){
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }

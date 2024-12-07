@@ -20,6 +20,7 @@ public  final class LoginDoctorResponse extends
     specialisation_ = "";
     id_ = "";
     password_ = "";
+    confirmation_ = "";
   }
 
   @java.lang.Override
@@ -75,6 +76,12 @@ public  final class LoginDoctorResponse extends
             java.lang.String s = input.readStringRequireUtf8();
 
             password_ = s;
+            break;
+          }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            confirmation_ = s;
             break;
           }
         }
@@ -270,6 +277,40 @@ public  final class LoginDoctorResponse extends
     }
   }
 
+  public static final int CONFIRMATION_FIELD_NUMBER = 6;
+  private volatile java.lang.Object confirmation_;
+  /**
+   * <code>string confirmation = 6;</code>
+   */
+  public java.lang.String getConfirmation() {
+    java.lang.Object ref = confirmation_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      confirmation_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string confirmation = 6;</code>
+   */
+  public com.google.protobuf.ByteString
+      getConfirmationBytes() {
+    java.lang.Object ref = confirmation_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      confirmation_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -297,6 +338,9 @@ public  final class LoginDoctorResponse extends
     if (!getPasswordBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, password_);
     }
+    if (!getConfirmationBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, confirmation_);
+    }
   }
 
   public int getSerializedSize() {
@@ -318,6 +362,9 @@ public  final class LoginDoctorResponse extends
     }
     if (!getPasswordBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, password_);
+    }
+    if (!getConfirmationBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, confirmation_);
     }
     memoizedSize = size;
     return size;
@@ -345,6 +392,8 @@ public  final class LoginDoctorResponse extends
         .equals(other.getId());
     result = result && getPassword()
         .equals(other.getPassword());
+    result = result && getConfirmation()
+        .equals(other.getConfirmation());
     return result;
   }
 
@@ -365,6 +414,8 @@ public  final class LoginDoctorResponse extends
     hash = (53 * hash) + getId().hashCode();
     hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
     hash = (53 * hash) + getPassword().hashCode();
+    hash = (37 * hash) + CONFIRMATION_FIELD_NUMBER;
+    hash = (53 * hash) + getConfirmation().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -504,6 +555,8 @@ public  final class LoginDoctorResponse extends
 
       password_ = "";
 
+      confirmation_ = "";
+
       return this;
     }
 
@@ -531,6 +584,7 @@ public  final class LoginDoctorResponse extends
       result.specialisation_ = specialisation_;
       result.id_ = id_;
       result.password_ = password_;
+      result.confirmation_ = confirmation_;
       onBuilt();
       return result;
     }
@@ -590,6 +644,10 @@ public  final class LoginDoctorResponse extends
       }
       if (!other.getPassword().isEmpty()) {
         password_ = other.password_;
+        onChanged();
+      }
+      if (!other.getConfirmation().isEmpty()) {
+        confirmation_ = other.confirmation_;
         onChanged();
       }
       onChanged();
@@ -959,6 +1017,75 @@ public  final class LoginDoctorResponse extends
   checkByteStringIsUtf8(value);
       
       password_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object confirmation_ = "";
+    /**
+     * <code>string confirmation = 6;</code>
+     */
+    public java.lang.String getConfirmation() {
+      java.lang.Object ref = confirmation_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        confirmation_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string confirmation = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getConfirmationBytes() {
+      java.lang.Object ref = confirmation_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        confirmation_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string confirmation = 6;</code>
+     */
+    public Builder setConfirmation(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      confirmation_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string confirmation = 6;</code>
+     */
+    public Builder clearConfirmation() {
+      
+      confirmation_ = getDefaultInstance().getConfirmation();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string confirmation = 6;</code>
+     */
+    public Builder setConfirmationBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      confirmation_ = value;
       onChanged();
       return this;
     }

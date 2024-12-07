@@ -48,21 +48,11 @@ public interface UpdateUserRequestOrBuilder extends
       getEmailBytes();
 
   /**
-   * <code>string oldPassword = 5;</code>
-   */
-  java.lang.String getOldPassword();
-  /**
-   * <code>string oldPassword = 5;</code>
-   */
-  com.google.protobuf.ByteString
-      getOldPasswordBytes();
-
-  /**
-   * <code>string newPassword = 6;</code>
+   * <code>string newPassword = 5;</code>
    */
   java.lang.String getNewPassword();
   /**
-   * <code>string newPassword = 6;</code>
+   * <code>string newPassword = 5;</code>
    */
   com.google.protobuf.ByteString
       getNewPasswordBytes();

@@ -74,6 +74,5 @@ message UpdateUserRequest
   string surname = 2;
   string phone = 3;
   string email = 4;
-  string oldPassword = 5;
-  string newPassword = 6;
+  string newPassword = 5;
 }
