@@ -56,6 +56,7 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
 
             Patient patient = model.loginPatient(loginDto);
 
+            System.out.println(patient.getPassword());
             LoginResponse response = LoginResponse.newBuilder()
                     .setName(patient.getName())
                     .setEmail(patient.getEmail())
@@ -79,24 +80,30 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
     @Override
-    public void registerPatient(RegisterRequest request, StreamObserver<DBresponse> responseObserver) {
-        try {
-            RegisterDto registerDto = new RegisterDto(request.getName(), request.getSurname(), request.getEmail(),
-                    request.getPhone(), request.getPassword(), request.getCPRNo());
+    public void registerPatient(RegisterRequest request, StreamObserver<DBresponse> responseObserver)
+    {
+        try
+        {
+            RegisterDto registerDto = new RegisterDto(request.getName(),
+                request.getSurname(), request.getEmail(), request.getPhone(),
+                request.getPassword(), request.getCPRNo());
             System.out.println("impl is here");
 
             model.registerPatient(registerDto);
 
             responseObserver.onNext(DBresponse.newBuilder().build());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             DBresponse errorResponse = DBresponse.newBuilder()
-                    .setConfirmation("Registration failed: " + e.getMessage())
-                    .build();
+                .setConfirmation("Registration failed: " + e.getMessage())
+                .build();
 
             responseObserver.onNext(errorResponse);
         }
-        finally {
+        finally
+        {
             responseObserver.onCompleted();
         }
     }
@@ -121,7 +128,7 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                         .setDoctorId(doctor.getId())
                         .setDoctorFirstName(doctor.getName())
                         .setDoctorLastName(doctor.getSurname())
-                        .setDoctorSpecialization(doctor.getSpecialisation())
+                        .setDoctorSpecialization(doctor.getSpecialization())
                         .setClinicName(clinic.getName())
                         .setClinicStreet(clinic.getStreet())
                         .setClinicStreetNumber(clinic.getStreetNo())

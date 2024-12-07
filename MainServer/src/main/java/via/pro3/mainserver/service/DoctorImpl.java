@@ -3,11 +3,7 @@ package via.pro3.mainserver.service;
 import doctor.grpc.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import org.apache.juli.logging.Log;
-import patient.grpc.AppointmentInfo;
-import patient.grpc.GetAppointmentsResponse;
-import patient.grpc.PatientRequest;
-import via.pro3.mainserver.DTOs.DoctorDto;
+
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.*;
@@ -40,7 +36,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
       LoginDoctorResponse response = LoginDoctorResponse.newBuilder()
           .setId(doctor.getId()).setName(doctor.getName())
           .setSurname(doctor.getSurname())
-          .setSpecialisation(doctor.getSpecialisation())
+          .setSpecialisation(doctor.getSpecialization())
           .setPassword(doctor.getPassword())
           .build();
 
@@ -93,7 +89,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
           .setFirstname(model.getDoctorById(request.getId()).getName())
           .setLastname(model.getDoctorById(request.getId()).getSurname())
           .setSpecialisation(
-              model.getDoctorById(request.getId()).getSpecialisation()).build();
+              model.getDoctorById(request.getId()).getSpecialization()).build();
       responseObserver.onNext(response);
     }
     catch (Exception e)

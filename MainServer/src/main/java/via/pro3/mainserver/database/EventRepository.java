@@ -102,8 +102,9 @@ public class EventRepository implements EventInterface {
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                         resultSet.getString("phone_number"),
+resultSet.getString("email"),
+//                            resultSet.getString("")
                             resultSet.getString("password"),
-                            resultSet.getString("clinic_id"),
                             resultSet.getString("specialisation"),
                             getClinicByDoctorId(doctorId)
                     );
@@ -320,6 +321,7 @@ public class EventRepository implements EventInterface {
             c.name AS clinic_name, 
             c.street AS clinic_street, 
             c.street_number AS clinic_street_number,
+            c.id AS clinic_id,
             city.city_name AS clinic_city
         FROM appointment a
         INNER JOIN doctor d ON a.doctor_id = d.id
@@ -337,6 +339,7 @@ public class EventRepository implements EventInterface {
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
                     Clinic clinic = new Clinic(
+                        rs.getString("clinic_id"),
                         rs.getString("clinic_name"),
                         rs.getString("clinic_city"),
                         rs.getString("clinic_street"),
@@ -349,6 +352,7 @@ public class EventRepository implements EventInterface {
                         rs.getString("doctor_last_name"),
                         null, // password not needed
                         null, // email not needed
+                        null,
                         rs.getString("doctor_specialisation"),
                         clinic
                     );
@@ -396,6 +400,7 @@ public class EventRepository implements EventInterface {
                 c.name AS clinic_name,
                 c.street AS clinic_street,
                 c.street_number AS clinic_street_number,
+                c.id AS clinic_id,
                 city.city_name AS clinic_city
             FROM appointment a
             INNER JOIN patient p ON a.patient_CPR = p.CPR_number
@@ -417,7 +422,9 @@ public class EventRepository implements EventInterface {
         while (rs.next())
         {
             System.out.println("found");
-            Clinic clinic = new Clinic(rs.getString("clinic_name"),
+            Clinic clinic = new Clinic(
+                rs.getString("clinic_id"),
+                rs.getString("clinic_name"),
                 rs.getString("clinic_city"), rs.getString("clinic_street"),
                 rs.getString("clinic_street_number"));
 

@@ -11,17 +11,6 @@ import patient.grpc.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/Demo")
-@CrossOrigin(origins = "*")
-public class Server {
-    private final PatientGrpc.PatientBlockingStub blockingStub;
-    public Server() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
-        blockingStub = PatientGrpc.newBlockingStub(channel);
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController @RequestMapping("/Demo") @CrossOrigin(origins = "*") public class Server
 {
   private final PatientGrpc.PatientBlockingStub blockingStub;

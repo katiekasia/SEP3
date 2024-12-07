@@ -73,62 +73,116 @@ public class ModelManager implements Model
     return eventRepository.getDoctorById(id);
   }
 
-  @Override public void registerPatient(RegisterDto registerDto)
-  {
-    Patient patient = new Patient(registerDto.getCprNo(), registerDto.getName(),
-        registerDto.getSurname(), registerDto.getPhone(),
-        registerDto.getEmail(), registerDto.getPassword());
-  @Override public List<CityDto> getCities()
-  {
+    @Override public List<CityDto> getCities ()
+    {
     System.out.println("Model manager Cities");
     return eventRepository.getCities();
   }
 
-  @Override public List<Clinic> getClinicByCity(String code)
-  {
-    System.out.println("Model manager Clinics");
-    return eventRepository.getClinicByCity(code);
-  }
+    @Override public List<Clinic> getClinicByCity (String code)
+    {
+      System.out.println("Model manager Clinics");
+      return eventRepository.getClinicByCity(code);
+    }
 
-  @Override public List<Doctor> getDoctorByClinic(String id_clinic)
-  {
-    System.out.println("Model manager Doctors");
-    return eventRepository.getDoctorsByClinic(id_clinic);
-  }
+    @Override public List<Doctor> getDoctorByClinic (String id_clinic)
+    {
+      System.out.println("Model manager Doctors");
+      return eventRepository.getDoctorsByClinic(id_clinic);
+    }
 
-
-
-  @Override
-  public void registerPatient(RegisterDto registerDto) {
-    Patient patient = new Patient(registerDto.getCprNo(),registerDto.getName(),registerDto.getSurname(),registerDto.getPhone(),registerDto.getEmail(),registerDto.getPassword());
+    @Override public void registerPatient (RegisterDto registerDto){
+    Patient patient = new Patient(registerDto.getCprNo(), registerDto.getName(),
+        registerDto.getSurname(), registerDto.getPhone(),
+        registerDto.getEmail(), registerDto.getPassword());
 
     try
     {
       eventRepository.createUser(patient);
       System.out.println("manager");
       DBresponse response = DBresponse.newBuilder()
-          .setConfirmation("Patient registered successfully")
-          .build();
-    }catch (Exception e){
+          .setConfirmation("Patient registered successfully").build();
+    }
+    catch (Exception e)
+    {
       throw new RuntimeException("Something went wrong");
     }
 
   }
 
-  @Override public Patient loginPatient(LoginDto loginDto)
-  {
+    @Override public Patient loginPatient (LoginDto loginDto)
+    {
+      try
+      {
+        if (eventRepository.loginUser(loginDto))
+        {
+          Patient patient = getPatientByCpr(loginDto.getcpr());
+
+          //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
+
+          return patient;
+          // }else {
+          //   throw new RuntimeException("Invalid login credentials");
+          //  }
+        }
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e.getMessage());
+      }
+      return null;
+    }
+
+    @Override public String changeDoctorPassword (ResetPasswordDto
+    resetPasswordDto)
+    {
+      try
+      {
+        return eventRepository.changePassowrdDoctor(resetPasswordDto);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e.getMessage());
+      }
+    }
+
+    @Override public void addPrescription (PrescriptionDto prescriptionDto){
     try
     {
-      if (eventRepository.loginUser(loginDto))
+      eventRepository.addPrescription(prescriptionDto);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+
+  }
+
+    @Override public Appointment getAppointmentByAppointmentId (
+    int appointmentId)
+    {
+      try
       {
-        Patient patient = getPatientByCpr(loginDto.getcpr());
+        return eventRepository.getAppointmentByAppointmentId(appointmentId);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e.getMessage());
+      }
+    }
 
-        //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
+    @Override public Doctor loginDoctor (LoginDto loginDto){
+    try
+    {
+      if (eventRepository.loginDoctor(loginDto))
+      {
+        Doctor doctor = getDoctorById(loginDto.getcpr());
 
-        return patient;
-        // }else {
-        //   throw new RuntimeException("Invalid login credentials");
-        //  }
+        return doctor;
       }
     }
     catch (Exception e)
@@ -138,113 +192,74 @@ public class ModelManager implements Model
     }
     return null;
   }
-
-  @Override public String changeDoctorPassword(
-      ResetPasswordDto resetPasswordDto)
-  {
+    @Override public List<Appointment> getPatientAppointments (String cpr){
     try
     {
-      return eventRepository.changePassowrdDoctor(resetPasswordDto);
-    }catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
-  }
-
-  @Override
-  public void addPrescription(PrescriptionDto prescriptionDto) {
-    try
-    {
-      eventRepository.addPrescription(prescriptionDto);
-    }catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
-
-  }
-
-  @Override public Appointment getAppointmentByAppointmentId(int appointmentId)
-  {
-    try
-    {
-     return eventRepository.getAppointmentByAppointmentId(appointmentId);
-    }catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
-  }
-
-  @Override
-  public Doctor loginDoctor(LoginDto loginDto) {
-    try{
-      if(eventRepository.loginDoctor(loginDto)){
-        Doctor doctor = getDoctorById(loginDto.getcpr());
-
-        return doctor;
-      }
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
-    return null;
-  }
-  @Override
-  public List<Appointment> getPatientAppointments(String cpr) {
-    try {
-      List<Appointment> appointments = eventRepository.getAppointmentsByPatientCpr(cpr);
+      List<Appointment> appointments = eventRepository.getAppointmentsByPatientCpr(
+          cpr);
 
       // Validate appointments
-      if (appointments == null || appointments.isEmpty()) {
+      if (appointments == null || appointments.isEmpty())
+      {
         return new ArrayList<>();
       }
 
       return appointments;
-    } catch (Exception e) {
-      throw new RuntimeException("Error retrieving patient appointments: " + e.getMessage(), e);
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(
+          "Error retrieving patient appointments: " + e.getMessage(), e);
     }
   }
-  @Override
-  public String getDoctorByClinicName(String clinicName) {
+    @Override public String getDoctorByClinicName (String clinicName){
     try
     {
       return eventRepository.getDoctorByClinicName(clinicName);
-    }catch (Exception e) {
-      throw new RuntimeException("Error retrieving doctor by clinic: " + e.getMessage(), e);
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(
+          "Error retrieving doctor by clinic: " + e.getMessage(), e);
     }
   }
 
-  @Override public List<Appointment> getDoctorAppointments(String id)
-  {
-    try
+    @Override public List<Appointment> getDoctorAppointments (String id)
     {
-      System.out.println("MODEL called");
-      List<Appointment> appointments = eventRepository.getAppointmentsByDoctorId(id);
-      if (appointments == null || appointments.isEmpty()) {
-        return new ArrayList<>();
+      try
+      {
+        System.out.println("MODEL called");
+        List<Appointment> appointments = eventRepository.getAppointmentsByDoctorId(
+            id);
+        if (appointments == null || appointments.isEmpty())
+        {
+          return new ArrayList<>();
+        }
+        return appointments;
       }
-      return appointments;
-    }catch (Exception e) {
-      throw new RuntimeException("Error retrieving doctor appointments: " + e.getMessage(), e);
+      catch (Exception e)
+      {
+        throw new RuntimeException(
+            "Error retrieving doctor appointments: " + e.getMessage(), e);
+      }
     }
-  }
 
-  @Override public Patient getPatientByAppointmentId(int appointmentId)
-  {
-    try
+    @Override public Patient getPatientByAppointmentId ( int appointmentId)
     {
-      Patient patient = eventRepository.getPatientByAppointmentId(appointmentId);
-      return patient;
-    }catch (Exception e) {
-      throw new RuntimeException("Error retrieving patient : " + e.getMessage(), e);
+      try
+      {
+        Patient patient = eventRepository.getPatientByAppointmentId(
+            appointmentId);
+        return patient;
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException(
+            "Error retrieving patient : " + e.getMessage(), e);
+      }
+    }
+    @Override public String updatePatient (UpdatePatientDto updatePatientDto)
+    {
+      return eventRepository.updateUser(updatePatientDto);
     }
   }
-  @Override
-  public String updatePatient(UpdatePatientDto updatePatientDto)
-  {
-    return eventRepository.updateUser(updatePatientDto);
-  }
-
-}
