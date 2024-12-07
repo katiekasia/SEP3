@@ -1,5 +1,6 @@
 package via.pro3.mainserver.Model;
 
+
 import patient.grpc.DBresponse;
 import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.database.DatabaseInterface;
@@ -9,20 +10,22 @@ import via.pro3.mainserver.database.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class ModelManager implements Model
 {
   private GeneratorInterface idGenerator;
   private final EventInterface eventRepository;
 
-  public ModelManager()
-  {
+
+  public ModelManager(){
     idGenerator = new IdGenerator();
     DatabaseInterface database = DatabaseSingleton.getInstance();
     this.eventRepository = new EventRepository(database);
   }
+
+
 
   @Override public String createAppointment(
       CreateAppointmentDto createAppointmentDto)
@@ -47,9 +50,7 @@ public class ModelManager implements Model
     {
       eventRepository.createAppointment(appointment, doctor, patient);
 
-    }
-    catch (Exception e)
-    {
+    }catch (Exception e){
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
@@ -77,6 +78,29 @@ public class ModelManager implements Model
     Patient patient = new Patient(registerDto.getCprNo(), registerDto.getName(),
         registerDto.getSurname(), registerDto.getPhone(),
         registerDto.getEmail(), registerDto.getPassword());
+  @Override public List<CityDto> getCities()
+  {
+    System.out.println("Model manager Cities");
+    return eventRepository.getCities();
+  }
+
+  @Override public List<Clinic> getClinicByCity(String code)
+  {
+    System.out.println("Model manager Clinics");
+    return eventRepository.getClinicByCity(code);
+  }
+
+  @Override public List<Doctor> getDoctorByClinic(String id_clinic)
+  {
+    System.out.println("Model manager Doctors");
+    return eventRepository.getDoctorsByClinic(id_clinic);
+  }
+
+
+
+  @Override
+  public void registerPatient(RegisterDto registerDto) {
+    Patient patient = new Patient(registerDto.getCprNo(),registerDto.getName(),registerDto.getSurname(),registerDto.getPhone(),registerDto.getEmail(),registerDto.getPassword());
 
     try
     {

@@ -1,4 +1,5 @@
-package via.pro3.mainserver.DTOs;
+package DTOs;
+
 public class DoctorDto
 {
     private String id;
@@ -34,11 +35,11 @@ public class DoctorDto
         return specialization;
     }
 
-    public void setName(String firstname) {
+    public void setFirstname(String firstname) {
         this.name = firstname;
     }
 
-    public void setSurname(String lastname) {
+    public void setLastname(String lastname) {
         this.surname = lastname;
     }
     public void setSpecialization(String specialization) {

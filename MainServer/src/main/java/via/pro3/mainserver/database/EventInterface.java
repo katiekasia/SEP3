@@ -1,5 +1,7 @@
 package via.pro3.mainserver.database;
 
+import via.pro3.mainserver.DTOs.CityDto;
+import via.pro3.mainserver.DTOs.DoctorDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.DTOs.PrescriptionDto;
@@ -26,6 +28,10 @@ public interface EventInterface
   boolean loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
+  List<Doctor> getDoctors();
+  List<CityDto> getCities();
+  List<Clinic> getClinicByCity(String code);
+  List<Doctor> getDoctorsByClinic(String id_clinic);
   List<Appointment> getAppointmentsByPatientCpr(String patientCpr);
   List<Appointment> getAppointmentsByDoctorId(String doctorId);
   String getDoctorByClinicName(String clinicName);
