@@ -11,6 +11,16 @@ import patient.grpc.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
+@RestController
+@RequestMapping("/Demo")
+@CrossOrigin(origins = "*")
+public class Server {
+    private final PatientGrpc.PatientBlockingStub blockingStub;
+    public Server() {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
+        blockingStub = PatientGrpc.newBlockingStub(channel);
+=======
 @RestController @RequestMapping("/Demo") @CrossOrigin(origins = "*") public class Server
 {
   private final PatientGrpc.PatientBlockingStub blockingStub;
@@ -47,6 +57,7 @@ import java.util.List;
     {
       e.printStackTrace();
       throw new RuntimeException("Error getting cities", e);
+>>>>>>> main
     }
 
   }
@@ -213,8 +224,13 @@ import java.util.List;
   @GetMapping("/appointments")
   public ResponseDto getAppointments(@RequestParam String cpr) {
     try {
+<<<<<<< HEAD
+      GetAppointmentsRequest request = GetAppointmentsRequest.newBuilder()
+          .setPatientCpr(cpr)
+=======
       PatientRequest request = PatientRequest.newBuilder()
           .setCpr(cpr)
+>>>>>>> main
           .build();
 
       GetAppointmentsResponse response = blockingStub.getAppointmentsByPatientCpr(request);
@@ -245,6 +261,11 @@ import java.util.List;
       return responseDto;
     } catch (Exception e) {
       e.printStackTrace();
+<<<<<<< HEAD
+      throw new RuntimeException("Error fetching appointments", e);
+    }
+  }
+=======
       throw new RuntimeException("Error fetching appointments: ", e);
     }
   }
@@ -277,4 +298,5 @@ import java.util.List;
         }
 
     }   
+>>>>>>> main
 }

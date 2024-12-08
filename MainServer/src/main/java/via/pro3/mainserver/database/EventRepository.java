@@ -5,21 +5,27 @@ import via.pro3.mainserver.DTOs.DoctorDto;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.PrescriptionDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
+<<<<<<< HEAD
+=======
 import via.pro3.mainserver.DTOs.UpdatePatientDto;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
+>>>>>>> main
 import via.pro3.mainserver.Model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
+=======
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+>>>>>>> main
 
 public class EventRepository implements EventInterface {
     private final DatabaseInterface database;
@@ -321,7 +327,10 @@ resultSet.getString("email"),
             c.name AS clinic_name, 
             c.street AS clinic_street, 
             c.street_number AS clinic_street_number,
+<<<<<<< HEAD
+=======
             c.id AS clinic_id,
+>>>>>>> main
             city.city_name AS clinic_city
         FROM appointment a
         INNER JOIN doctor d ON a.doctor_id = d.id
@@ -339,7 +348,10 @@ resultSet.getString("email"),
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
                     Clinic clinic = new Clinic(
+<<<<<<< HEAD
+=======
                         rs.getString("clinic_id"),
+>>>>>>> main
                         rs.getString("clinic_name"),
                         rs.getString("clinic_city"),
                         rs.getString("clinic_street"),
@@ -352,7 +364,10 @@ resultSet.getString("email"),
                         rs.getString("doctor_last_name"),
                         null, // password not needed
                         null, // email not needed
+<<<<<<< HEAD
+=======
                         null,
+>>>>>>> main
                         rs.getString("doctor_specialisation"),
                         clinic
                     );
@@ -380,6 +395,8 @@ resultSet.getString("email"),
         return appointments;
     }
 
+<<<<<<< HEAD
+=======
     @Override public List<Appointment> getAppointmentsByDoctorId(
         String doctorId)
     {
@@ -450,6 +467,7 @@ resultSet.getString("email"),
     }
         return appointments;
     }
+>>>>>>> main
 
     @Override
     public String getDoctorByClinicName(String clinicName) {
@@ -475,6 +493,8 @@ resultSet.getString("email"),
             throw new RuntimeException("Failed to fetch doctor ID: " + e.getMessage(), e);
         }
     }
+<<<<<<< HEAD
+=======
 
     @Override
     public String updateUser(UpdatePatientDto request) {
@@ -649,4 +669,5 @@ resultSet.getString("email"),
 
 
 
+>>>>>>> main
 }

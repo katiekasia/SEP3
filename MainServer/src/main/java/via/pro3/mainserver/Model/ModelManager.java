@@ -10,8 +10,13 @@ import via.pro3.mainserver.database.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+<<<<<<< HEAD
+import java.util.ArrayList;
+import java.util.List;
+=======
 import java.util.List;
 import java.util.ArrayList;
+>>>>>>> main
 
 public class ModelManager implements Model
 {
@@ -263,3 +268,26 @@ public class ModelManager implements Model
       return eventRepository.updateUser(updatePatientDto);
     }
   }
+<<<<<<< HEAD
+  @Override
+  public List<Appointment> getPatientAppointments(String cpr) {
+    try {
+      List<Appointment> appointments = eventRepository.getAppointmentsByPatientCpr(cpr);
+
+      // Validate appointments
+      if (appointments == null || appointments.isEmpty()) {
+        return new ArrayList<>();
+      }
+
+      return appointments;
+    } catch (Exception e) {
+      throw new RuntimeException("Error retrieving patient appointments: " + e.getMessage(), e);
+    }
+  }
+  @Override
+  public String getDoctorByClinicName(String clinicName) {
+    return eventRepository.getDoctorByClinicName(clinicName);
+  }
+}
+=======
+>>>>>>> main

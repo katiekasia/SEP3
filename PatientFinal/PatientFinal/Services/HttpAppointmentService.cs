@@ -67,6 +67,8 @@ namespace PatientFinal.Services
             {
                 Console.WriteLine(
                     $"Error retrieving appointments: {ex.Message}");
+<<<<<<< HEAD
+=======
                 throw;
             }
         }
@@ -173,9 +175,11 @@ namespace PatientFinal.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occurred while fetching cities: {ex.Message}");
+>>>>>>> main
                 throw;
             }
         }
-        
     }
+
+
 }

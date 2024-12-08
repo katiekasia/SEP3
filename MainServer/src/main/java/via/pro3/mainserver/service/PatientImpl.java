@@ -109,9 +109,15 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     }
 
         @Override
+<<<<<<< HEAD
+        public void getAppointmentsByPatientCpr(GetAppointmentsRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
+            try {
+                List<Appointment> appointments = model.getPatientAppointments(request.getPatientCpr());
+=======
         public void getAppointmentsByPatientCpr(PatientRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
             try {
                 List<Appointment> appointments = model.getPatientAppointments(request.getCpr());
+>>>>>>> main
                 GetAppointmentsResponse.Builder responseBuilder = GetAppointmentsResponse.newBuilder();
 
                 for (Appointment appointment : appointments) {
@@ -128,7 +134,11 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                         .setDoctorId(doctor.getId())
                         .setDoctorFirstName(doctor.getName())
                         .setDoctorLastName(doctor.getSurname())
+<<<<<<< HEAD
+                        .setDoctorSpecialization(doctor.getSpecialisation())
+=======
                         .setDoctorSpecialization(doctor.getSpecialization())
+>>>>>>> main
                         .setClinicName(clinic.getName())
                         .setClinicStreet(clinic.getStreet())
                         .setClinicStreetNumber(clinic.getStreetNo())
@@ -147,6 +157,10 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .asRuntimeException());
             }
         }
+<<<<<<< HEAD
+    }
+
+=======
 
 
     @Override
@@ -271,5 +285,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
 
 
 }
+>>>>>>> main
 
 
