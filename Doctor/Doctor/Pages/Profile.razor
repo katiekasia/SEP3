@@ -17,8 +17,7 @@
         <p>First name: @firstName</p>
         <p>Last name: @lastName</p>
         <p>Specialisation: @specialisation</p>
-
-        <input @bind="@currentPassword"></input>
+        
         <input @bind="@newPassword"></input>
         <button @onclick="ChangePassword">Change password</button>
 
@@ -35,7 +34,6 @@
     private string lastName;
     private string specialisation;
     private string newPassword;
-    private string currentPassword;
     private string responseMessage;
     
     protected override async Task OnInitializedAsync()
@@ -52,8 +50,9 @@
                 var doctor = await LoginService.getDoctorById(id);
                 if (doctor != null)
                 {
-                    firstName = doctor.FirstName;
-                    lastName = doctor.LastName;
+                    
+                    firstName = doctor.Name;
+                    lastName = doctor.Surname;
                     specialisation = doctor.Specialisation;
                 }
             }
@@ -66,9 +65,9 @@
 
     private async Task ChangePassword()
     {
-        if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword))
+        if (string.IsNullOrEmpty(newPassword))
         {
-            responseMessage = "Fields cannot be emtpy";
+            responseMessage = "Field cannot be emtpy";
             return;
         }
 
@@ -77,7 +76,6 @@
             var changePasswordDto = new ResetPasswordDto()
             {
                 id = id,
-                currentPassword = currentPassword,
                 newPassword = newPassword
             };
 

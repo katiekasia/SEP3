@@ -2,23 +2,31 @@ package via.pro3.mainserver.Model;
 
 public class Clinic
 {
+  private String id;
   private String name;
   private String city;
   private String street;
   private String streetNo;
 
-  public Clinic(String name, String city, String street, String streetNo){
+  public Clinic(String id, String name, String city, String street, String streetNo){
+    setId(id);
     setName(name);
     setCity(city);
     setStreet(street);
     setStreetNo(streetNo);
   }
   public Clinic copy(){
-    return new Clinic(getName(), getCity(), getStreet(), getStreetNo());
+    return new Clinic(getId(),getName(), getCity(), getStreet(), getStreetNo());
   }
 
 
 //GETTERS BELOW***********************************
+
+  public String getId()
+  {
+    return id;
+  }
+
 
   public String getAddress(){
     return getCity() + " " + getStreet() + " " + getStreetNo();
@@ -47,6 +55,11 @@ public class Clinic
   }
 
   //SETTERS BELOW************************
+
+  public void setId(String id)
+  {
+    this.id = id;
+  }
 
   public void setCity(String city)
   {

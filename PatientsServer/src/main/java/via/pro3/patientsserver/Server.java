@@ -11,6 +11,7 @@ import patient.grpc.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 @RestController
 @RequestMapping("/Demo")
 @CrossOrigin(origins = "*")
@@ -19,10 +20,123 @@ public class Server {
     public Server() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build();
         blockingStub = PatientGrpc.newBlockingStub(channel);
+=======
+@RestController @RequestMapping("/Demo") @CrossOrigin(origins = "*") public class Server
+{
+  private final PatientGrpc.PatientBlockingStub blockingStub;
+
+  public Server()
+  {
+    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+        .usePlaintext().build();
+    blockingStub = PatientGrpc.newBlockingStub(channel);
+  }
+  @CrossOrigin(origins = "*")
+
+  @GetMapping("/cities") public List<CityDto> getCities()
+  {
+
+    try
+    {
+      GetCities request = GetCities.newBuilder().build();
+      CityListResponse response = blockingStub.getCities(request);
+      List<CityDto> cityDtos = new ArrayList<>();
+
+      for (CityRequest city : response.getCitiesList()){
+        CityDto dto = new CityDto(
+            city.getName(),
+            city.getPostalcode()
+        );
+        cityDtos.add(dto);
+      }
+
+      return cityDtos;
+
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error getting cities", e);
+>>>>>>> main
     }
 
-  @PostMapping("/book")
-  public ResponseDto bookAppointment(@RequestBody CreateAppointmentDto createAppointmentDto) {
+  }
+
+  @GetMapping("/clinics") public List<ClinicDto> getClinicsByCity(@RequestParam String code)
+  {
+    System.out.println(code);
+    try
+    {
+      System.out.println("CALLED clinic");
+      CityRequest request = CityRequest.newBuilder()
+          .setName("")
+          .setPostalcode(code)
+          .build();
+      ClinicListResponse response = blockingStub.getClinics(request);
+      List<ClinicDto> clinics = new ArrayList<>();
+
+      for(Clinic clinic : response.getClinicsList()){
+        ClinicDto dto = new ClinicDto(
+            clinic.getId(),
+            clinic.getName(),
+            clinic.getAddress()
+        );
+        System.out.println("CLINIC PACKED");
+        clinics.add(dto);
+      }
+
+      System.out.println("clinic sent");
+      return clinics;
+
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error getting cities", e);
+    }
+
+  }
+
+  @GetMapping("/doctors") public List<DoctorDto> getDoctorByClinic(@RequestParam String clinic_id)
+  {
+    System.out.println(clinic_id);
+    try
+    {
+      System.out.println("CALLED doctor");
+      Clinic request = Clinic.newBuilder()
+          .setName("")
+          .setId(clinic_id)
+          .setAddress("")
+          .build();
+      DoctorListResponse response = blockingStub.getDoctors(request);
+      List<DoctorDto> doctors = new ArrayList<>();
+
+      for(DoctorRequest doctor : response.getDoctorList()){
+        DoctorDto dto = new DoctorDto(
+            doctor.getId(),
+            doctor.getFirstname(),
+            doctor.getLastname(),
+            doctor.getSpecialisation()
+        );
+       System.out.println("DOCTOR PACKED");
+        doctors.add(dto);
+      }
+
+      System.out.println("doctor sent");
+      return doctors;
+
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error getting cities", e);
+    }
+
+  }
+
+  @PostMapping("/book") public ResponseDto bookAppointment(
+      @RequestBody CreateAppointmentDto createAppointmentDto)
+  {
 
     CreateAppointment request = CreateAppointment.newBuilder()
         .setType(createAppointmentDto.getType())
@@ -31,15 +145,14 @@ public class Server {
         .setPatientCpr(createAppointmentDto.getPatientCpr())
         .setDoctorId(createAppointmentDto.getDoctorId())
         .setAppointmentDate(createAppointmentDto.getDate())
-        .setAppointmentTime(createAppointmentDto.getTime())
-        .build();
+        .setAppointmentTime(createAppointmentDto.getTime()).build();
 
-        DBresponse response = blockingStub.createAppointment(request);
-    ResponseDto responseDto= new ResponseDto();
+    DBresponse response = blockingStub.createAppointment(request);
+    ResponseDto responseDto = new ResponseDto();
     responseDto.setResponse(response.getConfirmation());
-        return responseDto;
+    return responseDto;
 
-    }
+  }
 
     @PostMapping("/register")
     public ResponseDto  registerPatient(@RequestBody RegisterDto registerDto) {
@@ -86,7 +199,7 @@ public class Server {
                     .build();
 
             LoginResponse response = blockingStub.loginPatient(request);
-          System.out.println("Got here");
+
             if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
             {
               UserDto userDto = new UserDto();
@@ -98,7 +211,6 @@ public class Server {
 
               return userDto;
             }else {
-              System.out.println("this no work");
               throw new RuntimeException("Invalid credentials");
             }
         } catch (StatusRuntimeException e) {
@@ -112,8 +224,13 @@ public class Server {
   @GetMapping("/appointments")
   public ResponseDto getAppointments(@RequestParam String cpr) {
     try {
+<<<<<<< HEAD
       GetAppointmentsRequest request = GetAppointmentsRequest.newBuilder()
           .setPatientCpr(cpr)
+=======
+      PatientRequest request = PatientRequest.newBuilder()
+          .setCpr(cpr)
+>>>>>>> main
           .build();
 
       GetAppointmentsResponse response = blockingStub.getAppointmentsByPatientCpr(request);
@@ -144,7 +261,42 @@ public class Server {
       return responseDto;
     } catch (Exception e) {
       e.printStackTrace();
+<<<<<<< HEAD
       throw new RuntimeException("Error fetching appointments", e);
     }
   }
+=======
+      throw new RuntimeException("Error fetching appointments: ", e);
+    }
+  }
+
+    @PostMapping("/update")
+    public ResponseDto updatePatient(@RequestBody UpdatePatientDto updatePatientDto) {
+        try {
+            String newPassword = PasswordHasher.hash(updatePatientDto.getNewPassword());
+            UpdateUserRequest request = UpdateUserRequest.newBuilder()
+                    .setCPR(updatePatientDto.getCPR())
+                    .setSurname(updatePatientDto.getSurname())
+                    .setPhone(updatePatientDto.getPhone())
+                    .setEmail(updatePatientDto.getEmail())
+                    .setNewPassword(newPassword)
+                    .build();
+
+            DBresponse response = blockingStub.updateUser(request);
+
+            if (response.getConfirmation() == null || response.getConfirmation().isEmpty()) {
+                throw new RuntimeException("Patient update failed: " + response.getConfirmation());
+            }
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getConfirmation());
+            return responseDto;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error updating patient details", e);
+        }
+
+    }   
+>>>>>>> main
 }

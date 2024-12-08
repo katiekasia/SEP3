@@ -1,0 +1,232 @@
+@page "/Prescriptions"
+@using System.Security.Claims
+@using Doctor.DTOs
+@using Doctor.Services
+@inject HttpClient Http;
+@inject AuthenticationStateProvider AuthProvider;
+@inject IPrescriptionsService prescriptionService;
+
+<h2 class="page-title">Prescriptions</h2>
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div>
+            <p>You need to login first.</p>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <div class="form-container">
+            <div class="patient-selection">
+                <label for="patientCpr">Choose a Patient</label>
+                <input id="patientCpr" class="input-box" value="@patientCpr" @oninput="OnInputChanged" placeholder="Patient CPR" disabled="@isLocked" />
+
+                <div class="suggestions">
+                    @foreach (var cpr in filteredPatientCprs)
+                    {
+                        var patient = patients.FirstOrDefault(p => p.cprnumber == cpr);
+                        var name = patient?.firstname + " " + patient?.lastname;
+                        <button class="suggestion-button" @onclick="() => SelectPatient(cpr)">@cpr (@name)</button>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis</label>
+                <input id="diagnosis" class="input-box" @bind="diagnosis" placeholder="Enter diagnosis..." />
+            </div>
+
+            <div class="form-group">
+                <label for="medication">Medication</label>
+                <input id="medication" class="input-box" @bind="medication" placeholder="Enter medication..." />
+            </div>
+
+            <div class="form-group">
+                <label for="recommendations">Recommendations</label>
+                <textarea id="recommendations" class="textarea-box" @bind="recommendations" placeholder="Enter recommendations..."></textarea>
+            </div>
+
+            <button class="submit-button" @onclick="AddPrescription">Add Prescription</button>
+
+            @if (!string.IsNullOrEmpty(serverResponse))
+            {
+                <div class="notification success">
+                    <p>@serverResponse</p>
+                </div>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string patientCpr = string.Empty;
+    private string diagnosis;
+    private string medication;
+    private string recommendations;
+    private string doctorId;
+    private List<PatientDto> patients = new();
+    private List<string> allPatientCprs = new();
+    private List<string> filteredPatientCprs = new();
+    private bool isLocked = false;
+    private string serverResponse;
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        doctorId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        patients = await prescriptionService.GetPatientsByDoctorId(doctorId);
+        allPatientCprs = patients.Select(p => p.cprnumber).ToList();
+        filteredPatientCprs = new List<string>(allPatientCprs);
+    }
+
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        patientCpr = e.Value?.ToString() ?? string.Empty;
+        var trimmedInput = patientCpr?.Trim() ?? string.Empty;
+        
+        if (string.IsNullOrEmpty(trimmedInput))
+        {
+            filteredPatientCprs = new List<string>(allPatientCprs);
+        }
+        else
+        {
+            filteredPatientCprs = allPatientCprs
+                .Where(cpr => cpr.StartsWith(trimmedInput, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+    }
+
+    private void SelectPatient(string selectedCpr)
+    {
+        patientCpr = selectedCpr;
+        isLocked = true;
+    }
+
+    private async Task AddPrescription()
+    {
+        try
+        {
+            var prescriptionDto = new PrescriptionDto()
+            {
+                id = Guid.NewGuid().ToString(),
+                diagnosis = diagnosis,
+                medication = medication,
+                recommendations = recommendations,
+                date = DateTime.Now.ToString(),
+                time = DateTime.UtcNow.ToString(),
+                patientcpr = patientCpr,
+                doctorid = doctorId
+            };
+            
+            var response = await prescriptionService.AddPrescription(prescriptionDto);
+            
+            if (response.response == "Success")
+            {
+                serverResponse = "Prescription added";
+            }
+            else
+            {
+                serverResponse = "Error adding prescription";
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-container {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .input-box, .textarea-box {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .textarea-box {
+        min-height: 80px;
+    }
+
+    .suggestion-button, .submit-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    .suggestion-button {
+        background-color: #6c757d;
+    }
+
+    .suggestion-button:hover, .submit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .submit-button {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .notification {
+        padding: 10px;
+        border-radius: 4px;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .notification.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .suggestions {
+        margin-top: 10px;
+    }
+
+    .suggestions .suggestion-button {
+        margin-right: 5px;
+    }
+</style>

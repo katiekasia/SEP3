@@ -4,21 +4,30 @@
 @using Doctor.Services
 @inject AuthenticationStateProvider AuthProvider
 @inject HttpClient Http
-@inject ILoginService LoginService
+@inject AuthenticationStateProvider LoginService
+@inject NavigationManager navMgr
 
 <h3>Doctor Login</h3>
 
-<p>Enter your ID:</p>
-<input @bind="id" placeholder="Enter your ID"/>
-<p>Enter your Password:</p>
-<input @bind="password" type="password" placeholder="Enter your password"/>
-<button @onclick="LoginDoctor">Login</button>
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Enter your ID:</p>
+        <input @bind="id" placeholder="Enter your ID"/>
+        <p>Enter your Password:</p>
+        <input @bind="password" type="password" placeholder="Enter your password"/>
+        <button @onclick="LoginDoctor">Login</button>
 
-@if (!string.IsNullOrEmpty(responseMessage))
-{
-    <p>Server Response: @responseMessage</p>
-}
+        @if (!string.IsNullOrEmpty(responseMessage))
+        {
+        <p>Server Response: @responseMessage</p>
+        }
 
+    </NotAuthorized>
+
+    <Authorized>
+        logged in! :)
+    </Authorized>
+</AuthorizeView>
 @code {
     private string id;
     private string password;
@@ -34,13 +43,14 @@
 
         try
         {
-            bool success = await ((SimpleAuthProvider)AuthProvider).Login(id, password);
-            if (success == false)
-                responseMessage = "Invalid Credentials";
+            await ((SimpleAuthProvider)LoginService).Login(id, password);
+            navMgr.NavigateTo("/");
+            
         }
         catch (Exception e)
         {
-            responseMessage = $"Login failed: {e.Message}";
+            Console.WriteLine($"Inner Error: {e.InnerException.Message}");
+            responseMessage = $"Login failed: {e.Message} ";
         }
     }
 

@@ -7,7 +7,15 @@ service Patient {
   rpc createAppointment (CreateAppointment) returns (DBresponse) {}
   rpc loginPatient (PatientRequest) returns (LoginResponse) {}
   rpc registerPatient (RegisterRequest) returns (DBresponse) {}
+<<<<<<< HEAD
   rpc getAppointmentsByPatientCpr(GetAppointmentsRequest) returns (GetAppointmentsResponse) {}
+=======
+  rpc getCities(GetCities) returns (CityListResponse);
+  rpc getClinics(CityRequest) returns (ClinicListResponse){}
+  rpc getDoctors(Clinic) returns (DoctorListResponse){}
+  rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
+  rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
+>>>>>>> main
 
 }
 message CreateAppointment {
@@ -20,6 +28,40 @@ message CreateAppointment {
   string appointmentTime = 7;
 }
 
+message CityRequest {
+  string name =1;
+  string postalcode= 2;
+}
+
+message CityListResponse {
+  repeated CityRequest cities = 1;
+}
+
+message ClinicListResponse {
+  repeated Clinic clinics= 1;
+}
+
+message Clinic {
+  string id =1;
+  string name=2;
+  string address=3;
+}
+
+
+message GetCities {
+  string request = 1;
+}
+
+message DoctorRequest {
+  string id=1;
+  string firstname =2;
+  string lastname =3;
+  string specialisation =4;
+}
+
+message DoctorListResponse {
+  repeated DoctorRequest doctor= 1;
+}
 
 message DBresponse {
   string confirmation = 1;
@@ -63,10 +105,24 @@ message AppointmentInfo {
   string clinicStreetNumber = 13;
   string clinicCity = 14;
 }
+<<<<<<< HEAD
 
 message GetAppointmentsRequest {
   string patientCpr = 1;}
 
 message GetAppointmentsResponse {
   repeated AppointmentInfo appointments = 1;
+=======
+message GetAppointmentsResponse {
+  repeated AppointmentInfo appointments = 1;
+}
+
+message UpdateUserRequest
+{
+  string CPR = 1;
+  string surname = 2;
+  string phone = 3;
+  string email = 4;
+  string newPassword = 5;
+>>>>>>> main
 }
