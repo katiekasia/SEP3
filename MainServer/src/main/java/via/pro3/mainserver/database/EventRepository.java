@@ -229,7 +229,7 @@ public class EventRepository implements EventInterface {
         String sql = "DELETE FROM appointments WHERE id = ?";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, appointmentId);
+            statement.setString(1, String.valueOf(appointmentId));
             statement.executeUpdate();
         } catch (DateTimeParseException | SQLException e) {
             throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
