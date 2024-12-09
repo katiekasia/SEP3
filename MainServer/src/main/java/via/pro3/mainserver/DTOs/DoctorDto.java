@@ -1,35 +1,47 @@
 package via.pro3.mainserver.DTOs;
-
-public class DoctorDto {
-    public String firstname;
-    public String lastname;
-    public String specialisation;
-    public DoctorDto(String firstname, String lastname, String specialisation) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.specialisation = specialisation;
+public class DoctorDto
+{
+    private String id;
+    private String name;
+    private String surname;
+    private String specialization;
+    public DoctorDto(String id, String name, String surname, String specialization) {
+        this.id= id;
+        this.name = name;
+        this.surname = surname;
+        this.specialization = specialization;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getId()
+    {
+        return id;
     }
 
-    public String getLastname() {
-        return lastname;
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
-    public String getSpecialisation() {
-        return specialisation;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public String getSpecialization() {
+        return specialization;
     }
-    public void setSpecialisation(String specialisation) {
-        this.specialisation = specialisation;
+
+    public void setName(String firstname) {
+        this.name = firstname;
+    }
+
+    public void setSurname(String lastname) {
+        this.surname = lastname;
+    }
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 }

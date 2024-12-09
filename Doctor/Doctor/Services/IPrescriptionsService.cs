@@ -1,4 +1,5 @@
 using Doctor.DTOs;
+using PatientFinal.DTOs;
 
 namespace Doctor.Services;
 

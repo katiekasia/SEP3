@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Doctor.DTOs;
+using PatientFinal.DTOs;
 
 namespace Doctor.Services;
 

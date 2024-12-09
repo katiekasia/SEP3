@@ -1,0 +1,157 @@
+﻿@page "/appointments"
+@using PatientFinal.DTOs
+@using PatientFinal.Services
+@inject IAppointmentService AppointmentService
+
+<div class="container mt-4">
+    <h2 class="mb-4">Patient Appointments</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Enter CPR Number"
+                               @bind="cprNumber"
+                               @bind:event="oninput"
+                               maxlength="10" />
+                        <button class="btn btn-primary @(isLoading ? "disabled" : "")"
+                                @onclick="FetchAppointments">
+                            @if (isLoading)
+                            {
+                            <span class="spinner-border spinner-border-sm me-1"></span>
+                            }
+                            Search
+                        </button>
+                    </div>
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                    <div class="alert alert-danger">@errorMessage</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (appointments?.Any() == true)
+    {
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Clinic</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var appointment in appointments.OrderByDescending(a => DateOnly.Parse(a.Date)).ThenBy(a => TimeOnly.Parse(a.Time)))
+                    {
+                    <tr>
+                        <td>@DateOnly.Parse(appointment.Date).ToString("dd/MM/yyyy")</td>
+                        <td>@TimeOnly.Parse(appointment.Time).ToString("HH:mm")</td>
+                        <td>@appointment.Type</td>
+                        <td>Dr. @appointment.DoctorFirstName @appointment.DoctorLastName</td>
+                        <td>@appointment.DoctorSpecialization</td>
+                        <td>
+                            <div>@appointment.ClinicName</div>
+                            <small class="text-muted">
+                                @appointment.ClinicStreet @appointment.ClinicStreetNumber, @appointment.ClinicCity
+                            </small>
+                        </td>
+                        <td>
+                                        <span class="badge bg-@GetStatusColor(appointment.Status)">
+                                            @appointment.Status
+                                        </span>
+                        </td>
+                        <td>@appointment.Description</td>
+                        <td>
+                            @if (appointment.Status == "Active")
+                            {
+                            <button class="btn btn-danger btn-sm"
+                                    @onclick="() => CancelAppointment(appointment.Id)">
+                                Cancel
+                            </button>
+                            }
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+@code {
+private List<GetAppointmentsDto> appointments;
+private string cprNumber = "";
+private string errorMessage;
+private bool isLoading;
+
+private async Task FetchAppointments()
+{
+if (string.IsNullOrWhiteSpace(cprNumber))
+{
+errorMessage = "Please enter a CPR number";
+return;
+}
+
+try
+{
+isLoading = true;
+errorMessage = null;
+appointments = await AppointmentService.GetAppointments(cprNumber);
+}
+catch (Exception ex)
+{
+errorMessage = "Failed to load appointments. Please try again.";
+Console.WriteLine($"Error: {ex.Message}");
+}
+finally
+{
+isLoading = false;
+}
+}
+
+private string GetStatusColor(string status) => status?.ToLower() switch
+{
+"active" => "success",
+"cancelled" => "danger",
+"expired" => "warning",
+_ => "secondary"
+};
+
+private async Task CancelAppointment(int appointmentId)
+{
+try
+{
+var success = await AppointmentService.CancelAppointment(appointmentId, cprNumber);
+if (success)
+{
+// Refresh appointments list
+await FetchAppointments();
+}
+else
+{
+errorMessage = "Failed to cancel appointment. Please try again.";
+}
+}
+catch (Exception ex)
+{
+errorMessage = "Failed to cancel appointment. Please try again.";
+Console.WriteLine($"Error: {ex.Message}");
+}
+}
+}
