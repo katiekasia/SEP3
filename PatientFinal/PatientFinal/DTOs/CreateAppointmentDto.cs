@@ -6,9 +6,6 @@ public class CreateAppointmentDto
 {
         public string type {get; set;}
         
-        public string clinic {get; set;}
-        
-        public string city {get; set;}
         
         public string description { get; set; }
         public string status { get; set; }
@@ -17,9 +14,5 @@ public class CreateAppointmentDto
         
         public string date { get; set; }
         public string time { get; set; }
-    
-     
-        
-       
       
 }
