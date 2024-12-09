@@ -16,7 +16,7 @@ public class EventRepositoryTest {
     EventRepository repo = new EventRepository(database);
 
     try {
-      String testCpr = "1234567889";
+      String testCpr = "1234567890";
       String testDoctorId = "1";
 
       System.out.println("=== 1. Setting up test data ===");

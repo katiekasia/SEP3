@@ -660,7 +660,7 @@ public class EventRepository implements EventInterface {
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, newStatus);
-            statement.setString(2, String.valueOf(appointmentId));
+            statement.setInt(2, appointmentId);  // Changed to setInt
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -690,8 +690,8 @@ public class EventRepository implements EventInterface {
             // Cancel the appointment in memory
             appointmentToCancel.cancel();
 
-            // Update the database
-            statement.setString(1, String.valueOf(appointmentId));  // Convert to String for database
+            // Update the database using integer ID
+            statement.setInt(1, appointmentId);
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
@@ -751,11 +751,11 @@ public class EventRepository implements EventInterface {
                         rs.getTime("time").toLocalTime()
                     );
 
-                    // Convert String ID from database to int for Appointment
-                    int appointmentId = Integer.parseInt(rs.getString("id"));
+                    // Get appointment ID directly as int
+                    int appointmentId = rs.getInt("id");
 
                     Appointment appointment = new Appointment(
-                        appointmentId,  // Using parsed int
+                        appointmentId,
                         clinic,
                         rs.getString("type"),
                         dateAndTime,
@@ -780,10 +780,7 @@ public class EventRepository implements EventInterface {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
-        } catch (NumberFormatException e) {
-            throw new RuntimeException("Invalid appointment ID format in database: " + e.getMessage(), e);
         }
         return appointments;
     }
-
 }

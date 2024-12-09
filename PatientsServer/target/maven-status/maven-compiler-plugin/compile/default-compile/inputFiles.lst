@@ -1,4 +1,5 @@
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\Auth\PasswordHasher.java
+C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\CancelAppointmentDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\CityDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\CityListDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\ClinicDto.java
@@ -8,7 +9,6 @@ C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\GetApp
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\LoginDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\RegisterDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\ResponseDto.java
-C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UpdateAppointmentDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UpdatePatientDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\DTOs\UserDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\PatientsServer\src\main\java\via\pro3\patientsserver\PatientsServerApplication.java

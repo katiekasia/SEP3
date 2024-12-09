@@ -20,6 +20,7 @@ patient\grpc\DBresponse.class
 patient\grpc\LoginResponseOrBuilder.class
 patient\grpc\RegisterRequest$1.class
 patient\grpc\GetAppointmentsResponse$Builder.class
+DTOs\CancelAppointmentDto.class
 patient\grpc\GetAppointmentsResponse.class
 patient\grpc\DoctorRequestOrBuilder.class
 patient\grpc\DoctorListResponse$Builder.class
@@ -39,7 +40,6 @@ DTOs\ResponseDto.class
 DTOs\UpdatePatientDto.class
 patient\grpc\CityListResponseOrBuilder.class
 patient\grpc\Clinic.class
-DTOs\UpdateAppointmentDto.class
 DTOs\LoginDto.class
 patient\grpc\DoctorListResponse$1.class
 patient\grpc\GetAppointmentsResponseOrBuilder.class

@@ -3,6 +3,7 @@ C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainse
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\database\EventInterface.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\database\EventRepository.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\database\EventRepositoryTest.java
+C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\CancelAppointmentDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\CityDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\ClinicDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\CreateAppointmentDto.java
@@ -13,7 +14,6 @@ C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainse
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\PrescriptionDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\RegisterDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\ResetPasswordDto.java
-C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\UpdateAppointmentDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\UpdatePatientDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\DTOs\UserDto.java
 C:\Users\Catalina\Documents\GitHub\SEP3\MainServer\src\main\java\via\pro3\mainserver\MainServer.java
