@@ -98,15 +98,15 @@ public class EventRepository implements EventInterface {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Doctor(
-                            resultSet.getString("id"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
+                        resultSet.getString("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
                         resultSet.getString("phone_number"),
-resultSet.getString("email"),
-//                            resultSet.getString("")
-                            resultSet.getString("password"),
-                            resultSet.getString("specialisation"),
-                            getClinicByDoctorId(doctorId)
+                        resultSet.getString("email"),
+                        //                            resultSet.getString("")
+                        resultSet.getString("password"),
+                        resultSet.getString("specialisation"),
+                        getClinicByDoctorId(doctorId)
                     );
                 } else {
                     throw new RuntimeException("No doctor found for doctorId: " + doctorId);
@@ -653,7 +653,137 @@ resultSet.getString("email"),
     }
 
 
+    public void updateAppointmentStatus(int appointmentId, String newStatus) {
+        String sql = "UPDATE appointment SET status = ? WHERE id = ?";
 
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
+            statement.setString(1, newStatus);
+            statement.setString(2, String.valueOf(appointmentId));
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update appointment status: " + e.getMessage(), e);
+        }
+    }
+    public void cancelAppointment(int appointmentId, String patientCpr) {
+        // Get all appointments for the patient
+        List<Appointment> appointments = getAppointmentsByPatientCpr(patientCpr);
+
+        // Find the specific appointment
+        Appointment appointmentToCancel = appointments.stream()
+            .filter(apt -> apt.getAppointmentId() == appointmentId)
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        // Check if appointment can be cancelled
+        if (!appointmentToCancel.getStatus().equals("Active")) {
+            throw new IllegalStateException("Only active appointments can be cancelled");
+        }
+
+        String sql = "UPDATE appointment SET status = 'Cancelled' WHERE id = ?";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            // Cancel the appointment in memory
+            appointmentToCancel.cancel();
+
+            // Update the database
+            statement.setString(1, String.valueOf(appointmentId));  // Convert to String for database
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Failed to update appointment status in database");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = """
+        SELECT 
+            a.id, 
+            a.description, 
+            a.type, 
+            a.date, 
+            a.time, 
+            a.status,
+            d.id AS doctor_id,
+            d.first_name AS doctor_first_name,
+            d.last_name AS doctor_last_name,
+            d.specialisation AS doctor_specialisation,
+            c.name AS clinic_name, 
+            c.street AS clinic_street, 
+            c.street_number AS clinic_street_number,
+            c.id AS clinic_id,
+            city.city_name AS clinic_city
+        FROM appointment a
+        INNER JOIN doctor d ON a.doctor_id = d.id
+        INNER JOIN clinic c ON d.clinic_id = c.id
+        INNER JOIN city ON c.city_PO_code = city.postal_code
+        WHERE a.patient_CPR = ?
+        ORDER BY a.date DESC, a.time ASC
+    """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, patientCpr);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Clinic clinic = new Clinic(
+                        rs.getString("clinic_id"),
+                        rs.getString("clinic_name"),
+                        rs.getString("clinic_city"),
+                        rs.getString("clinic_street"),
+                        rs.getString("clinic_street_number")
+                    );
+
+                    MyDateAndTime dateAndTime = new MyDateAndTime(
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("time").toLocalTime()
+                    );
+
+                    // Convert String ID from database to int for Appointment
+                    int appointmentId = Integer.parseInt(rs.getString("id"));
+
+                    Appointment appointment = new Appointment(
+                        appointmentId,  // Using parsed int
+                        clinic,
+                        rs.getString("type"),
+                        dateAndTime,
+                        rs.getString("description"),
+                        rs.getString("status")
+                    );
+
+                    // Check if appointment should be expired
+                    LocalDateTime appointmentDateTime = LocalDateTime.of(
+                        appointment.getDate(),
+                        appointment.getTime()
+                    );
+                    LocalDateTime now = LocalDateTime.now();
+
+                    if (appointmentDateTime.isBefore(now) && appointment.getStatus().equals("Active")) {
+                        appointment.expire();
+                        updateAppointmentStatus(appointment.getAppointmentId(), "Expired");
+                    }
+
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid appointment ID format in database: " + e.getMessage(), e);
+        }
+        return appointments;
+    }
 
 }

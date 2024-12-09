@@ -13,6 +13,8 @@ service Patient {
   rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
   rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
 
+  rpc cancelAppointment (CancelAppointmentRequest) returns (DBresponse) {}
+
 }
 message CreateAppointment {
   string type = 1;
@@ -112,4 +114,9 @@ message UpdateUserRequest
   string phone = 3;
   string email = 4;
   string newPassword = 5;
+}
+
+message CancelAppointmentRequest {
+  int32 appointmentId = 1;
+  string patientCpr = 2;
 }

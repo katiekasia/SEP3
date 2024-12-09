@@ -38,41 +38,70 @@ namespace PatientFinal.Services
             }
         }
 
-        public async Task<List<GetAppointmentsDto>> GetAppointments(
-            string patientCpr)
+         public async Task<List<GetAppointmentsDto>> GetAppointments(string patientCpr)
+    {
+        try
         {
-            try
+            var httpResponse = await client.GetAsync($"{baseUrl}/Demo/appointments?cpr={patientCpr}");
+            var response = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
             {
-                var httpResponse =
-                    await client.GetAsync(
-                        $"{baseUrl}/Demo/appointments?cpr={patientCpr}");
-                var response = await httpResponse.Content.ReadAsStringAsync();
-                Console.WriteLine($"Raw response: {response}");
-
-                if (!httpResponse.IsSuccessStatusCode)
-                    throw new Exception(
-                        $"Failed to get appointments: {response}");
-
-                var responseDto = JsonSerializer.Deserialize<ResponseDto>(
-                    response,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-
-                return responseDto?.Appointments ??
-                       new List<GetAppointmentsDto>();
+                throw new Exception($"Failed to get appointments: {response}");
             }
-            catch (Exception ex)
+
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(
+                response,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+            if (!responseDto.Success)
             {
-                Console.WriteLine(
-                    $"Error retrieving appointments: {ex.Message}");
-                throw;
+                throw new Exception(responseDto.response ?? "Unknown error occurred");
             }
+
+            return responseDto.Appointments ??
+                   new List<GetAppointmentsDto>();
         }
-        
-        
-          public async Task<List<CityDto>> GetCities()
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving appointments: {ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task<bool> CancelAppointment(int appointmentId, string patientCpr)
+    {
+        try
+        {
+            var cancelRequest = new CancelAppointmentDto(appointmentId, patientCpr);
+
+            var httpResponse = await client.PostAsJsonAsync(
+                $"{baseUrl}/Demo/appointments/cancel",
+                cancelRequest
+            );
+
+            var response = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception($"Failed to cancel appointment: {response}");
+            }
+
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(
+                response,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+            return responseDto.Success;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error cancelling appointment: {ex.Message}");
+            throw;
+        }
+    }
+        public async Task<List<CityDto>> GetCities()
         {
             try
             {
@@ -173,9 +202,13 @@ namespace PatientFinal.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occurred while fetching cities: {ex.Message}");
+
                 throw;
             }
         }
         
+       
     }
+
+
 }

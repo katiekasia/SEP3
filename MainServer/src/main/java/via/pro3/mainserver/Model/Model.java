@@ -14,11 +14,14 @@ public interface Model
   Doctor loginDoctor(LoginDto loginDto);
   Patient loginPatient(LoginDto loginDto);
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
+
+
+
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);
   List<Doctor> getDoctorByClinic(String id_clinic);
-  List<Appointment> getPatientAppointments(String cpr);
-  String getDoctorByClinicName(String clinicName);
+
+
   String updatePatient(UpdatePatientDto updatePatientDto);
 
   List<Appointment> getDoctorAppointments(String id);
@@ -26,5 +29,7 @@ public interface Model
   void addPrescription(PrescriptionDto prescriptionDto);
   Appointment getAppointmentByAppointmentId(int appointmentId);
 
-
+  void cancelAppointment(int appointmentId, String patientCpr);
+  List<Appointment> getPatientAppointments(String cpr);
+  String getDoctorByClinicName(String clinicName);
 }

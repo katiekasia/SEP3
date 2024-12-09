@@ -28,6 +28,7 @@ public interface EventInterface
   boolean loginDoctor(LoginDto request);
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
+
   List<Doctor> getDoctors();
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);
@@ -39,4 +40,7 @@ public interface EventInterface
   String updateUser(UpdatePatientDto request);
   void addPrescription(PrescriptionDto request);
   Appointment getAppointmentByAppointmentId(int appointmentId);
+
+  void updateAppointmentStatus(int appointmentId, String newStatus);
+  void cancelAppointment(int appointmentId, String patientCpr);
 }
