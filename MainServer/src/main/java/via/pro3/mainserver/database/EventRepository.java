@@ -276,26 +276,21 @@ public class EventRepository implements EventInterface {
     }
 
     @Override
-<<<<<<< HEAD
     public String cancelAppointment(int appointmentId) {
-        String sql = "DELETE FROM appointments WHERE id = ?";
+        String sql = "UPDATE appointment SET status = 'Cancelled' WHERE id = ?";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, String.valueOf(appointmentId));
+            statement.setInt(1, appointmentId);
             statement.executeUpdate();
-        } catch (DateTimeParseException | SQLException e) {
+            return "Appointment cancelled";
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
         }
-        return "Appointment cancelled";
     }
 
     @Override
-    public String loginDoctor(LoginDto request) {
-        String sql = "SELECT * FROM doctor WHERE id = ? AND password =?";
-=======
     public boolean loginDoctor(LoginDto request) {
         String sql = "SELECT * FROM doctor WHERE id = ?";
->>>>>>> main
 
         try (Connection connection = database.getConnection(); // Get connection from pool
              PreparedStatement statement = connection.prepareStatement(sql)) {

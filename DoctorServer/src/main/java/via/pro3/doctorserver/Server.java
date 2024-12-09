@@ -193,6 +193,22 @@ public class Server
     }
   }
 
+  @PutMapping("/cancelAppointment")
+  public ResponseDto cancelAppointment(@RequestParam String appointmentId){
+    try
+    {
+      GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
+              .setId(appointmentId)
+              .build();
+
+      ResponseDto response = new ResponseDto();
+      response.setResponse((String.valueOf(blockingStub.cancelAppointment(request))));
+      return response;
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+    }
+  }
 
   @GetMapping("/Prescriptions/getPatients")
   public List<PatientDto> getPatients(@RequestParam String doctorid) {

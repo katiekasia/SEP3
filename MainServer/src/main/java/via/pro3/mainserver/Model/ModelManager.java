@@ -255,6 +255,18 @@ public class ModelManager implements Model
     }
   }
 
+  @Override
+  public String cancelAppointment(int appointmentId) {
+    try {
+      return eventRepository.cancelAppointment(appointmentId);
+    }  catch (IllegalStateException e) {
+
+      throw e;
+    } catch (Exception e) {
+      throw new RuntimeException("Error cancelling appointment: " + e.getMessage(), e);
+    }
+  }
+
 
   @Override
   public List<Appointment> getPatientAppointments(String cpr) {

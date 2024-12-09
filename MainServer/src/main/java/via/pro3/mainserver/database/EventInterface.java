@@ -39,12 +39,9 @@ public interface EventInterface
   Patient getPatientByAppointmentId(int appointmentId);
   String updateUser(UpdatePatientDto request);
   void addPrescription(PrescriptionDto request);
-<<<<<<< HEAD
   String cancelAppointment(int appointmentId);
-=======
   Appointment getAppointmentByAppointmentId(int appointmentId);
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);
->>>>>>> main
 }

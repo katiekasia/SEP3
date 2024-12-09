@@ -34,6 +34,12 @@
                 <br/>
                 <!-- Cancel Appointment Button (No functionality for now) -->
                 <button class="btn btn-danger" @onclick="CancelAppointment">Cancel Appointment</button>
+                @if (!string.IsNullOrEmpty(serverResponse))
+                {
+                <div class="notification success">
+                    <p>@serverResponse</p>
+                </div>
+                }
             </div>
         }
         else
@@ -47,6 +53,7 @@
     [Parameter] public int AppointmentId { get; set; }
     private GetAppointmentsDto appointment;
     private string doctorId;
+    private string serverResponse;
 
     [CascadingParameter] public Task<AuthenticationState> State { get; set; }
 
@@ -83,10 +90,13 @@
         }
     }
 
-    private void CancelAppointment()
+    private async void CancelAppointment()
     {
-        
-        // FOR DANIEL / MICHAEL / OR ME
+
         Console.WriteLine("Cancel appointment button clicked.");
+
+        var cancelAppointment = await AppointmentService.cancelAppointment(AppointmentId);
+        serverResponse = cancelAppointment.response;
     }
+
 }

@@ -88,4 +88,30 @@ public class HttpAppointmentService : IAppointmentService
             throw;
         }
     }
+
+    public async Task<ResponseDto> cancelAppointment(int appointmentId)
+    {
+        try
+        {
+            var httpResponse =
+                await http.PutAsync(
+                    $"{baseUrl}/Doctor/cancelAppointment?appointmentId={appointmentId}", null);
+            var response = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new Exception(
+                    $"Failed to get appointments: {response}");
+
+            return JsonSerializer.Deserialize<ResponseDto>(response, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(
+                $"Error canceling appointment: {ex.Message}");
+            throw;
+        }
+    }
 }

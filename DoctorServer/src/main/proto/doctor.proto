@@ -12,6 +12,7 @@ service Doctor {
   rpc getPatientsByDoctorId(GetPatientsRequest) returns (GetPatientsResponse){}
   rpc addPrescription(AddPrescriptionRequest) returns (Response){}
   rpc getAppointmentById(GetAppointmentByIdReq) returns(AppointmentInfoD){}
+  rpc cancelAppointment(GetAppointmentByIdReq) returns (Response){}
 }
 
 message EmptyRequest{}

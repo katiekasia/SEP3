@@ -229,4 +229,23 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             .asRuntimeException());
       }
     }
+
+    @Override
+    public void cancelAppointment(GetAppointmentByIdReq request,
+                                       StreamObserver<Response> responseObserver){
+        try{
+            Response response = Response.newBuilder()
+                    .setConfirmation(model.cancelAppointment(Integer.parseInt(request.getId())))
+                    .build();
+            responseObserver.onNext(response);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Response response = Response.newBuilder().setConfirmation("Failed").build();
+            responseObserver.onNext(response);
+        }
+        finally {
+            responseObserver.onCompleted();
+        }
+    }
 }

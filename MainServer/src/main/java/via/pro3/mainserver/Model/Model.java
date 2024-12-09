@@ -30,6 +30,7 @@ public interface Model
   Appointment getAppointmentByAppointmentId(int appointmentId);
 
   void cancelAppointment(int appointmentId, String patientCpr);
+  String cancelAppointment(int appointmentId);
   List<Appointment> getPatientAppointments(String cpr);
   String getDoctorByClinicName(String clinicName);
 }
