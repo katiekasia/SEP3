@@ -49,5 +49,22 @@ public class GetAppointmentsDto
   public void setClinicStreet(String clinicStreet) { this.clinicStreet = clinicStreet; }
   public void setClinicStreetNumber(String clinicStreetNumber) { this.clinicStreetNumber = clinicStreetNumber; }
   public void setClinicCity(String clinicCity) { this.clinicCity = clinicCity; }
+
+  //  methods for status checking
+  public boolean isActive() {
+    return "Active".equals(status);
+  }
+
+  public boolean isCancelled() {
+    return "Cancelled".equals(status);
+  }
+
+  public boolean isExpired() {
+    return "Expired".equals(status);
+  }
+
+  public boolean canBeCancelled() {
+    return isActive();
+  }
 }
 

@@ -30,13 +30,13 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         try {
 
             CreateAppointmentDto newAppointment = new CreateAppointmentDto(request.getType(),
-                    request.getDescription(), request.getStatus(), request.getPatientCpr(), request.getDoctorId(),
-                    request.getAppointmentDate(), request.getAppointmentTime());
+                request.getDescription(), request.getStatus(), request.getPatientCpr(), request.getDoctorId(),
+                request.getAppointmentDate(), request.getAppointmentTime());
 
 
             DBresponse response = DBresponse.newBuilder()
-                    .setConfirmation(model.createAppointment(newAppointment))
-                    .build();
+                .setConfirmation(model.createAppointment(newAppointment))
+                .build();
 
             // Send the response to the client
             responseObserver.onNext(response);
@@ -58,22 +58,22 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
 
             System.out.println(patient.getPassword());
             LoginResponse response = LoginResponse.newBuilder()
-                    .setName(patient.getName())
-                    .setEmail(patient.getEmail())
-                    .setPhone(patient.getPhone())
-                    .setSurname(patient.getSurname())
-                    .setCpr(patient.getCPRNo())
-                    .setPassword(patient.getPassword())
-                    .build();
+                .setName(patient.getName())
+                .setEmail(patient.getEmail())
+                .setPhone(patient.getPhone())
+                .setSurname(patient.getSurname())
+                .setCpr(patient.getCPRNo())
+                .setPassword(patient.getPassword())
+                .build();
 
             responseObserver.onNext(response);
         } catch (Exception e) {
             e.printStackTrace();
             responseObserver.onError(
-                    Status.INTERNAL
-                            .withDescription(e.getMessage())
-                            .withCause(e)
-                            .asRuntimeException()
+                Status.INTERNAL
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
             );
         } finally {
             responseObserver.onCompleted();
@@ -108,86 +108,33 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
 
-        @Override
-<<<<<<< HEAD
-        public void getAppointmentsByPatientCpr(GetAppointmentsRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
-            try {
-                List<Appointment> appointments = model.getPatientAppointments(request.getPatientCpr());
-=======
-        public void getAppointmentsByPatientCpr(PatientRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
-            try {
-                List<Appointment> appointments = model.getPatientAppointments(request.getCpr());
->>>>>>> main
-                GetAppointmentsResponse.Builder responseBuilder = GetAppointmentsResponse.newBuilder();
-
-                for (Appointment appointment : appointments) {
-                    Clinic clinic = appointment.getClinic();
-                    Doctor doctor = model.getDoctorById(model.getDoctorByClinicName(clinic.getName()));
-
-                    AppointmentInfo appointmentInfo = AppointmentInfo.newBuilder()
-                        .setId(appointment.getAppointmentId())
-                        .setDescription(appointment.getDescription())
-                        .setType(appointment.getType())
-                        .setDate(appointment.getDate().toString())
-                        .setTime(appointment.getTime().toString())
-                        .setStatus(appointment.getStatus())
-                        .setDoctorId(doctor.getId())
-                        .setDoctorFirstName(doctor.getName())
-                        .setDoctorLastName(doctor.getSurname())
-<<<<<<< HEAD
-                        .setDoctorSpecialization(doctor.getSpecialisation())
-=======
-                        .setDoctorSpecialization(doctor.getSpecialization())
->>>>>>> main
-                        .setClinicName(clinic.getName())
-                        .setClinicStreet(clinic.getStreet())
-                        .setClinicStreetNumber(clinic.getStreetNo())
-                        .setClinicCity(clinic.getCity())
-                        .build();
-
-                    responseBuilder.addAppointments(appointmentInfo);
-                }
-
-                responseObserver.onNext(responseBuilder.build());
-                responseObserver.onCompleted();
-            } catch (Exception e) {
-                responseObserver.onError(Status.INTERNAL
-                    .withDescription("Error fetching appointments: " + e.getMessage())
-                    .withCause(e)
-                    .asRuntimeException());
-            }
-        }
-<<<<<<< HEAD
-    }
-
-=======
 
 
     @Override
     public void updateUser(UpdateUserRequest request, StreamObserver<DBresponse> responseObserver) {
         try {
             UpdatePatientDto updatePatientDto = new UpdatePatientDto(
-                    request.getCPR(),
-                    request.getSurname(),
-                    request.getPhone(),
-                    request.getEmail(),
-                    request.getNewPassword()
+                request.getCPR(),
+                request.getSurname(),
+                request.getPhone(),
+                request.getEmail(),
+                request.getNewPassword()
             );
 
             String result = model.updatePatient(updatePatientDto);
 
             DBresponse response = DBresponse.newBuilder()
-                    .setConfirmation(result)
-                    .build();
+                .setConfirmation(result)
+                .build();
 
             responseObserver.onNext(response);
         } catch (Exception e) {
             e.printStackTrace();
             responseObserver.onError(
-                    Status.INTERNAL
-                            .withDescription(e.getMessage())
-                            .withCause(e)
-                            .asRuntimeException()
+                Status.INTERNAL
+                    .withDescription(e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
             );
         } finally {
             responseObserver.onCompleted();
@@ -236,7 +183,7 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .setId(clinic.getId())
                     .setName(clinic.getName())
                     .setAddress(clinic.getAddress()).build();
-                    responseBuilder.addClinics(info);
+                responseBuilder.addClinics(info);
             }
             responseObserver.onNext(responseBuilder.build());
         } catch (Exception e) {
@@ -252,8 +199,8 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
 
-   @Override
-   public void getDoctors(patient.grpc.Clinic request, StreamObserver<DoctorListResponse> responseObserver) {
+    @Override
+    public void getDoctors(patient.grpc.Clinic request, StreamObserver<DoctorListResponse> responseObserver) {
         try {
             System.out.println("PATEINTIMPL DOCTOR");
             List<Doctor> doctors = model.getDoctorByClinic(request.getId());
@@ -281,10 +228,72 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
             responseObserver.onCompleted();
         }
     }
+    @Override
+    public void cancelAppointment(CancelAppointmentRequest request, StreamObserver<DBresponse> responseObserver) {
+        try {
+
+            model.cancelAppointment(request.getAppointmentId(), request.getPatientCpr());
+
+            DBresponse response = DBresponse.newBuilder()
+                .setConfirmation("Appointment cancelled successfully")
+                .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IllegalStateException e) {
+
+            responseObserver.onError(Status.FAILED_PRECONDITION
+                .withDescription(e.getMessage())
+                .asRuntimeException());
+        } catch (Exception e) {
+            responseObserver.onError(Status.INTERNAL
+                .withDescription("Error cancelling appointment: " + e.getMessage())
+                .asRuntimeException());
+        }
+    }
+
+
+    @Override
+    public void getAppointmentsByPatientCpr(PatientRequest request, StreamObserver<GetAppointmentsResponse> responseObserver) {
+        try {
+            List<Appointment> appointments = model.getPatientAppointments(request.getCpr());
+            GetAppointmentsResponse.Builder responseBuilder = GetAppointmentsResponse.newBuilder();
+
+            for (Appointment appointment : appointments) {
+                Clinic clinic = appointment.getClinic();
+                Doctor doctor = model.getDoctorById(model.getDoctorByClinicName(clinic.getName()));
+
+                AppointmentInfo appointmentInfo = AppointmentInfo.newBuilder()
+                    .setId(appointment.getAppointmentId())
+                    .setStatus(appointment.getStatus())
+                    .setDescription(appointment.getDescription())
+                    .setType(appointment.getType())
+                    .setDate(appointment.getDate().toString())
+                    .setTime(appointment.getTime().toString())
+                    .setDoctorId(doctor.getId())
+                    .setDoctorFirstName(doctor.getName())
+                    .setDoctorLastName(doctor.getSurname())
+                    .setDoctorSpecialization(doctor.getSpecialization())
+                    .setClinicName(clinic.getName())
+                    .setClinicStreet(clinic.getStreet())
+                    .setClinicStreetNumber(clinic.getStreetNo())
+                    .setClinicCity(clinic.getCity())
+                    .build();
+
+                responseBuilder.addAppointments(appointmentInfo);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(Status.INTERNAL
+                .withDescription("Error fetching appointments: " + e.getMessage())
+                .asRuntimeException());
+        }
+    }
 
 
 
 }
->>>>>>> main
 
 

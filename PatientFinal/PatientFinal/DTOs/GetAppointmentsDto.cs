@@ -17,5 +17,7 @@
         public string ClinicStreet { get; set; }
         public string ClinicStreetNumber { get; set; }
         public string ClinicCity { get; set; }
+        public bool CanBeCancelled => Status == "Active";
+        
     }
 }

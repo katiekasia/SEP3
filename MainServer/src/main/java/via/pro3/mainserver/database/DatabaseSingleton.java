@@ -12,11 +12,9 @@ public final class DatabaseSingleton implements DatabaseInterface {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres?currentSchema=sep3";
     private static final String USER = "postgres";
-<<<<<<< HEAD
+
     private static final String PSWD = "sukablyat";
-=======
-    private static final String PSWD = "VIAVIAVIA";
->>>>>>> main
+
 
     private DatabaseSingleton(){
         // Configure HikariCP
