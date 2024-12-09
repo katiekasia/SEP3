@@ -56,4 +56,5 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(
             Task.FromResult(new AuthenticationState(user)));
     }
+    
 }

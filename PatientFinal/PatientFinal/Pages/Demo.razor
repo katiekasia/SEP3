@@ -1,11 +1,14 @@
 ﻿@page "/Demo"
 @using System.Diagnostics
 @using System.Linq.Expressions
+@using System.Security.Claims
+@using PatientFinal.Auth
 @using PatientFinal.DTOs
 @using PatientFinal.Services
 @inject HttpClient Http
 @inject IAppointmentService AppointmentService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider;
 
 <PageTitle>Book Appointment</PageTitle>
 <h3>Book an Appointment</h3>
@@ -109,8 +112,7 @@
         {
             <div id="server-response" class="response-container">@serverResponse</div>
         }
-    </Authorized>
-</AuthorizeView>
+ 
 
 
 
@@ -119,9 +121,28 @@
    private List<CityDto> cities = new List<CityDto>();
    private List<ClinicDto> clinics = new List<ClinicDto>();
    private List<DoctorDto> doctors = new List<DoctorDto>();
+   private string cpr;
 
     protected override async Task OnInitializedAsync()
     {
+        try
+        {
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            this.cpr = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            if (string.IsNullOrEmpty(this.cpr))
+            {
+                serverResponse = "Error: Could not retrieve CPR. Please try logging in again.";
+                return;
+            } 
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("AuthState");
+        }
+
         try
         {
             cities = await AppointmentService.GetCities();
@@ -240,41 +261,43 @@
             serverResponse = "Please select a valid date and time.";
             return;
         }
+        
+        Console.WriteLine($"Retrieved CPR from claims: {cpr}");
     
+        if (string.IsNullOrEmpty(cpr))
+        {
+            serverResponse = "Unable to retrieve user CPR. Please try logging in again.";
+            return;
+        }
+
         var createAppointmentDto = new CreateAppointmentDto()
         {
             status = "Active",
             description = writtenDescription,
             type = selectedType,
             doctorId = selectedDoctor.id,
-            patientCpr = "1234567890",
+            patientCpr = cpr,
             date = selectedDate?.ToString("yyyy-MM-dd"),
             time = selectedTime?.ToString("HH:mm")
         };
-    
+
         try
         {
-            
             var response = await AppointmentService.CreateAppointment(createAppointmentDto);
-            serverResponse = response.response != null
-                ? response.response
-                :" response";
+            serverResponse = response.response ?? " response";
             Navigation.NavigateTo("/appointments");
-            
         }
         catch (Exception e)
         {
-            // System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
-            // Console.WriteLine("KK");
-            // Debug.WriteLine(Environment.StackTrace);
             serverResponse = $"Error creating an appointment: {e.Message}";
-          
+            Console.WriteLine($"Full error details: {e}");
         }
     }
     
 }
 
-
+    </Authorized>
+</AuthorizeView>
 <style>
     /* General container for the form */
     #appointment-form {

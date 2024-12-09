@@ -18,6 +18,7 @@ builder.Services.AddScoped<IAppointmentService, HttpAppointmentService>();
 builder.Services.AddScoped<IRegisterService, HttpRegisterService>();
 builder.Services.AddScoped<IUpdateService, HttpUpdatePatientService>();
 builder.Services.AddScoped<ILoginService, HttpLoginService>();
+builder.Services.AddScoped<SimpleAuthProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddMudServices();
