@@ -26,4 +26,5 @@ public interface EventInterface
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
   void addPrescription(PrescriptionDto request);
+  String cancelAppointment(int appointmentId);
 }
