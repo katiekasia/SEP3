@@ -307,83 +307,83 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Failed to change doctor password: " + e.getMessage(), e);
         }
     }
-    @Override
-    public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
-        List<Appointment> appointments = new ArrayList<>();
-        String sql = """
-        SELECT 
-            a.id, 
-            a.description, 
-            a.type, 
-            a.date, 
-            a.time, 
-            a.status,
-            d.id AS doctor_id,
-            d.first_name AS doctor_first_name,
-            d.last_name AS doctor_last_name,
-            d.specialisation AS doctor_specialisation,
-            c.name AS clinic_name, 
-            c.street AS clinic_street, 
-            c.street_number AS clinic_street_number,
-            c.id AS clinic_id,
-            city.city_name AS clinic_city
-        FROM appointment a
-        INNER JOIN doctor d ON a.doctor_id = d.id
-        INNER JOIN clinic c ON d.clinic_id = c.id
-        INNER JOIN city ON c.city_PO_code = city.postal_code
-        WHERE a.patient_CPR = ?
-        ORDER BY a.date DESC, a.time ASC
-    """;
-
-        try (Connection connection = database.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, patientCpr);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    Clinic clinic = new Clinic(
-                        rs.getString("clinic_id"),
-                        rs.getString("clinic_name"),
-                        rs.getString("clinic_city"),
-                        rs.getString("clinic_street"),
-                        rs.getString("clinic_street_number")
-                    );
-
-                    Doctor doctor = new Doctor(
-                        rs.getString("doctor_id"),
-                        rs.getString("doctor_first_name"),
-                        rs.getString("doctor_last_name"),
-                        null, // password not needed
-                        null, // email not needed
-                        null,
-                        rs.getString("doctor_specialisation"),
-                        clinic
-                    );
-
-                    MyDateAndTime dateAndTime = new MyDateAndTime(
-                        rs.getDate("date").toLocalDate(),
-                        rs.getTime("time").toLocalTime()
-                    );
-
-                    Appointment appointment = new Appointment(
-                        rs.getInt("id"),
-                        clinic,
-                        rs.getString("type"),
-                        dateAndTime,
-                        rs.getString("description"),
-                        rs.getString("status")
-                    );
-
-                    appointments.add(appointment);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
-        }
-        return appointments;
-    }
+//    @Override
+//    public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
+//        List<Appointment> appointments = new ArrayList<>();
+//        String sql = """
+//        SELECT
+//            a.id,
+//            a.description,
+//            a.type,
+//            a.date,
+//            a.time,
+//            a.status,
+//            d.id AS doctor_id,
+//            d.first_name AS doctor_first_name,
+//            d.last_name AS doctor_last_name,
+//            d.specialisation AS doctor_specialisation,
+//            c.name AS clinic_name,
+//            c.street AS clinic_street,
+//            c.street_number AS clinic_street_number,
+//            c.id AS clinic_id,
+//            city.city_name AS clinic_city
+//        FROM appointment a
+//        INNER JOIN doctor d ON a.doctor_id = d.id
+//        INNER JOIN clinic c ON d.clinic_id = c.id
+//        INNER JOIN city ON c.city_PO_code = city.postal_code
+//        WHERE a.patient_CPR = ?
+//        ORDER BY a.date DESC, a.time ASC
+//    """;
+//
+//        try (Connection connection = database.getConnection();
+//            PreparedStatement statement = connection.prepareStatement(sql)) {
+//
+//            statement.setString(1, patientCpr);
+//
+//            try (ResultSet rs = statement.executeQuery()) {
+//                while (rs.next()) {
+//                    Clinic clinic = new Clinic(
+//                        rs.getString("clinic_id"),
+//                        rs.getString("clinic_name"),
+//                        rs.getString("clinic_city"),
+//                        rs.getString("clinic_street"),
+//                        rs.getString("clinic_street_number")
+//                    );
+//
+//                    Doctor doctor = new Doctor(
+//                        rs.getString("doctor_id"),
+//                        rs.getString("doctor_first_name"),
+//                        rs.getString("doctor_last_name"),
+//                        null, // password not needed
+//                        null, // email not needed
+//                        null,
+//                        rs.getString("doctor_specialisation"),
+//                        clinic
+//                    );
+//
+//                    MyDateAndTime dateAndTime = new MyDateAndTime(
+//                        rs.getDate("date").toLocalDate(),
+//                        rs.getTime("time").toLocalTime()
+//                    );
+//
+//                    Appointment appointment = new Appointment(
+//                        rs.getInt("id"),
+//                        clinic,
+//                        rs.getString("type"),
+//                        dateAndTime,
+//                        rs.getString("description"),
+//                        rs.getString("status")
+//                    );
+//
+//                    appointments.add(appointment);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
+//        }
+//        return appointments;
+//    }
 
     @Override public List<Appointment> getAppointmentsByDoctorId(
         String doctorId)
