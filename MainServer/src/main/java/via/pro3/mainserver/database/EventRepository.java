@@ -141,6 +141,7 @@ resultSet.getString("email"),
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
         }
     }
@@ -171,6 +172,7 @@ resultSet.getString("email"),
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to fetch patients for doctor", e);
         }
         return patients;
@@ -192,6 +194,7 @@ resultSet.getString("email"),
 
             statement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to create patient: " + e.getMessage(), e);
         }
     }
@@ -209,6 +212,7 @@ resultSet.getString("email"),
                 return resultSet.next(); // Returns true if patient found
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
         }
     }
@@ -375,6 +379,7 @@ resultSet.getString("email"),
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
         }
         return appointments;
@@ -385,12 +390,12 @@ resultSet.getString("email"),
     {
         List<Appointment> appointments = new ArrayList<>();
         String sql = """
-                SELECT\s
-                a.id,\s
-                a.description,\s
-                a.type,\s
-                a.date,\s
-                a.time,\s
+                SELECT
+                a.id,
+                a.description,
+                a.type,
+                a.date,
+                a.time,
                 a.status,
                 p.CPR_number AS cpr,
                 p.first_name AS patient_first_name,
@@ -446,6 +451,7 @@ resultSet.getString("email"),
         }
     }
     } catch (SQLException e) {
+            e.printStackTrace();
         throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
     }
         return appointments;
@@ -519,6 +525,7 @@ resultSet.getString("email"),
                 throw new RuntimeException("No patient found for appointment: " + appointmentId);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient : " + e.getMessage(), e);
         }
     }
