@@ -83,7 +83,7 @@ message GetPatientsResponse{
 }
 
 message AddPrescriptionRequest{
-  string id = 1;
+  int32 id = 1;
   string diagnosis = 2;
   string medication = 3;
   string recommendations = 4;

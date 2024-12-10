@@ -1,11 +1,6 @@
 package via.pro3.mainserver.database;
 
-import via.pro3.mainserver.DTOs.CityDto;
-import via.pro3.mainserver.DTOs.DoctorDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.PrescriptionDto;
-import via.pro3.mainserver.DTOs.ResetPasswordDto;
-import via.pro3.mainserver.DTOs.UpdatePatientDto;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -47,6 +42,65 @@ public class EventRepository implements EventInterface {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
+    {
+        String sql = """
+           
+                SELECT p.id, p.diagnosis, p.medication, p.recommendations, p.date,
+                p.time, p.patient_CPR, p.doctor_id
+                FROM prescription p
+                INNER JOIN patient pat ON pat.CPR_number = p.patient_CPR
+                WHERE p.patient_CPR=?
+                
+                    """;
+
+        System.out.println("Fetching presciptions for patient: " + patientCpr); // Debugging log
+        try (Connection connection = database.getConnection(); // Get connection from pool
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            List<GetPrescriptionsDto> prescriptions = new ArrayList<>();
+            statement.setString(1, patientCpr);
+
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                while (resultSet.next()) {
+
+                    String doctorName = "";
+                    String doctorSurname = "";
+                    Doctor doctor = getDoctorById(resultSet.getString("doctor_id"));
+                    if (doctor != null) {
+                        doctorName = doctor.getName();
+                        doctorSurname = doctor.getSurname();
+                    } else {
+                        System.out.println("Doctor not found for id: " + resultSet.getString("doctor_id"));
+                    }
+
+                    prescriptions.add(new GetPrescriptionsDto(
+                        resultSet.getInt("id"),
+                        resultSet.getString("diagnosis"),
+                        resultSet.getString("medication"),
+                        resultSet.getString("recommendations"),
+                        resultSet.getString("date"),
+                        resultSet.getString("time"),
+                        resultSet.getString("patient_CPR"),
+                        resultSet.getString("doctor_id"),
+                        doctorName,
+                        doctorSurname
+                    ));
+                }
+                GetPrescriptionsDto dto =prescriptions.get(0);
+                System.out.println(dto.id);
+                System.out.println(dto.doctorname);
+                System.out.println(dto.doctorsurname);
+
+                return prescriptions;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch prescriptions: " + patientCpr, e);
         }
     }
 
@@ -226,7 +280,7 @@ public class EventRepository implements EventInterface {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime dateTime = LocalDateTime.parse(request.getDate(), formatter);
 
-            statement.setString(1, request.getId());
+            statement.setInt(1, request.getId());
             statement.setString(2, request.getDiagnosis());
             statement.setString(3, request.getMedication());
             statement.setString(4, request.getRecommendations());

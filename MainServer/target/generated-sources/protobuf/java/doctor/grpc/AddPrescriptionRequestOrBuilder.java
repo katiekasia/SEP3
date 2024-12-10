@@ -8,14 +8,9 @@ public interface AddPrescriptionRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string id = 1;</code>
+   * <code>int32 id = 1;</code>
    */
-  java.lang.String getId();
-  /**
-   * <code>string id = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getIdBytes();
+  int getId();
 
   /**
    * <code>string diagnosis = 2;</code>

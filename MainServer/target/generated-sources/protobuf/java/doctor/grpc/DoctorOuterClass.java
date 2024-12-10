@@ -118,7 +118,7 @@ public final class DoctorOuterClass {
       "PatientsRequest\022\020\n\010doctorid\030\001 \001(\t\";\n\023Get" +
       "PatientsResponse\022$\n\010patients\030\001 \003(\0132\022.Pat" +
       "ientDtoMessage\"\246\001\n\026AddPrescriptionReques" +
-      "t\022\n\n\002id\030\001 \001(\t\022\021\n\tdiagnosis\030\002 \001(\t\022\022\n\nmedi" +
+      "t\022\n\n\002id\030\001 \001(\005\022\021\n\tdiagnosis\030\002 \001(\t\022\022\n\nmedi" +
       "cation\030\003 \001(\t\022\027\n\017recommendations\030\004 \001(\t\022\014\n" +
       "\004date\030\005 \001(\t\022\014\n\004time\030\006 \001(\t\022\022\n\npatientcpr\030" +
       "\007 \001(\t\022\020\n\010doctorid\030\010 \001(\t2\325\003\n\006Doctor\022<\n\013lo" +

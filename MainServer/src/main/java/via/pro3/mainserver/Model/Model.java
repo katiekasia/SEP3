@@ -15,7 +15,7 @@ public interface Model
   Patient loginPatient(LoginDto loginDto);
   String changeDoctorPassword(ResetPasswordDto resetPasswordDto);
 
-
+  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr);
 
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);

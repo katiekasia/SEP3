@@ -70,6 +70,16 @@ public final class PatientOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_PatientRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetPrescriptionsResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetPrescriptionsResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_PrescriptionInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_PrescriptionInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -121,36 +131,45 @@ public final class PatientOuterClass {
       "quest\022\014\n\004name\030\001 \001(\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005" +
       "email\030\003 \001(\t\022\r\n\005phone\030\004 \001(\t\022\020\n\010password\030\005" +
       " \001(\t\022\r\n\005CPRNo\030\006 \001(\t\"\035\n\016PatientRequest\022\013\n" +
-      "\003cpr\030\001 \001(\t\"k\n\rLoginResponse\022\014\n\004name\030\001 \001(" +
-      "\t\022\017\n\007surname\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n\005pho",
-      "ne\030\004 \001(\t\022\013\n\003cpr\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\"" +
-      "\247\002\n\017AppointmentInfo\022\n\n\002id\030\001 \001(\005\022\023\n\013descr" +
-      "iption\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\014\n\004date\030\004 \001(\t" +
-      "\022\014\n\004time\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\020\n\010doctor" +
-      "Id\030\007 \001(\t\022\027\n\017doctorFirstName\030\010 \001(\t\022\026\n\016doc" +
-      "torLastName\030\t \001(\t\022\034\n\024doctorSpecializatio" +
-      "n\030\n \001(\t\022\022\n\nclinicName\030\013 \001(\t\022\024\n\014clinicStr" +
-      "eet\030\014 \001(\t\022\032\n\022clinicStreetNumber\030\r \001(\t\022\022\n" +
-      "\nclinicCity\030\016 \001(\t\"A\n\027GetAppointmentsResp" +
-      "onse\022&\n\014appointments\030\001 \003(\0132\020.Appointment",
-      "Info\"d\n\021UpdateUserRequest\022\013\n\003CPR\030\001 \001(\t\022\017" +
-      "\n\007surname\030\002 \001(\t\022\r\n\005phone\030\003 \001(\t\022\r\n\005email\030" +
-      "\004 \001(\t\022\023\n\013newPassword\030\005 \001(\t\"E\n\030CancelAppo" +
-      "intmentRequest\022\025\n\rappointmentId\030\001 \001(\005\022\022\n" +
-      "\npatientCpr\030\002 \001(\t2\361\003\n\007Patient\0226\n\021createA" +
-      "ppointment\022\022.CreateAppointment\032\013.DBrespo" +
-      "nse\"\000\0221\n\014loginPatient\022\017.PatientRequest\032\016" +
-      ".LoginResponse\"\000\0222\n\017registerPatient\022\020.Re" +
-      "gisterRequest\032\013.DBresponse\"\000\022*\n\tgetCitie" +
-      "s\022\n.GetCities\032\021.CityListResponse\0221\n\ngetC",
-      "linics\022\014.CityRequest\032\023.ClinicListRespons" +
-      "e\"\000\022,\n\ngetDoctors\022\007.Clinic\032\023.DoctorListR" +
-      "esponse\"\000\022/\n\nupdateUser\022\022.UpdateUserRequ" +
-      "est\032\013.DBresponse\"\000\022J\n\033getAppointmentsByP" +
-      "atientCpr\022\017.PatientRequest\032\030.GetAppointm" +
-      "entsResponse\"\000\022=\n\021cancelAppointment\022\031.Ca" +
-      "ncelAppointmentRequest\032\013.DBresponse\"\000B\020\n" +
-      "\014patient.grpcP\001b\006proto3"
+      "\003cpr\030\001 \001(\t\"D\n\030GetPrescriptionsResponse\022(" +
+      "\n\rprescriptions\030\001 \003(\0132\021.PrescriptionInfo",
+      "\"\313\001\n\020PrescriptionInfo\022\n\n\002id\030\001 \001(\005\022\021\n\tdia" +
+      "gnosis\030\002 \001(\t\022\022\n\nmedication\030\003 \001(\t\022\027\n\017reco" +
+      "mmendations\030\004 \001(\t\022\014\n\004date\030\005 \001(\t\022\014\n\004time\030" +
+      "\006 \001(\t\022\022\n\npatientcpr\030\007 \001(\t\022\020\n\010doctorid\030\010 " +
+      "\001(\t\022\022\n\ndoctorname\030\t \001(\t\022\025\n\rdoctorsurname" +
+      "\030\n \001(\t\"k\n\rLoginResponse\022\014\n\004name\030\001 \001(\t\022\017\n" +
+      "\007surname\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\r\n\005phone\030\004" +
+      " \001(\t\022\013\n\003cpr\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\"\247\002\n\017" +
+      "AppointmentInfo\022\n\n\002id\030\001 \001(\005\022\023\n\013descripti" +
+      "on\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\014\n\004date\030\004 \001(\t\022\014\n\004",
+      "time\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\020\n\010doctorId\030\007" +
+      " \001(\t\022\027\n\017doctorFirstName\030\010 \001(\t\022\026\n\016doctorL" +
+      "astName\030\t \001(\t\022\034\n\024doctorSpecialization\030\n " +
+      "\001(\t\022\022\n\nclinicName\030\013 \001(\t\022\024\n\014clinicStreet\030" +
+      "\014 \001(\t\022\032\n\022clinicStreetNumber\030\r \001(\t\022\022\n\ncli" +
+      "nicCity\030\016 \001(\t\"A\n\027GetAppointmentsResponse" +
+      "\022&\n\014appointments\030\001 \003(\0132\020.AppointmentInfo" +
+      "\"d\n\021UpdateUserRequest\022\013\n\003CPR\030\001 \001(\t\022\017\n\007su" +
+      "rname\030\002 \001(\t\022\r\n\005phone\030\003 \001(\t\022\r\n\005email\030\004 \001(" +
+      "\t\022\023\n\013newPassword\030\005 \001(\t\"E\n\030CancelAppointm",
+      "entRequest\022\025\n\rappointmentId\030\001 \001(\005\022\022\n\npat" +
+      "ientCpr\030\002 \001(\t2\277\004\n\007Patient\0226\n\021createAppoi" +
+      "ntment\022\022.CreateAppointment\032\013.DBresponse\"" +
+      "\000\0221\n\014loginPatient\022\017.PatientRequest\032\016.Log" +
+      "inResponse\"\000\0222\n\017registerPatient\022\020.Regist" +
+      "erRequest\032\013.DBresponse\"\000\022*\n\tgetCities\022\n." +
+      "GetCities\032\021.CityListResponse\0221\n\ngetClini" +
+      "cs\022\014.CityRequest\032\023.ClinicListResponse\"\000\022" +
+      ",\n\ngetDoctors\022\007.Clinic\032\023.DoctorListRespo" +
+      "nse\"\000\022/\n\nupdateUser\022\022.UpdateUserRequest\032",
+      "\013.DBresponse\"\000\022J\n\033getAppointmentsByPatie" +
+      "ntCpr\022\017.PatientRequest\032\030.GetAppointments" +
+      "Response\"\000\022L\n\034getPrescriptionsByPatientC" +
+      "pr\022\017.PatientRequest\032\031.GetPrescriptionsRe" +
+      "sponse\"\000\022=\n\021cancelAppointment\022\031.CancelAp" +
+      "pointmentRequest\032\013.DBresponse\"\000B\020\n\014patie" +
+      "nt.grpcP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -230,32 +249,44 @@ public final class PatientOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PatientRequest_descriptor,
         new java.lang.String[] { "Cpr", });
-    internal_static_LoginResponse_descriptor =
+    internal_static_GetPrescriptionsResponse_descriptor =
       getDescriptor().getMessageTypes().get(11);
+    internal_static_GetPrescriptionsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetPrescriptionsResponse_descriptor,
+        new java.lang.String[] { "Prescriptions", });
+    internal_static_PrescriptionInfo_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_PrescriptionInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_PrescriptionInfo_descriptor,
+        new java.lang.String[] { "Id", "Diagnosis", "Medication", "Recommendations", "Date", "Time", "Patientcpr", "Doctorid", "Doctorname", "Doctorsurname", });
+    internal_static_LoginResponse_descriptor =
+      getDescriptor().getMessageTypes().get(13);
     internal_static_LoginResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginResponse_descriptor,
         new java.lang.String[] { "Name", "Surname", "Email", "Phone", "Cpr", "Password", });
     internal_static_AppointmentInfo_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_AppointmentInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AppointmentInfo_descriptor,
         new java.lang.String[] { "Id", "Description", "Type", "Date", "Time", "Status", "DoctorId", "DoctorFirstName", "DoctorLastName", "DoctorSpecialization", "ClinicName", "ClinicStreet", "ClinicStreetNumber", "ClinicCity", });
     internal_static_GetAppointmentsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_GetAppointmentsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetAppointmentsResponse_descriptor,
         new java.lang.String[] { "Appointments", });
     internal_static_UpdateUserRequest_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_UpdateUserRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UpdateUserRequest_descriptor,
         new java.lang.String[] { "CPR", "Surname", "Phone", "Email", "NewPassword", });
     internal_static_CancelAppointmentRequest_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_CancelAppointmentRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CancelAppointmentRequest_descriptor,
