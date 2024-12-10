@@ -2,7 +2,7 @@ namespace Doctor.DTOs;
 
 public class PrescriptionDto
 {
-    public string id { get; set; }
+    public int id { get; set; }
     public string diagnosis { get; set; }
     public string medication { get; set; }
     public string recommendations { get; set; }
