@@ -2,27 +2,38 @@
 @inject HttpClient Http
 @using PatientFinal.DTOs
 
-<h3>Register</h3>
+<link href="css/Register.css" rel="stylesheet" />
 
-<input placeholder="Name" @bind="Name"></input>
-<input placeholder="Surname" @bind="Surname"></input>
-<input placeholder="CPR" @bind="CPR_No"></input>
-<input placeholder="Phone number" @bind="Phone"></input>
-<input placeholder="Email" @bind="Email"></input>
-<input placeholder="Password" type="password" @bind="Password"></input>
+<div class="login-wrapper">
+    <div class="login-box">
+        <h3>Register</h3>
 
-@if (!string.IsNullOrEmpty(serverResponse))
-{
-    <p>@serverResponse</p>
-}
+        <div class="input-container">
+            <input placeholder="Name" @bind="Name" class="input-field" />
+            <input placeholder="Surname" @bind="Surname" class="input-field" />
+            <input placeholder="CPR" @bind="CPR_No" class="input-field" />
+            <input placeholder="Phone number" @bind="Phone" class="input-field" />
+            <input placeholder="Email" @bind="Email" class="input-field" />
+            <input placeholder="Password" type="password" @bind="Password" class="input-field" />
+        </div>
 
-@if (!string.IsNullOrEmpty(serverResponse2))
-{
-<p>@serverResponse2</p>
-}
+        @if (!string.IsNullOrEmpty(serverResponse))
+        {
+            <p class="error-message">@serverResponse</p>
+        }
 
+        @if (!string.IsNullOrEmpty(serverResponse2))
+        {
+            <p>@serverResponse2</p>
+        }
 
-<button @onclick="RegisterPatient">Register</button>
+        <button @onclick="RegisterPatient" class="login-btn">Register</button>
+
+        <p class="register-link">
+            Have an account? <a href="/">Log in</a>
+        </p>
+    </div>
+</div>
 
 @code {
     private string Name;
@@ -76,12 +87,12 @@
             password = Password,
             cprno = CPR_No
         };
-        
+
         try
         {
             HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
                 "http://localhost:8081/Demo/register", registerDto);
-            
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 serverResponse = await responseMessage.Content.ReadAsStringAsync();

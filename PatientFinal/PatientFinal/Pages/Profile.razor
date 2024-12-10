@@ -1,50 +1,56 @@
-﻿<AuthorizeView>
+﻿@page "/Profile"
+@using System.Security.Claims
+@using PatientFinal.DTOs
+@using PatientFinal.Services
+@inject HttpClient Http
+@inject ILoginService LoginService
+@inject IUpdateService UpdateService
+@inject AuthenticationStateProvider AuthProvider
+
+<link href="css/Profile.css" rel="stylesheet" />
+
+<AuthorizeView>
     <NotAuthorized>
+        <h3>Profile Overview</h3>
         <p>Please log in with your patient credentials</p>
     </NotAuthorized>
 
     <Authorized>
-        @page "/Profile"
-        @using System.Security.Claims
-        @using PatientFinal.DTOs
-        @using PatientFinal.Services
+        <div class="login-wrapper">
+            <div class="login-box">
+                <h3>Profile Overview</h3>
 
-        @inject HttpClient Http; 
-        @inject ILoginService LoginService; 
-        @inject IUpdateService UpdateService; 
-        @inject AuthenticationStateProvider AuthProvider; 
+                <p>Logged in patient: <strong>@firstName</strong></p>
+                <p>CPR: <strong>@CPR</strong></p>
 
-        <h3>Profile Overview</h3>
+                <div>
+                    <label for="lastName">Last Name:</label>
+                    <input id="lastName" @bind="@lastName" class="input-field" />
+                </div>
 
-        <p>Logged in patient: <strong>@firstName</strong></p>
-        <p>CPR: <strong>@CPR</strong></p>
+                <div>
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input id="phoneNumber" @bind="@phoneNumber" class="input-field" />
+                </div>
 
-        <div>
-            <label for="lastName">Last Name:</label>
-            <input id="lastName" @bind=@lastName>
+                <div>
+                    <label for="Email">Email:</label>
+                    <input id="Email" @bind="@Email" class="input-field" />
+                </div>
+
+                <div>
+                    <label for="newPassword">New Password:</label>
+                    <input id="newPassword" type="password" @bind="@newPassword" class="input-field" />
+                </div>
+
+                <button @onclick="EditAccount" class="login-btn">Edit Account</button>
+
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                    <p>@responseMessage</p>
+                }
+            </div>
         </div>
-
-        <div>
-            <label for="phoneNumber">Phone Number:</label>
-            <input id="phoneNumber" @bind=@phoneNumber>
-        </div>
-
-        <div>
-            <label for="Email">Email:</label>
-            <input id="Email" @bind=@Email>
-        </div>
-
-        <div>
-            <label for="newPassword">New Password:</label>
-            <input id="newPassword" type="password" @bind="@newPassword">
-        </div>
-
-        <button @onclick="EditAccount">Edit Account</button>
-
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-            <p>Server Response: @responseMessage</p>
-        }
     </Authorized>
 </AuthorizeView>
 
