@@ -300,6 +300,64 @@ public class EventRepository implements EventInterface {
         }
     }
 
+    @Override public int getPrescriptionCount()
+    {
+        int nextId = 1;
+        String sql = "SELECT MAX(id) AS id FROM prescription";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if (resultSet.next())
+                {
+                    int maxId = resultSet.getInt("id");
+                    if (!resultSet.wasNull()){
+                        nextId = maxId++;
+                    }
+
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(
+                "Failed to fetch appointment id : " + e.getMessage(), e);
+        }
+        return nextId;
+    }
+
+    @Override public int getAppointmentCount()
+    {
+        int nextId = 1;
+        String sql = "SELECT MAX(id) AS id FROM appointment";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if (resultSet.next())
+                {
+                    int maxId = resultSet.getInt("id");
+                    if (!resultSet.wasNull()){
+                        nextId = maxId++;
+                    }
+
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(
+                "Failed to fetch prescriptions id : " + e.getMessage(), e);
+        }
+        return nextId;
+    }
+
     @Override
     public String cancelAppointment(int appointmentId) {
         String sql = "UPDATE appointment SET status = 'Cancelled' WHERE id = ?";

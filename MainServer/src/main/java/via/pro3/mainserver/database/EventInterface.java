@@ -42,6 +42,8 @@ public interface EventInterface
   String cancelAppointment(int appointmentId);
   Appointment getAppointmentByAppointmentId(int appointmentId);
   Doctor getDoctorByAppointmentId(int appointmentId);
+  int getPrescriptionCount();
+  int getAppointmentCount();
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);

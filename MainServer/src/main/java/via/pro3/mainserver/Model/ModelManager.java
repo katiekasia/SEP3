@@ -21,10 +21,10 @@ public class ModelManager implements Model
 
 
   public ModelManager(){
-    idGenerator = new IdGenerator();
     DatabaseInterface database = DatabaseSingleton.getInstance();
     this.eventRepository = new EventRepository(database);
     this.emailSender = new EmailSender();
+    idGenerator = new IdGenerator(eventRepository.getAppointmentCount(),eventRepository.getPrescriptionCount());
   }
 
 
