@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+}
+
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+    height: auto; 
+    margin-top: 20px; 
+}
+
+.profile-box {
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    color: #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 0; 
+}
+
+
+h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.profile-details p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.error-message {
+    text-align: center;
+    font-size: 1rem;
+    color: #dc3545;
+    margin: 20px 0;
+}
+
+.password-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.profile-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-btn:hover {
+    background-color: #0056b3;
+}
+
+.response-message {
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.response-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

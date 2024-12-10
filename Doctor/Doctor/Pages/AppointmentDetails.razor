@@ -6,6 +6,8 @@
 @using System.Security.Claims
 @using PatientFinal.DTOs
 
+<link href="css/appointmentDetails.css" rel="stylesheet" />
+
 <h3>Appointment Details</h3>
 
 <AuthorizeView>
@@ -32,7 +34,6 @@
                 <p><strong>Phone: </strong>@appointment.patientPhone</p>
 
                 <br/>
-                <!-- Cancel Appointment Button (No functionality for now) -->
                 <button class="btn btn-danger" @onclick="CancelAppointment">Cancel Appointment</button>
                 @if (!string.IsNullOrEmpty(serverResponse))
                 {
@@ -92,9 +93,6 @@
 
     private async void CancelAppointment()
     {
-
-        Console.WriteLine("Cancel appointment button clicked.");
-
         var cancelAppointment = await AppointmentService.cancelAppointment(AppointmentId);
         serverResponse = cancelAppointment.response;
     }

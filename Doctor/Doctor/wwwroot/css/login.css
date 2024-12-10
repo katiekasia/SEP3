@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+}
+
+/* Center the login form */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Styling for the login box */
+.login-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Heading style */
+h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Paragraphs inside the login box */
+.login-box p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Input container styling */
+.input-container {
+    margin-bottom: 20px;
+}
+
+/* Input fields */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Input focus effect */
+.input-field:focus {
+    border-color: #2575fc;
+    outline: none;
+}
+
+/* Error message */
+.error-message {
+    margin-top: 10px;
+    color: red;
+    font-size: 14px;
+}
+
+/* Button style */
+.login-btn {
+    padding: 12px 20px;
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.login-btn:hover {
+    background-color: #1e5db0;
+}
+
+/* Ensuring the button doesn't overflow on small screens */
+button {
+    width: 100%;
+}

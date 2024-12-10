@@ -7,27 +7,33 @@
 @inject AuthenticationStateProvider LoginService
 @inject NavigationManager navMgr
 
-<h3>Doctor Login</h3>
+<link href="css/Login.css" rel="stylesheet" />
 
-<AuthorizeView>
-    <NotAuthorized>
-        <p>Enter your ID:</p>
-        <input @bind="id" placeholder="Enter your ID"/>
-        <p>Enter your Password:</p>
-        <input @bind="password" type="password" placeholder="Enter your password"/>
-        <button @onclick="LoginDoctor">Login</button>
+<div class="login-wrapper">
+    <div class="login-box">
+        <h3>Doctor Login</h3>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="input-container">
+                    <p>Enter your ID:</p>
+                    <input @bind="id" placeholder="Enter your ID" class="input-field" />
+                    <p>Enter your Password:</p>
+                    <input @bind="password" type="password" placeholder="Enter your password" class="input-field" />
+                </div>
 
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-        <p>Server Response: @responseMessage</p>
-        }
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                <p class="error-message">Server Response: @responseMessage</p>
+                }
+                <button @onclick="LoginDoctor" class="login-btn">Login</button>
+            </NotAuthorized>
+            <Authorized>
+                <h3>Logged in! :)</h3>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
 
-    </NotAuthorized>
-
-    <Authorized>
-        logged in! :)
-    </Authorized>
-</AuthorizeView>
 @code {
     private string id;
     private string password;

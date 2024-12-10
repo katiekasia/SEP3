@@ -5,28 +5,41 @@
 @inject HttpClient Http;
 @inject ILoginService LoginService;
 @inject AuthenticationStateProvider AuthProvider;
+
 <h3>Profile Overview</h3>
 
-<AuthorizeView>
-    <NotAuthorized>
-        You need to login first
-    </NotAuthorized>
-    
-    <Authorized>
-        <p>ID: @id</p>
-        <p>First name: @firstName</p>
-        <p>Last name: @lastName</p>
-        <p>Specialisation: @specialisation</p>
-        
-        <input @bind="@newPassword"></input>
-        <button @onclick="ChangePassword">Change password</button>
+<link href="css/profile.css" rel="stylesheet" />
 
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-        <p>Server Response: @responseMessage</p>
-        }
-    </Authorized>
-</AuthorizeView>
+<div class="profile-wrapper">
+    <div class="profile-box">
+        <AuthorizeView>
+            <NotAuthorized>
+                <p class="error-message">You need to login first.</p>
+            </NotAuthorized>
+
+            <Authorized>
+                <h3>Doctor Profile</h3>
+                <div class="profile-details">
+                    <p>Id: @id</p>
+                    <p>First Name: @firstName</p>
+                    <p>Last Name: @lastName</p>
+                    <p>Specialisation: @specialisation</p>
+                </div>
+
+                <div class="password-container">
+                    <input @bind="@newPassword" type="password" placeholder="Enter new password" class="input-field" />
+                    <button @onclick="ChangePassword" class="profile-btn">Change Password</button>
+                </div>
+
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                <p class="response-message">@responseMessage</p>
+                }
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
 
 @code {
     private string id;

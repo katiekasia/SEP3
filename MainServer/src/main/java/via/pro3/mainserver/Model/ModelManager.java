@@ -40,6 +40,7 @@ public class ModelManager implements Model
     Patient patient = getPatientByCpr(createAppointmentDto.getPatientCpr());
 
     Appointment appointment = new Appointment(
+            //Problematic
         idGenerator.generateAppointmentId(), clinic,
         createAppointmentDto.getType(), dateAndTime,
         createAppointmentDto.getDescription(),

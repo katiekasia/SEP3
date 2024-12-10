@@ -6,6 +6,7 @@
 @using Doctor.DTOs
 @inject NavigationManager NavigationManager
 
+<link href="css/Appointments.css" rel="stylesheet" />
 
 <h3>Appointments</h3>
 <AuthorizeView>
@@ -152,40 +153,3 @@
     
 
 }
-
-@* Styles for the schedule table *@
-<style>
-    .navigation {
-        margin-bottom: 10px;
-        text-align: center;
-    }
-
-    .navigation button {
-        margin: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .schedule-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .schedule-table th, .schedule-table td {
-        padding: 8px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-
-    .schedule-table th {
-        background-color: #f2f2f2;
-    }
-
-    .appointment {
-        padding: 4px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-        margin-bottom: 4px;
-    }
-</style>
