@@ -17,12 +17,14 @@ public class ModelManager implements Model
 {
   private GeneratorInterface idGenerator;
   private final EventInterface eventRepository;
+  private final EmailSenderInterface emailSender;
 
 
   public ModelManager(){
     idGenerator = new IdGenerator();
     DatabaseInterface database = DatabaseSingleton.getInstance();
     this.eventRepository = new EventRepository(database);
+    this.emailSender = new EmailSender();
   }
 
 
@@ -54,6 +56,7 @@ public class ModelManager implements Model
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
+    emailSender.sendBookingConfirmation(doctor.getEmail(),patient.getEmail(),appointment);
     return "Appointment created in " + appointment.getCity() + " at "
         + appointment.getDateAndTime().toString();
   }
@@ -258,6 +261,10 @@ public class ModelManager implements Model
   @Override
   public String cancelAppointment(int appointmentId) {
     try {
+      Appointment appointment = getAppointmentByAppointmentId(appointmentId);
+      Patient patient = getPatientByAppointmentId(appointmentId);
+      Doctor doctor = eventRepository.getDoctorByAppointmentId(appointmentId);
+      emailSender.sendBookingCancellation(doctor.getEmail(), patient.getEmail(),appointment);
       return eventRepository.cancelAppointment(appointmentId);
     }  catch (IllegalStateException e) {
 

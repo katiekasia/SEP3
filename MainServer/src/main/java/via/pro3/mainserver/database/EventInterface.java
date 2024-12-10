@@ -41,6 +41,7 @@ public interface EventInterface
   void addPrescription(PrescriptionDto request);
   String cancelAppointment(int appointmentId);
   Appointment getAppointmentByAppointmentId(int appointmentId);
+  Doctor getDoctorByAppointmentId(int appointmentId);
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);

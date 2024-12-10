@@ -272,6 +272,34 @@ public class EventRepository implements EventInterface {
         return null;
     }
 
+    @Override public Doctor getDoctorByAppointmentId(int appointmentId)
+    {
+        String sql = """
+        SELECT d.id AS doctor_id
+        FROM doctor d
+        INNER JOIN appointment a ON d.id = a.doctor_id
+        WHERE a.id = ?
+        LIMIT 1""";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, appointmentId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("patient success");
+                    return  getDoctorById(resultSet.getString("doctor_id"));
+
+                }
+                throw new RuntimeException("No doctor found for appointment: " + appointmentId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch doctor : " + e.getMessage(), e);
+        }
+    }
+
     @Override
     public String cancelAppointment(int appointmentId) {
         String sql = "UPDATE appointment SET status = 'Cancelled' WHERE id = ?";
