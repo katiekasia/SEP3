@@ -8,23 +8,32 @@
 @using PatientFinal.DTOs
 @using PatientFinal.Services
 
-<h3>Login</h3>
-<AuthorizeView>
-    <NotAuthorized>
-<input placeholder="CPR-Number" @bind="cprno"></input>
-<input placeholder="Password" type="password" @bind="passwordinput"></input>
-    </NotAuthorized>
-    <Authorized>
-        <h3>Hello, @context.User.Identity.Name</h3>
-    </Authorized>
-</AuthorizeView>
+<link href="css/Login.css" rel="stylesheet" />
 
-@if (!string.IsNullOrEmpty(serverResponse))
-{
-    <p>@serverResponse</p>
-}
-
-<button @onclick="LoginPatient">Login</button>
+<div class="login-wrapper">
+    <div class="login-box">
+        <h3>Login</h3>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="input-container">
+                    <input placeholder="CPR-Number" @bind="cprno" class="input-field" />
+                    <input placeholder="Password" type="password" @bind="passwordinput" class="input-field" />
+                </div>
+                @if (!string.IsNullOrEmpty(serverResponse))
+                {
+                    <p class="error-message">@serverResponse</p>
+                }
+                <button @onclick="LoginPatient" class="login-btn">Login</button>
+                <p class="register-link">
+                    Don't have an account? <a href="/Register">Register here</a>
+                </p>
+            </NotAuthorized>
+            <Authorized>
+                <h3>Hello, @context.User.Identity.Name</h3>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
 
 @code {
     private string cprno;
@@ -36,7 +45,7 @@
     {
         if (string.IsNullOrWhiteSpace(cprno) || string.IsNullOrWhiteSpace(passwordinput))
         {
-            serverResponse = "Both CPR and Password are required";
+            serverResponse = "Both CPR and password are required";
             return;
         }
 
@@ -51,5 +60,4 @@
             serverResponse = $"Loggin failed: {e.Message}";
         }
     }
-
 }
