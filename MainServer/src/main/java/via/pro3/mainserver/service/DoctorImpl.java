@@ -4,6 +4,7 @@ import doctor.grpc.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
+import patient.grpc.GetPrescriptionsResponse;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
 import via.pro3.mainserver.Model.*;
@@ -140,6 +141,49 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     }
   }
 
+  @Override
+  public void getPrescriptionsByCpr(PatientCprRequest request, StreamObserver<GetPrescriptionsByCprResponse> responseObserver)
+  {
+    try {
+
+      List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr());
+
+      GetPrescriptionsByCprResponse.Builder responseBuilder = GetPrescriptionsByCprResponse.newBuilder();
+
+      for (GetPrescriptionsDto prescription : prescriptions) {
+        PrescriptionByCprInfo prescriptionInfo = PrescriptionByCprInfo.newBuilder()
+            .setId(prescription.getId())
+            .setDiagnosis(prescription.getDiagnosis())
+            .setMedication(prescription.getMedication())
+            .setRecommendations(prescription.getRecommendations())
+            .setDate(prescription.getDate())
+            .setTime(prescription.getTime())
+            .setPatientcpr(request.getCpr())
+            .setDoctorid(prescription.getDoctorId())
+            .setDoctorname(prescription.getDoctorname())
+            .setDoctorsurname(prescription.getDoctorsurname())
+            .build();
+
+        responseBuilder.addPrescriptions(prescriptionInfo);
+      }
+
+      System.out.println("DATABASE PREScrtiption");
+
+      responseObserver.onNext(responseBuilder.build());
+    } catch (Exception e) {
+
+      e.printStackTrace();
+      responseObserver.onError(
+          Status.INTERNAL
+              .withDescription("Error fetching prescriptions: " + e.getMessage())
+              .withCause(e)
+              .asRuntimeException()
+      );
+    } finally {
+      responseObserver.onCompleted();
+    }
+  }
+
     @Override
     public void getPatientsByDoctorId(GetPatientsRequest request, StreamObserver<GetPatientsResponse> responseObserver) {
         try {
@@ -180,7 +224,8 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     public void addPrescription(AddPrescriptionRequest request, StreamObserver<Response> responseObserver){
         try{
             PrescriptionDto prescriptionDto = new PrescriptionDto(
-                    request.getId(), request.getDiagnosis(), request.getMedication(),
+                    request.getId(),
+                    request.getDiagnosis(), request.getMedication(),
                     request.getRecommendations(), request.getDate(), request.getTime(),
                     request.getPatientcpr(), request.getDoctorid()
             );

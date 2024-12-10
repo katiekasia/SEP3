@@ -2,59 +2,45 @@
 @using System.Security.Claims
 @using PatientFinal.DTOs
 @using PatientFinal.Services
+
 @inject AuthenticationStateProvider AuthProvider;
-@inject IPrescriptionGetService PrescriptionGetService;
+@inject IPrescriptionService PrescriptionService;
 
 <h3>Prescriptions</h3>
 <PageTitle>Prescriptions</PageTitle>
-
-<link href = "css/prescriptions.css" rel = "stylesheet"/>
 
 <AuthorizeView>
     <NotAuthorized>
         <p>Please log in to see your prescriptions :)</p>
     </NotAuthorized>
     <Authorized>
-        @if (isAuthenticated)
-        {
-            <div class="prescription-container">
-                <h3>Search for prescriptions</h3>
-
-                <div>
-                    <label for="cpr-input">Enter patient's CPR number:</label>
-                    <input type="text" id="cpr-input" @bind="insertedcpr" placeholder="Enter CPR number" />
-                    <button @onclick="LoadPrescriptionsAsync">Load Prescriptions</button>
-                </div>
-
-                @if (loading)
+        <div class="prescription-container">
+            <h3>Your Prescriptions</h3>
+            
+            @if (loading)
+            {
+                <p>Loading prescriptions...</p>
+            }
+            else if (prescriptions == null)
+            {
+                <p>No prescriptions found</p>
+            }
+            else
+            {
+                @foreach (var prescription in prescriptions)
                 {
-                    <p>Search for prescriptions</p>
+                    <div class="prescription-card">
+                        <h4>Diagnosis: @prescription.diagnosis</h4>
+                        <p><strong>Medication:</strong> @prescription.medication</p>
+                        <p><strong>Recommendations:</strong> @prescription.recommendations</p>
+                        <p><strong>Date:</strong> @prescription.date</p>
+                        <p><strong>Time:</strong> @prescription.time</p>
+                        <p><strong>Doctor:</strong> @prescription.doctorid @prescription.doctorname @prescription.doctorsurname</p>
+             
+                    </div>
                 }
-                else if (prescriptions == null)
-                {
-                    <p>No prescriptions found</p>
-                }
-                else
-                {
-                    @foreach (var prescription in prescriptions)
-                    {
-                        <div class="prescription-card">
-                            <h4>Diagnosis: @prescription.diagnosis</h4>
-                            <p><strong>Medication:</strong> @prescription.medication</p>
-                            <p><strong>Recommendations:</strong> @prescription.recommendations</p>
-                            <p><strong>Date:</strong> @prescription.date</p>
-                            <p><strong>Time:</strong> @prescription.time</p>
-                            <p><strong>Doctor:</strong> @prescription.doctorid @prescription.doctorname @prescription.doctorsurname</p>
-                            <p><strong>Patient CPR: @prescription.patientcpr</strong></p>
-                        </div>
-                    }
-                }
-            </div>
-        }
-        else
-        {
-            <p>Please log in to see your prescriptions :)</p>
-        }
+            }
+        </div>
     </Authorized>
 </AuthorizeView>
 
@@ -62,27 +48,23 @@
     private List<GetPrescriptionsDto> prescriptions;
     private bool loading = true;
     private string errorMessage;
-    private string insertedcpr;
-    private bool isAuthenticated;
+    private string cpr;
 
-    // To check authentication state
     protected override async Task OnInitializedAsync()
     {
-        var authenticationState = await AuthProvider.GetAuthenticationStateAsync();
-        isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
-    }
-
-    protected async Task LoadPrescriptionsAsync()
-    {
-        if (!isAuthenticated)
-        {
-            errorMessage = "You need to be logged in to view prescriptions.";
-            return;
-        }
-
         try
         {
-            prescriptions = await PrescriptionGetService.GetPrescriptionsByPatientCpr(insertedcpr) ?? new List<GetPrescriptionsDto>();
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            this.cpr = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(this.cpr))
+            {
+                errorMessage = "Couldn't retrieve your CPR. Please ensure you're logged in.";
+                return;
+            }
+
+            prescriptions = await PrescriptionService.GetPrescriptionsByPatientCpr(cpr) ?? new List<GetPrescriptionsDto>();
         }
         catch (Exception e)
         {

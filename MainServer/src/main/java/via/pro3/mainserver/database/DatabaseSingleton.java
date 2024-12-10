@@ -13,7 +13,7 @@ public final class DatabaseSingleton implements DatabaseInterface {
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres?currentSchema=sep3";
     private static final String USER = "postgres";
 
-    private static final String PSWD = "admin";
+    private static final String PSWD = "VIAVIAVIA";
 
 
     private DatabaseSingleton(){
@@ -22,6 +22,9 @@ public final class DatabaseSingleton implements DatabaseInterface {
         config.setJdbcUrl(URL);
         config.setUsername(USER);
         config.setPassword(PSWD);
+        config.setMaximumPoolSize(20);
+        config.setConnectionTimeout(300000);
+        config.setLeakDetectionThreshold(300000);
         config.setMaximumPoolSize(30);  // Set the pool size
         dataSource = new HikariDataSource(config);
     }

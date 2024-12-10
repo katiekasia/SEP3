@@ -5,8 +5,8 @@
     max-width: 600px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
-    color: white; /* Ensure text contrasts with the background */
+    background: linear-gradient(to right, #6a11cb, #2575fc); 
+    color: white; 
 }
 
 /* Grouped form elements */
@@ -52,7 +52,7 @@
 }
 
 .btn-book {
-    background-color: #28a745;
+    background-color: #2575fc;
 }
 
 .btn-confirm:hover,
@@ -67,19 +67,25 @@
     max-width: 600px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #e9ecef;
+    background: linear-gradient(to right, #6a11cb, #2575fc); /* Apply gradient background */
+    color: white; /* Ensure text contrasts with the background */
 }
 
 /* Server response styling */
 .response-container {
     margin: 20px auto;
-    padding: 10px;
-    max-width: 600px;
-    border: 1px solid #007bff;
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border-radius: 5px;
+    padding: 15px 20px; /* Add more padding for better spacing */
+    max-width: 600px; /* Same max-width for consistency */
+    border: 2px solid #007bff; /* Slightly thicker border for emphasis */
+    background: linear-gradient(to right, #d1ecf1, #bce7f5); /* Gradient background */
+    color: #003d5c; /* Darker text color for better contrast */
+    border-radius: 8px; /* Rounded corners for a smoother look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-size: 16px; /* Standard font size for readability */
+    text-align: center; /* Center-align the content */
+    line-height: 1.5; /* Improve readability of multi-line messages */
 }
+    
 
 /* Ensure full page background */
 html, body {

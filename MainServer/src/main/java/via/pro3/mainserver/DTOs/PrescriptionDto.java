@@ -2,7 +2,7 @@ package via.pro3.mainserver.DTOs;
 
 public class PrescriptionDto {
 
-    public String id;
+    public int id;
     public String diagnosis;
     public String medication;
     public String recommendations;
@@ -11,7 +11,7 @@ public class PrescriptionDto {
     public String patientcpr;
     public String doctorid;
 
-    public PrescriptionDto(String id, String diagnosis, String medication, String recommendations, String date, String time, String patientcpr, String doctorid) {
+    public PrescriptionDto(int id, String diagnosis, String medication, String recommendations, String date, String time, String patientcpr, String doctorid) {
         this.id = id;
         this.diagnosis = diagnosis;
         this.medication = medication;
@@ -22,7 +22,7 @@ public class PrescriptionDto {
         this.doctorid = doctorid;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

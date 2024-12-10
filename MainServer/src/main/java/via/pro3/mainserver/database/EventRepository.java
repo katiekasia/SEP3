@@ -1,11 +1,6 @@
 package via.pro3.mainserver.database;
 
-import via.pro3.mainserver.DTOs.CityDto;
-import via.pro3.mainserver.DTOs.DoctorDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.PrescriptionDto;
-import via.pro3.mainserver.DTOs.ResetPasswordDto;
-import via.pro3.mainserver.DTOs.UpdatePatientDto;
+import via.pro3.mainserver.DTOs.*;
 import via.pro3.mainserver.Model.Appointment;
 import via.pro3.mainserver.Model.Clinic;
 import via.pro3.mainserver.Model.Doctor;
@@ -46,6 +41,61 @@ public class EventRepository implements EventInterface {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
+    {
+        String sql = """
+           
+                SELECT p.id, p.diagnosis, p.medication, p.recommendations, p.date,
+                p.time, p.patient_CPR, p.doctor_id
+                FROM prescription p
+                INNER JOIN patient pat ON pat.CPR_number = p.patient_CPR
+                WHERE p.patient_CPR=?
+                
+                    """;
+
+        System.out.println("Fetching presciptions for patient: " + patientCpr); // Debugging log
+        try (Connection connection = database.getConnection(); // Get connection from pool
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            List<GetPrescriptionsDto> prescriptions = new ArrayList<>();
+            statement.setString(1, patientCpr);
+
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                while (resultSet.next()) {
+
+                    String doctorName = "";
+                    String doctorSurname = "";
+                    Doctor doctor = getDoctorById(resultSet.getString("doctor_id"));
+                    if (doctor != null) {
+                        doctorName = doctor.getName();
+                        doctorSurname = doctor.getSurname();
+                    } else {
+                        System.out.println("Doctor not found for id: " + resultSet.getString("doctor_id"));
+                    }
+
+                    prescriptions.add(new GetPrescriptionsDto(
+                        resultSet.getInt("id"),
+                        resultSet.getString("diagnosis"),
+                        resultSet.getString("medication"),
+                        resultSet.getString("recommendations"),
+                        resultSet.getString("date"),
+                        resultSet.getString("time"),
+                        resultSet.getString("patient_CPR"),
+                        resultSet.getString("doctor_id"),
+                        doctorName,
+                        doctorSurname
+                    ));
+                }
+
+                return prescriptions;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch prescriptions: " + patientCpr, e);
         }
     }
 
@@ -223,7 +273,7 @@ public class EventRepository implements EventInterface {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime dateTime = LocalDateTime.parse(request.getDate(), formatter);
 
-            statement.setString(1, request.getId());
+            statement.setInt(1, request.getId());
             statement.setString(2, request.getDiagnosis());
             statement.setString(3, request.getMedication());
             statement.setString(4, request.getRecommendations());
@@ -270,6 +320,92 @@ public class EventRepository implements EventInterface {
                     "Failed to fetch doctor from SQL: " + e.getMessage(), e);
         }
         return null;
+    }
+
+    @Override public Doctor getDoctorByAppointmentId(int appointmentId)
+    {
+        String sql = """
+        SELECT d.id AS doctor_id
+        FROM doctor d
+        INNER JOIN appointment a ON d.id = a.doctor_id
+        WHERE a.id = ?
+        LIMIT 1""";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, appointmentId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("patient success");
+                    return  getDoctorById(resultSet.getString("doctor_id"));
+
+                }
+                throw new RuntimeException("No doctor found for appointment: " + appointmentId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch doctor : " + e.getMessage(), e);
+        }
+    }
+
+    @Override public int getPrescriptionCount()
+    {
+        int nextId = 1;
+        String sql = "SELECT MAX(id) AS id FROM prescription";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if (resultSet.next())
+                {
+                    int maxId = resultSet.getInt("id");
+                    if (!resultSet.wasNull()){
+                        nextId = maxId++;
+                    }
+
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(
+                "Failed to fetch appointment id : " + e.getMessage(), e);
+        }
+        return nextId;
+    }
+
+    @Override public int getAppointmentCount()
+    {
+        int nextId = 1;
+        String sql = "SELECT MAX(id) AS id FROM appointment";
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                if (resultSet.next())
+                {
+                    int maxId = resultSet.getInt("id");
+                    if (!resultSet.wasNull()){
+                        nextId = maxId++;
+                    }
+
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(
+                "Failed to fetch prescriptions id : " + e.getMessage(), e);
+        }
+        return nextId;
     }
 
     @Override

@@ -108,6 +108,48 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
 
+    @Override
+    public void getPrescriptionsByPatientCpr(PatientRequest request, StreamObserver<GetPrescriptionsResponse> responseObserver)
+    {
+        try {
+
+            List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr());
+
+            GetPrescriptionsResponse.Builder responseBuilder = GetPrescriptionsResponse.newBuilder();
+
+            for (GetPrescriptionsDto prescription : prescriptions) {
+                PrescriptionInfo prescriptionInfo = PrescriptionInfo.newBuilder()
+                    .setId(prescription.getId())
+                    .setDiagnosis(prescription.getDiagnosis())
+                    .setMedication(prescription.getMedication())
+                    .setRecommendations(prescription.getRecommendations())
+                    .setDate(prescription.getDate())
+                    .setTime(prescription.getTime())
+                    .setPatientcpr(request.getCpr())
+                    .setDoctorid(prescription.getDoctorId())
+                    .setDoctorname(prescription.getDoctorname())
+                    .setDoctorsurname(prescription.getDoctorsurname())
+                    .build();
+
+                responseBuilder.addPrescriptions(prescriptionInfo);
+            }
+
+            System.out.println("DATABASE PREScrtiption");
+
+            responseObserver.onNext(responseBuilder.build());
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            responseObserver.onError(
+                Status.INTERNAL
+                    .withDescription("Error fetching prescriptions: " + e.getMessage())
+                    .withCause(e)
+                    .asRuntimeException()
+            );
+        } finally {
+            responseObserver.onCompleted();
+        }
+    }
 
 
     @Override

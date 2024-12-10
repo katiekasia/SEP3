@@ -4,6 +4,7 @@ using Doctor;
 using Doctor.Pages.Auth;
 using Doctor.Services;
 using Microsoft.AspNetCore.Components.Authorization;
+using PatientFinal.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,6 +15,7 @@ builder.Services.AddScoped(sp => new HttpClient
 builder.Services.AddScoped<ILoginService, HttpLoginService>();
 builder.Services.AddScoped<IAppointmentService, HttpAppointmentService>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
+builder.Services.AddScoped<IPrescriptionGetService, HttpPrescriptionGetService>();
 builder.Services.AddScoped<IPrescriptionsService, HttpPrescriptionsService>();
 builder.Services.AddAuthorizationCore();
 

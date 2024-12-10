@@ -1,15 +1,7 @@
 package via.pro3.mainserver.database;
 
-import via.pro3.mainserver.DTOs.CityDto;
-import via.pro3.mainserver.DTOs.DoctorDto;
-import via.pro3.mainserver.DTOs.LoginDto;
-import via.pro3.mainserver.DTOs.UpdatePatientDto;
-import via.pro3.mainserver.DTOs.PrescriptionDto;
-import via.pro3.mainserver.DTOs.ResetPasswordDto;
-import via.pro3.mainserver.Model.Appointment;
-import via.pro3.mainserver.Model.Clinic;
-import via.pro3.mainserver.Model.Doctor;
-import via.pro3.mainserver.Model.Patient;
+import via.pro3.mainserver.DTOs.*;
+import via.pro3.mainserver.Model.*;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -29,6 +21,7 @@ public interface EventInterface
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
 
+  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr);
   List<Doctor> getDoctors();
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);
@@ -41,6 +34,9 @@ public interface EventInterface
   void addPrescription(PrescriptionDto request);
   String cancelAppointment(int appointmentId);
   Appointment getAppointmentByAppointmentId(int appointmentId);
+  Doctor getDoctorByAppointmentId(int appointmentId);
+  int getPrescriptionCount();
+  int getAppointmentCount();
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);

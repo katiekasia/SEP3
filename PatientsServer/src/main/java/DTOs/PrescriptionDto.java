@@ -1,6 +1,7 @@
 package DTOs;
 
-public class PrescriptionDto {
+public class PrescriptionDto
+{
 
     public int id;
     public String diagnosis;
@@ -10,6 +11,17 @@ public class PrescriptionDto {
     public String time;
     public String patientcpr;
     public String doctorid;
+
+    public PrescriptionDto(int id, String diagnosis, String medication, String recommendations, String date, String time, String patientcpr, String doctorid) {
+        this.id = id;
+        this.diagnosis = diagnosis;
+        this.medication = medication;
+        this.recommendations = recommendations;
+        this.date = date;
+        this.time = time;
+        this.patientcpr = patientcpr;
+        this.doctorid = doctorid;
+    }
 
     public int getId() {
         return id;
@@ -31,6 +43,7 @@ public class PrescriptionDto {
         return date;
     }
 
+
     public String getTime() {
         return time;
     }
@@ -38,6 +51,7 @@ public class PrescriptionDto {
     public String getPatientCpr() {
         return patientcpr;
     }
+
 
     public String getDoctorId() {
         return doctorid;
