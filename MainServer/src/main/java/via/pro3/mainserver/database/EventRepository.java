@@ -92,10 +92,6 @@ public class EventRepository implements EventInterface {
                         doctorSurname
                     ));
                 }
-                GetPrescriptionsDto dto =prescriptions.get(0);
-                System.out.println(dto.id);
-                System.out.println(dto.doctorname);
-                System.out.println(dto.doctorsurname);
 
                 return prescriptions;
             }

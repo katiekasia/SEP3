@@ -194,7 +194,40 @@ public class Server
   }
 
 
-  @GetMapping("/Prescriptions/getPatients")
+  @GetMapping("/Prescriptions")
+  public List<GetPrescriptionsDto> getPrescriptionsByClientCpr(@RequestParam String cpr){
+    try
+    {
+      PatientCprRequest request = PatientCprRequest.newBuilder().setCpr(cpr).build();
+
+      GetPrescriptionsByCprResponse response = blockingStub.getPrescriptionsByCpr(request);
+
+      List<GetPrescriptionsDto> prescriptionDtos = new ArrayList<>();
+      for (PrescriptionByCprInfo prescription : response.getPrescriptionsList())
+      {
+        GetPrescriptionsDto dto = new GetPrescriptionsDto(
+            prescription.getId(),
+            prescription.getDiagnosis(),
+            prescription.getMedication(),
+            prescription.getRecommendations(),
+            prescription.getDate(),
+            prescription.getTime(),
+            prescription.getPatientcpr(),
+            prescription.getDoctorid(),
+            prescription.getDoctorname(),
+            prescription.getDoctorsurname());
+
+        prescriptionDtos.add(dto);
+      }
+      return prescriptionDtos;
+
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException("Error fetching prescriptions: " + e.getMessage());
+    }
+  }
+
+  @GetMapping("/AddPrescriptions/getPatients")
   public List<PatientDto> getPatients(@RequestParam String doctorid) {
     try {
       GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
@@ -205,11 +238,11 @@ public class Server
 
       for (PatientDtoMessage patientDto : response.getPatientsList()) {
         PatientDto dto = new PatientDto(
-                patientDto.getCpr(),
-                patientDto.getFirstName(),
-                patientDto.getLastName(),
-                patientDto.getEmail(),
-                patientDto.getPhoneNumber()
+            patientDto.getCpr(),
+            patientDto.getFirstName(),
+            patientDto.getLastName(),
+            patientDto.getEmail(),
+            patientDto.getPhoneNumber()
         );
 
         patientDtos.add(dto);
@@ -222,7 +255,7 @@ public class Server
     }
   }
 
-  @PostMapping("/Prescriptions/addPrescription")
+  @PostMapping("/AddPrescriptions/addPrescription")
   public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
     try{
       AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()

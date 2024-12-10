@@ -12,6 +12,7 @@ service Doctor {
   rpc getPatientsByDoctorId(GetPatientsRequest) returns (GetPatientsResponse){}
   rpc addPrescription(AddPrescriptionRequest) returns (Response){}
   rpc getAppointmentById(GetAppointmentByIdReq) returns(AppointmentInfoD){}
+  rpc getPrescriptionsByCpr(PatientCprRequest) returns (GetPrescriptionsByCprResponse){}
 }
 
 message EmptyRequest{}
@@ -91,4 +92,27 @@ message AddPrescriptionRequest{
   string time = 6;
   string patientcpr = 7;
   string doctorid = 8;
+}
+
+
+
+message PatientCprRequest {
+  string cpr = 1;
+}
+
+message GetPrescriptionsByCprResponse{
+  repeated PrescriptionByCprInfo prescriptions =1;
+}
+
+message PrescriptionByCprInfo{
+  int32 id =1;
+  string diagnosis = 2;
+  string medication =3;
+  string recommendations =4;
+  string date=5;
+  string time = 6;
+  string patientcpr= 7;
+  string doctorid=8;
+  string doctorname =9;
+  string doctorsurname=10;
 }

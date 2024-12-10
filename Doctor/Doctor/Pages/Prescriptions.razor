@@ -1,232 +1,162 @@
-@page "/Prescriptions"
+﻿@page "/Prescriptions"
 @using System.Security.Claims
-@using Doctor.DTOs
-@using Doctor.Services
-@inject HttpClient Http;
+@using PatientFinal.DTOs
+@using PatientFinal.Services
 @inject AuthenticationStateProvider AuthProvider;
-@inject IPrescriptionsService prescriptionService;
+@inject IPrescriptionGetService PrescriptionGetService;
 
-<h2 class="page-title">Prescriptions</h2>
+<h3>Prescriptions</h3>
+<PageTitle>Prescriptions</PageTitle>
 
 <AuthorizeView>
     <NotAuthorized>
-        <div>
-            <p>You need to login first.</p>
-        </div>
+        <p>Please log in to see your prescriptions :)</p>
     </NotAuthorized>
     <Authorized>
-        <div class="form-container">
-            <div class="patient-selection">
-                <label for="patientCpr">Choose a Patient</label>
-                <input id="patientCpr" class="input-box" value="@patientCpr" @oninput="OnInputChanged" placeholder="Patient CPR" disabled="@isLocked" />
+        @if (isAuthenticated)
+        {
+            <div class="prescription-container">
+                <h3>Search for prescriptions</h3>
 
-                <div class="suggestions">
-                    @foreach (var cpr in filteredPatientCprs)
+                <div>
+                    <label for="cpr-input">Enter patient's CPR number:</label>
+                    <input type="text" id="cpr-input" @bind="insertedcpr" placeholder="Enter CPR number" />
+                    <button @onclick="LoadPrescriptionsAsync">Load Prescriptions</button>
+                </div>
+
+                @if (loading)
+                {
+                    <p>Search for prescriptions</p>
+                }
+                else if (prescriptions == null)
+                {
+                    <p>No prescriptions found</p>
+                }
+                else
+                {
+                    @foreach (var prescription in prescriptions)
                     {
-                        var patient = patients.FirstOrDefault(p => p.cprnumber == cpr);
-                        var name = patient?.firstname + " " + patient?.lastname;
-                        <button class="suggestion-button" @onclick="() => SelectPatient(cpr)">@cpr (@name)</button>
+                        <div class="prescription-card">
+                            <h4>Diagnosis: @prescription.diagnosis</h4>
+                            <p><strong>Medication:</strong> @prescription.medication</p>
+                            <p><strong>Recommendations:</strong> @prescription.recommendations</p>
+                            <p><strong>Date:</strong> @prescription.date</p>
+                            <p><strong>Time:</strong> @prescription.time</p>
+                            <p><strong>Doctor:</strong> @prescription.doctorid @prescription.doctorname @prescription.doctorsurname</p>
+                            <p><strong>Patient CPR: @prescription.patientcpr</strong></p>
+                        </div>
                     }
-                </div>
+                }
             </div>
-
-            <div class="form-group">
-                <label for="diagnosis">Diagnosis</label>
-                <input id="diagnosis" class="input-box" @bind="diagnosis" placeholder="Enter diagnosis..." />
-            </div>
-
-            <div class="form-group">
-                <label for="medication">Medication</label>
-                <input id="medication" class="input-box" @bind="medication" placeholder="Enter medication..." />
-            </div>
-
-            <div class="form-group">
-                <label for="recommendations">Recommendations</label>
-                <textarea id="recommendations" class="textarea-box" @bind="recommendations" placeholder="Enter recommendations..."></textarea>
-            </div>
-
-            <button class="submit-button" @onclick="AddPrescription">Add Prescription</button>
-
-            @if (!string.IsNullOrEmpty(serverResponse))
-            {
-                <div class="notification success">
-                    <p>@serverResponse</p>
-                </div>
-            }
-        </div>
+        }
+        else
+        {
+            <p>Please log in to see your prescriptions :)</p>
+        }
     </Authorized>
 </AuthorizeView>
 
 @code {
-    private string patientCpr = string.Empty;
-    private string diagnosis;
-    private string medication;
-    private string recommendations;
-    private string doctorId;
-    private List<PatientDto> patients = new();
-    private List<string> allPatientCprs = new();
-    private List<string> filteredPatientCprs = new();
-    private bool isLocked = false;
-    private string serverResponse;
+    private List<GetPrescriptionsDto> prescriptions;
+    private bool loading = true;
+    private string errorMessage;
+    private string insertedcpr;
+    private bool isAuthenticated;
 
-    protected override async Task OnInitializedAsync() 
+    // To check authentication state
+    protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        doctorId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        patients = await prescriptionService.GetPatientsByDoctorId(doctorId);
-        allPatientCprs = patients.Select(p => p.cprnumber).ToList();
-        filteredPatientCprs = new List<string>(allPatientCprs);
+        var authenticationState = await AuthProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
     }
 
-    private void OnInputChanged(ChangeEventArgs e)
+    protected async Task LoadPrescriptionsAsync()
     {
-        patientCpr = e.Value?.ToString() ?? string.Empty;
-        var trimmedInput = patientCpr?.Trim() ?? string.Empty;
-        
-        if (string.IsNullOrEmpty(trimmedInput))
+        if (!isAuthenticated)
         {
-            filteredPatientCprs = new List<string>(allPatientCprs);
+            errorMessage = "You need to be logged in to view prescriptions.";
+            return;
         }
-        else
-        {
-            filteredPatientCprs = allPatientCprs
-                .Where(cpr => cpr.StartsWith(trimmedInput, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-    }
 
-    private void SelectPatient(string selectedCpr)
-    {
-        patientCpr = selectedCpr;
-        isLocked = true;
-    }
-
-    private async Task AddPrescription()
-    {
         try
         {
-            var prescriptionDto = new PrescriptionDto()
-            {
-                id = Guid.NewGuid().ToString(),
-                diagnosis = diagnosis,
-                medication = medication,
-                recommendations = recommendations,
-                date = DateTime.Now.ToString(),
-                time = DateTime.UtcNow.ToString(),
-                patientcpr = patientCpr,
-                doctorid = doctorId
-            };
-            
-            var response = await prescriptionService.AddPrescription(prescriptionDto);
-            
-            if (response.response == "Success")
-            {
-                serverResponse = "Prescription added";
-            }
-            else
-            {
-                serverResponse = "Error adding prescription";
-            }
+            prescriptions = await PrescriptionGetService.GetPrescriptionsByPatientCpr(insertedcpr) ?? new List<GetPrescriptionsDto>();
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            errorMessage = "An error occurred while loading prescriptions.";
+            Console.WriteLine($"Error: {e.Message}");
+        }
+        finally
+        {
+            loading = false;
         }
     }
 }
 
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-    }
-
-    .page-title {
-        font-size: 2rem;
-        color: #333;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .form-container {
-        background: #fff;
-        border-radius: 8px;
+    .prescription-container {
         padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
-        margin: 0 auto;
+        background-color: #f4f8ff; /* Soft light blue background */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px;
     }
 
-    .form-group {
+    .prescription-container h3 {
+        color: #004085; /* Dark blue for title */
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Prescription Card Styling */
+    .prescription-card {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    label {
-        display: block;
+    .prescription-card:hover {
+        transform: translateY(-5px); /* Slight hover effect */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+    /* Title and Label Styling within Prescription Cards */
+    .prescription-card h4 {
+        color: #0062cc; /* Blue color for diagnosis */
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .prescription-card p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555555; /* Dark gray text */
+    }
+
+    .prescription-card strong {
+        color: #004085; /* Dark blue for labels */
+    }
+
+    /* Loading and No Prescriptions Messages */
+    p {
+        font-size: 16px;
+        color: #555555;
+    }
+
+    /* Error or No Data Styling */
+    p.no-prescriptions {
+        color: #ff6b6b; /* Red for error message */
+        font-size: 18px;
         font-weight: bold;
-        margin-bottom: 5px;
     }
 
-    .input-box, .textarea-box {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-    }
-
-    .textarea-box {
-        min-height: 80px;
-    }
-
-    .suggestion-button, .submit-button {
-        display: inline-block;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        background-color: #007bff;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        margin: 5px 0;
-        text-align: center;
-    }
-
-    .suggestion-button {
-        background-color: #6c757d;
-    }
-
-    .suggestion-button:hover, .submit-button:hover {
-        background-color: #0056b3;
-    }
-
-    .submit-button {
-        display: block;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .notification {
-        padding: 10px;
-        border-radius: 4px;
-        margin-top: 15px;
-        text-align: center;
-    }
-
-    .notification.success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    
-    .suggestions {
-        margin-top: 10px;
-    }
-
-    .suggestions .suggestion-button {
-        margin-right: 5px;
+    p.loading {
+        color: #007bff; /* Blue for loading text */
+        font-size: 16px;
     }
 </style>
