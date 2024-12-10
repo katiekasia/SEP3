@@ -108,9 +108,10 @@
     {
         try
         {
+            var random = new Random();
             var prescriptionDto = new PrescriptionDto()
             {
-                id = Guid.NewGuid().ToString(),
+                id = random.Next(1, int.MaxValue),
                 diagnosis = diagnosis,
                 medication = medication,
                 recommendations = recommendations,
