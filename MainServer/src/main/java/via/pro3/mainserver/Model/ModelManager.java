@@ -249,7 +249,11 @@ public class ModelManager implements Model
   @Override
   public void cancelAppointment(int appointmentId, String patientCpr) {
     try {
+      Appointment appointment = getAppointmentByAppointmentId(appointmentId);
+      Patient patient = getPatientByCpr(patientCpr);
+      Doctor doctor = eventRepository.getDoctorByAppointmentId(appointmentId);
       eventRepository.cancelAppointment(appointmentId, patientCpr);
+      emailSender.sendBookingCancellation(doctor.getEmail(), patient.getEmail(), appointment);
     }  catch (IllegalStateException e) {
 
       throw e;
