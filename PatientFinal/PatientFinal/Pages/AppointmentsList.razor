@@ -5,16 +5,16 @@
 @inject IAppointmentService AppointmentService
 @inject AuthenticationStateProvider AuthProvider; 
 
+<link href="css/Appointments.css" rel="stylesheet" />
+
 <AuthorizeView>
     <NotAuthorized>
-        <h2 class="mb-4">Patient Appointments</h2>
-        <p>Please log in with your patient credentials</p>
+        <h2>Patient Appointments</h2>
+        <p>Please log in with your patient credentials.</p>
     </NotAuthorized>
 
     <Authorized>
-        <div class="container mt-4">
-            
-
+        <div class="container">
             @if (!string.IsNullOrEmpty(errorMessage))
             {
                 <div class="alert alert-danger">@errorMessage</div>
@@ -22,68 +22,65 @@
 
             @if (appointments?.Any() == true)
             {
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Type</th>
-                                    <th>Doctor</th>
-                                    <th>Specialization</th>
-                                    <th>Clinic</th>
-                                    <th>Status</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach (var appointment in appointments.OrderByDescending(a => DateOnly.Parse(a.Date)).ThenBy(a => TimeOnly.Parse(a.Time)))
-                                {
-                                    <tr>
-                                        <td>@DateOnly.Parse(appointment.Date).ToString("dd/MM/yyyy")</td>
-                                        <td>@TimeOnly.Parse(appointment.Time).ToString("HH:mm")</td>
-                                        <td>@appointment.Type</td>
-                                        <td>Dr. @appointment.DoctorFirstName @appointment.DoctorLastName</td>
-                                        <td>@appointment.DoctorSpecialization</td>
-                                        <td>
-                                            <div>@appointment.ClinicName</div>
-                                            <small class="text-muted">
-                                                @appointment.ClinicStreet @appointment.ClinicStreetNumber, @appointment.ClinicCity
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-@GetStatusColor(appointment.Status)">
-                                                @appointment.Status
-                                            </span>
-                                        </td>
-                                        <td>@appointment.Description</td>
-                                        <td>
-                                            @if (appointment.Status == "Active")
-                                            {
-                                                <button class="btn btn-danger btn-sm"
-                                                        @onclick="() => CancelAppointment(appointment.Id)">
-                                                    Cancel
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Doctor</th>
+                            <th>Specialization</th>
+                            <th>Clinic</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var appointment in appointments.OrderByDescending(a => DateOnly.Parse(a.Date)).ThenBy(a => TimeOnly.Parse(a.Time)))
+                        {
+                            <tr>
+                                <td>@DateOnly.Parse(appointment.Date).ToString("dd/MM/yyyy")</td>
+                                <td>@TimeOnly.Parse(appointment.Time).ToString("HH:mm")</td>
+                                <td>@appointment.Type</td>
+                                <td>Dr. @appointment.DoctorFirstName @appointment.DoctorLastName</td>
+                                <td>@appointment.DoctorSpecialization</td>
+                                <td>
+                                    <div>@appointment.ClinicName</div>
+                                    <small class="text-muted">
+                                        @appointment.ClinicStreet @appointment.ClinicStreetNumber, @appointment.ClinicCity
+                                    </small>
+                                </td>
+                                <td>
+                                        <span class="badge badge-@GetStatusColor(appointment.Status)">
+                                            @appointment.Status
+                                        </span>
+                                </td>
+                                <td>@appointment.Description</td>
+                                <td>
+                                    @if (appointment.Status == "Active")
+                                    {
+                                        <button class="btn btn-danger"
+                                                @onclick="() => CancelAppointment(appointment.Id)">
+                                            Cancel
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
             }
             else if (!isLoading)
             {
-                <p>No appointments found.</p>
+                <div class="alert alert-success">No appointments found.</div>
             }
         </div>
     </Authorized>
 </AuthorizeView>
+
 
 @code {
     private List<GetAppointmentsDto> appointments;
