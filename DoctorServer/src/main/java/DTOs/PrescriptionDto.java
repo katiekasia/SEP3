@@ -2,7 +2,7 @@ package DTOs;
 
 public class PrescriptionDto {
 
-    public String id;
+    public int id;
     public String diagnosis;
     public String medication;
     public String recommendations;
@@ -11,7 +11,7 @@ public class PrescriptionDto {
     public String patientcpr;
     public String doctorid;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
