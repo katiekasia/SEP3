@@ -12,7 +12,7 @@ service Patient {
   rpc getDoctors(Clinic) returns (DoctorListResponse){}
   rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
   rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
-
+  rpc getPrescriptionsByPatientCpr(PatientRequest) returns (GetPrescriptionsResponse){}
   rpc cancelAppointment (CancelAppointmentRequest) returns (DBresponse) {}
 
 }
@@ -76,6 +76,23 @@ message RegisterRequest {
 
 message PatientRequest {
   string cpr = 1;
+}
+
+message GetPrescriptionsResponse{
+  repeated PrescriptionInfo prescriptions =1;
+}
+
+message PrescriptionInfo{
+  int32 id =1;
+  string diagnosis = 2;
+  string medication =3;
+  string recommendations =4;
+  string date=5;
+  string time = 6;
+  string patientcpr= 7;
+  string doctorid=8;
+  string doctorname =9;
+  string doctorsurname=10;
 }
 
 message LoginResponse {

@@ -1,6 +1,7 @@
-package via.pro3.mainserver.DTOs;
+package DTOs;
 
-public class PrescriptionDto {
+public class PrescriptionDto
+{
 
     public int id;
     public String diagnosis;

@@ -1,0 +1,146 @@
+﻿@page "/Prescriptions"
+@using System.Security.Claims
+@using PatientFinal.DTOs
+@using PatientFinal.Services
+
+@inject AuthenticationStateProvider AuthProvider;
+@inject IPrescriptionService PrescriptionService;
+
+<h3>Prescriptions</h3>
+<PageTitle>Prescriptions</PageTitle>
+
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Please log in to see your prescriptions :)</p>
+    </NotAuthorized>
+    <Authorized>
+        <div class="prescription-container">
+            <h3>Your Prescriptions</h3>
+            
+            @if (loading)
+            {
+                <p>Loading prescriptions...</p>
+            }
+            else if (prescriptions == null)
+            {
+                <p>No prescriptions found</p>
+            }
+            else
+            {
+                @foreach (var prescription in prescriptions)
+                {
+                    <div class="prescription-card">
+                        <h4>Diagnosis: @prescription.diagnosis</h4>
+                        <p><strong>Medication:</strong> @prescription.medication</p>
+                        <p><strong>Recommendations:</strong> @prescription.recommendations</p>
+                        <p><strong>Date:</strong> @prescription.date</p>
+                        <p><strong>Time:</strong> @prescription.time</p>
+                        <p><strong>Doctor:</strong> @prescription.doctorid @prescription.doctorname @prescription.doctorsurname</p>
+             
+                    </div>
+                }
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private List<GetPrescriptionsDto> prescriptions;
+    private bool loading = true;
+    private string errorMessage;
+    private string cpr;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            this.cpr = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(this.cpr))
+            {
+                errorMessage = "Couldn't retrieve your CPR. Please ensure you're logged in.";
+                return;
+            }
+
+            prescriptions = await PrescriptionService.GetPrescriptionsByPatientCpr(cpr) ?? new List<GetPrescriptionsDto>();
+        }
+        catch (Exception e)
+        {
+            errorMessage = "An error occurred while loading prescriptions.";
+            Console.WriteLine($"Error: {e.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}
+
+
+<style>
+    .prescription-container {
+        padding: 20px;
+        background-color: #f4f8ff; /* Soft light blue background */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px;
+    }
+
+    .prescription-container h3 {
+        color: #004085; /* Dark blue for title */
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Prescription Card Styling */
+    .prescription-card {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .prescription-card:hover {
+        transform: translateY(-5px); /* Slight hover effect */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+    /* Title and Label Styling within Prescription Cards */
+    .prescription-card h4 {
+        color: #0062cc; /* Blue color for diagnosis */
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .prescription-card p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555555; /* Dark gray text */
+    }
+
+    .prescription-card strong {
+        color: #004085; /* Dark blue for labels */
+    }
+
+    /* Loading and No Prescriptions Messages */
+    p {
+        font-size: 16px;
+        color: #555555;
+    }
+
+    /* Error or No Data Styling */
+    p.no-prescriptions {
+        color: #ff6b6b; /* Red for error message */
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    p.loading {
+        color: #007bff; /* Blue for loading text */
+        font-size: 16px;
+    }
+</style>

@@ -76,6 +76,12 @@ public class ModelManager implements Model
     return eventRepository.getDoctorById(id);
   }
 
+  @Override public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
+  {
+    System.out.println("MODEL MANAGER Prescription");
+    return eventRepository.getPrescriptionsByPatientCpr(patientCpr);
+  }
+
   @Override public List<CityDto> getCities ()
   {
     System.out.println("Model manager Cities");

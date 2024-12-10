@@ -180,7 +180,8 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     public void addPrescription(AddPrescriptionRequest request, StreamObserver<Response> responseObserver){
         try{
             PrescriptionDto prescriptionDto = new PrescriptionDto(
-                    request.getId(), request.getDiagnosis(), request.getMedication(),
+                    request.getId(),
+                    request.getDiagnosis(), request.getMedication(),
                     request.getRecommendations(), request.getDate(), request.getTime(),
                     request.getPatientcpr(), request.getDoctorid()
             );
