@@ -1,0 +1,118 @@
+﻿@page "/Profile"
+@using System.Security.Claims
+@using Patient.DTOs
+@using Patient.Services
+@inject HttpClient Http
+@inject ILoginService LoginService
+@inject IUpdateService UpdateService
+@inject AuthenticationStateProvider AuthProvider
+
+<link href="css/Profile.css" rel="stylesheet" />
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h3>Profile Overview</h3>
+        <p>Please log in with your patient credentials</p>
+    </NotAuthorized>
+
+    <Authorized>
+        <div class="login-wrapper">
+            <div class="login-box">
+                <h3>Profile Overview</h3>
+
+                <p>Logged in patient: <strong>@firstName</strong></p>
+                <p>CPR: <strong>@CPR</strong></p>
+
+                <div>
+                    <label for="lastName">Last Name:</label>
+                    <input id="lastName" @bind="@lastName" class="input-field" />
+                </div>
+
+                <div>
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input id="phoneNumber" @bind="@phoneNumber" class="input-field" />
+                </div>
+
+                <div>
+                    <label for="Email">Email:</label>
+                    <input id="Email" @bind="@Email" class="input-field" />
+                </div>
+
+                <div>
+                    <label for="newPassword">New Password:</label>
+                    <input id="newPassword" type="password" @bind="@newPassword" class="input-field" />
+                </div>
+
+                <button @onclick="EditAccount" class="login-btn">Edit Account</button>
+
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                    <p>@responseMessage</p>
+                }
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string CPR;
+    private string firstName;
+    private string lastName;
+    private string Email;
+    private string phoneNumber;
+    private string newPassword;
+    private string responseMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            CPR = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            firstName = user.FindFirst(ClaimTypes.Name)?.Value;
+            lastName = user.FindFirst(ClaimTypes.Surname)?.Value;
+            Email = user.FindFirst(ClaimTypes.Email)?.Value;
+            phoneNumber = user.FindFirst(ClaimTypes.MobilePhone)?.Value;
+
+            Console.WriteLine($"CPR fetched: {CPR}");
+            Console.WriteLine($"Patient: {firstName} {lastName}");
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Failed: {e.Message}";
+        }
+    }
+
+    private async Task EditAccount()
+    {
+        try
+        {
+            var updatePatient = new UpdatePatientDto()
+            {
+                cpr = CPR,
+                surname = string.IsNullOrEmpty(lastName) ? null : lastName,
+                phone = string.IsNullOrEmpty(phoneNumber) ? null : phoneNumber,
+                email = string.IsNullOrEmpty(Email) ? null : Email,
+                newPassword = string.IsNullOrEmpty(newPassword) ? null : newPassword
+            };
+
+            Console.WriteLine($"Updated fields: {updatePatient.surname}, {updatePatient.phone}, {updatePatient.email}, {updatePatient.newPassword}");
+
+            var response = await UpdateService.UpdatePatient(updatePatient);
+
+            if (response != null)
+            {
+                responseMessage = "Account updated successfully";
+            }
+            else
+            {
+                responseMessage = "Failed to update account.";
+            }
+        }
+        catch (Exception e)
+        {
+            responseMessage = $"Changing account failed: {e.Message}";
+        }
+    }
+}
