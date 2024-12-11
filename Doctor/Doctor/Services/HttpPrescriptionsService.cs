@@ -20,7 +20,7 @@ public class HttpPrescriptionsService : IPrescriptionsService
         try
         {
             HttpResponseMessage httpResponseMessage = await client.GetAsync(
-                $"http://localhost:8080/Doctor/Prescriptions/getPatients?doctorid={Uri.EscapeDataString(doctorid)}");
+                $"http://localhost:8080/Doctor/AddPrescriptions/getPatients?doctorid={Uri.EscapeDataString(doctorid)}");
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
 
             if (!httpResponseMessage.IsSuccessStatusCode)
@@ -45,7 +45,7 @@ public class HttpPrescriptionsService : IPrescriptionsService
         try
         {
             HttpResponseMessage httpResponseMessage =
-                await client.PostAsJsonAsync("http://localhost:8080/Doctor/Prescriptions/addPrescription",
+                await client.PostAsJsonAsync("http://localhost:8080/Doctor/AddPrescriptions/addPrescription",
                     prescription);
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
 
