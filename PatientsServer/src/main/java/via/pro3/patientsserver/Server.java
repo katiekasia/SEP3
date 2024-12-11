@@ -12,7 +12,7 @@ import patient.grpc.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController @RequestMapping("/Demo") @CrossOrigin(origins = "*") public class Server
+@RestController @RequestMapping("/Booking") @CrossOrigin(origins = "*") public class Server
 {
   private final PatientGrpc.PatientBlockingStub blockingStub;
 
@@ -355,11 +355,11 @@ import java.util.List;
   }
 
   @GetMapping("/Prescriptions") public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(
-      @RequestParam String cpr)
+      @RequestParam String cpr, @RequestParam int page)
   {
     try
     {
-      PatientRequest request = PatientRequest.newBuilder().setCpr(cpr).build();
+      RequestForAppointments request = RequestForAppointments.newBuilder().setCpr(cpr).setPage(page).build();
 
       GetPrescriptionsResponse response = blockingStub.getPrescriptionsByPatientCpr(
           request);
@@ -381,6 +381,7 @@ import java.util.List;
 
         prescriptionDtos.add(dto);
       }
+
       return prescriptionDtos;
     }
     catch (StatusRuntimeException e)
@@ -389,6 +390,24 @@ import java.util.List;
           "gRPC error: " + e.getStatus().getDescription(), e);
     }
 
+  }
+  @GetMapping("/count") public int getAppointmentsCount(@RequestParam String cpr){
+    try
+    {
+      RequestForAppointments request = RequestForAppointments.newBuilder().setCpr(cpr).build();
+
+      CountReply response = blockingStub.getPrescriptionCount(request);
+
+      return response.getCount();
+    }catch (StatusRuntimeException e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting", e);
+    }
+    catch (Exception e)
+    {e.printStackTrace();
+      throw new RuntimeException("Error counting appointments", e);
+    }
   }
 
   @GetMapping("/appointments") public ResponseDto getAppointments(
@@ -420,6 +439,7 @@ import java.util.List;
         dto.setClinicStreetNumber(appointment.getClinicStreetNumber());
         dto.setClinicCity(appointment.getClinicCity());
 
+
         appointmentsList.add(dto);
       }
 
@@ -431,6 +451,7 @@ import java.util.List;
     }
     catch (StatusRuntimeException e)
     {
+      e.printStackTrace();
 
       ResponseDto errorResponse = new ResponseDto();
       errorResponse.setSuccess(false);
@@ -439,7 +460,7 @@ import java.util.List;
       return errorResponse;
     }
     catch (Exception e)
-    {
+    {e.printStackTrace();
 
       ResponseDto errorResponse = new ResponseDto();
       errorResponse.setSuccess(false);

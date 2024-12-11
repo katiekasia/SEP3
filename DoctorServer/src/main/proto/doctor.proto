@@ -13,9 +13,16 @@ service Doctor {
   rpc addPrescription(AddPrescriptionRequest) returns (Response){}
   rpc getAppointmentById(GetAppointmentByIdReq) returns(AppointmentInfoD){}
   rpc cancelAppointment(GetAppointmentByIdReq) returns (Response){}
-  rpc getPrescriptionsByCpr(PatientCprRequest) returns (GetPrescriptionsByCprResponse){}
+  rpc getPrescriptionsByCpr(PrescriptionRequest) returns (GetPrescriptionsByCprResponse){}
+  rpc getPrescriptionsCount(PatientCprRequest) returns(PrescriptionCount){}
 }
-
+message PrescriptionRequest{
+  string cpr = 1;
+  int32 page = 2;
+}
+message PrescriptionCount{
+  int32 count = 1;
+}
 message EmptyRequest{}
 
 message GetAppointmentByIdReq{

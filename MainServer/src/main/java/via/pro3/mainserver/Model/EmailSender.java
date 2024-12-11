@@ -9,14 +9,14 @@ import javax.mail.internet.*;
 public class EmailSender implements EmailSenderInterface
 {
 
-  final String username = "postmaster@sandboxeba37d0ff69a41dd8bdd56e3e3375b87.mailgun.org";
-  final String password = "16b0692833cb1e05e20ef3da71ee851e-da554c25-96eaede1";
+  final String username = "postmaster@sandboxeba37d0ff69a41dd8bdd56e3e3375b87.mailgun.org"; // your email
+  final String password = "16b0692833cb1e05e20ef3da71ee851e-da554c25-96eaede1"; // your email password
 
   Properties props = new Properties();
 
   public EmailSender()
   {
-    props.put("mail.smtp.host", "smtp.mailgun.org");
+    props.put("mail.smtp.host", "smtp.mailgun.org"); // your domain
     props.put("mail.smtp.port", "587");
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");  // Enable STARTTLS for port 587
@@ -33,9 +33,9 @@ public class EmailSender implements EmailSenderInterface
     String patientMessage =
         "A new appointment made: " + appointment.getDateAndTime();
 
-    sendEmail(doctorMail, doctorSubject, doctorMessage);
-    sendEmail(patientMail, patientSubject, patientMessage);
-
+   // sendEmail(doctorMail, doctorSubject, doctorMessage);
+   // sendEmail(patientMail, patientSubject, patientMessage);
+    //SENDING DISABLED BECAUSE WE REFUSE TO PAY FOR A MAIL :( the thing is correct tho
   }
 
   @Override public void sendBookingCancellation(String doctorMail,
@@ -49,8 +49,9 @@ public class EmailSender implements EmailSenderInterface
     String patientMessage =
         "An appointment has been cancelled at: " + appointment.getDateAndTime();
 
-    sendEmail(doctorMail, doctorSubject, doctorMessage);
-    sendEmail(patientMail, patientSubject, patientMessage);
+   // sendEmail(doctorMail, doctorSubject, doctorMessage);
+   // sendEmail(patientMail, patientSubject, patientMessage);
+    //SENDING DISABLED BECAUSE WE REFUSE TO PAY FOR A MAIL :( the thing is correct tho
   }
 
   private void sendEmail(String recipient, String subject, String message)

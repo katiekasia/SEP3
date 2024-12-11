@@ -12,55 +12,67 @@
 <AuthorizeView>
     <NotAuthorized>
         You need to login first
+        <NavLink class="nav-link" href="/">
+            <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
+        </NavLink>
     </NotAuthorized>
 
     <Authorized>
-<div class="navigation">
-    <button @onclick="PreviousWeek">Previous Week</button>
-    <button @onclick="NextWeek">Next Week</button>
-</div>
-
-<table class="schedule-table">
-    <thead>
-        <tr>
-            <th>Hour</th>
-            @foreach (var day in GetWeekDates())
-            {
-                <th>@($"{day:dddd}, {day:MMMM d}")</th> <!-- Show day name and date -->
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var hour in Hours)
+        <div class="navigation">
+            <button @onclick="PreviousWeek">Previous Week</button>
+            <button @onclick="NextWeek">Next Week</button>
+        </div>
+        @if (!string.IsNullOrEmpty(serverResponse))
         {
+            <div class="notification success">
+                <p>@serverResponse</p>
+            </div>
+        }
+
+        <table class="schedule-table">
+            <thead>
             <tr>
-                <td>@hour:00</td>
+                <th>Hour</th>
                 @foreach (var day in GetWeekDates())
                 {
-                    <td>
-                        @* Check if there's an event for this day and hour *@
-                        @foreach (var ap in AppointmentsList.Where(a => a.Date == day.Date && a.Time.Hour == hour))
-                        {
-                            <div class="appointment" @onclick="() => NavigateToDetails(ap.Id)">
-                                <strong>@ap.status</strong><br />
-                                <span>@ap.type</span>
-                                <span>@ap.Id</span>
-                                <span>@ap.Time</span>
-                            </div>
-                        }
-                    </td>
+                    <th>@($"{day:dddd}, {day:MMMM d}")</th> <!-- Show day name and date -->
                 }
             </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            @foreach (var hour in Hours)
+            {
+                <tr>
+                    <td>@hour:00</td>
+                    @foreach (var day in GetWeekDates())
+                    {
+                        <td>
+                            @* Check if there's an event for this day and hour *@
+                            @foreach (var ap in AppointmentsList.Where(a => a.Date == day.Date && a.Time.Hour == hour))
+                            {
+                                <div class="appointment" @onclick="() => NavigateToDetails(ap.Id)">
+                                    <strong>@ap.status</strong><br />
+                                    <span>@ap.type</span>
+                                    <span>@ap.Id</span>
+                                    <span>@ap.Time</span>
+                                </div>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div>
+            <button @onclick="updateAppointmentsList">Refresh</button>
+        </div>
 </Authorized>
 </AuthorizeView>
 @code {
+    private string serverResponse;
     
     private void NavigateToDetails(int appointmentId)
     {
-        Console.WriteLine(appointmentId);
         NavigationManager.NavigateTo($"/AppointmentDetails/{appointmentId}");
     }
     
@@ -124,18 +136,17 @@
 
             if (string.IsNullOrEmpty(doctorId))
             {
-                Console.WriteLine("Doctor ID is missing in the claims.");
+                serverResponse = "Doctor ID is missing in the claims.";
                 return;
             }
-
-            Console.WriteLine($"Doctor ID: {doctorId}");
+            
 
             // Now call GetAppointments with the correct doctorId
             AppointmentsList = await AppointmentService.GetAppointments(doctorId);
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error: {e}");
+            serverResponse = $"Error while loading";
         }
     }
 
@@ -144,10 +155,11 @@
         try
         {
             AppointmentsList = await AppointmentService.GetAppointments(doctorId);
+            StateHasChanged();
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            serverResponse = "Error while loading";
         }
     }
     

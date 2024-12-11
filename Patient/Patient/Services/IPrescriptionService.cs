@@ -4,5 +4,6 @@ namespace Patient.Services;
 
 public interface IPrescriptionService
 {
-    public Task<List<GetPrescriptionsDto>> GetPrescriptionsByPatientCpr(string cpr);
+    public Task<List<GetPrescriptionsDto>> GetPrescriptionsByPatientCpr(string cpr, int page);
+    Task<int> GetPrescriptionCount(string cpr);
 }

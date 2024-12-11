@@ -51,7 +51,7 @@
         try
         {
             await ((SimpleAuthProvider)LoginService).Login(cprno, passwordinput);
-            navMgr.NavigateTo("/");
+            navMgr.NavigateTo("/Profile");
 
         }
         catch (HttpRequestException httpEx)

@@ -5,6 +5,7 @@ import DTOs.*;
 import DTOs.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import doctor.grpc.*;
+import io.grpc.StatusRuntimeException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -185,9 +186,9 @@ public class Server {
     }
 
     @GetMapping("/Prescriptions")
-    public List<GetPrescriptionsDto> getPrescriptionsByClientCpr(@RequestParam String cpr) {
+    public List<GetPrescriptionsDto> getPrescriptionsByClientCpr(@RequestParam String cpr, @RequestParam int page) {
         try {
-            PatientCprRequest request = PatientCprRequest.newBuilder().setCpr(cpr).build();
+            PrescriptionRequest request = PrescriptionRequest.newBuilder().setCpr(cpr).setPage(page).build();
 
             GetPrescriptionsByCprResponse response = blockingStub.getPrescriptionsByCpr(request);
 
@@ -207,11 +208,29 @@ public class Server {
 
                 prescriptionDtos.add(dto);
             }
+
             return prescriptionDtos;
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error fetching prescriptions: " + e.getMessage());
+        }
+    }
+    @GetMapping("/count") public int getAppointmentsCount(@RequestParam String cpr){
+        try
+        {
+            PatientCprRequest request = PatientCprRequest.newBuilder().setCpr(cpr).build();
+
+            PrescriptionCount response = blockingStub.getPrescriptionsCount(request);
+            return response.getCount();
+        }catch (StatusRuntimeException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException("Error counting", e);
+        }
+        catch (Exception e)
+        {e.printStackTrace();
+            throw new RuntimeException("Error counting appointments", e);
         }
     }
 

@@ -42,52 +42,53 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create appointment: " + e.getMessage(), e);
         }
+
     }
 
     @Override
-    public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
+    public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr, int page)
     {
+        int pageSize = 10;
+        // Calculate offset
+        int offset = (page - 1) * pageSize;
+        // SQL query with LIMIT and OFFSET for pagination
         String sql = """
-           
-                SELECT p.id, p.diagnosis, p.medication, p.recommendations, p.date,
-                p.time, p.patient_CPR, p.doctor_id
-                FROM prescription p
-                INNER JOIN patient pat ON pat.CPR_number = p.patient_CPR
-                WHERE p.patient_CPR=?
                 
-                    """;
+            SELECT p.id, p.diagnosis, p.medication, p.recommendations, p.date,
+                                       p.time, p.patient_CPR, p.doctor_id, d.first_name AS doctor_name, d.last_name AS doctor_surname
+                                FROM prescription p
+                                INNER JOIN patient pat ON pat.CPR_number = p.patient_CPR
+                                LEFT JOIN doctor d ON p.doctor_id = d.id
+                                WHERE p.patient_CPR = ?
+                                ORDER BY p.date DESC
+                                LIMIT ? OFFSET ?;
+                """;
 
         try (Connection connection = database.getConnection(); // Get connection from pool
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             List<GetPrescriptionsDto> prescriptions = new ArrayList<>();
+
+            // Set query parameters
             statement.setString(1, patientCpr);
+            statement.setInt(2, pageSize);  // Number of prescriptions per page
+            statement.setInt(3, offset);    // Calculate the offset for the current page
 
-            try (ResultSet resultSet = statement.executeQuery())
-            {
-                while (resultSet.next()) {
-
-                    String doctorName = "";
-                    String doctorSurname = "";
-                    Doctor doctor = getDoctorById(resultSet.getString("doctor_id"));
-                    if (doctor != null) {
-                        doctorName = doctor.getName();
-                        doctorSurname = doctor.getSurname();
-                    }
-                    prescriptions.add(new GetPrescriptionsDto(
-                        resultSet.getInt("id"),
-                        resultSet.getString("diagnosis"),
-                        resultSet.getString("medication"),
-                        resultSet.getString("recommendations"),
-                        resultSet.getString("date"),
-                        resultSet.getString("time"),
-                        resultSet.getString("patient_CPR"),
-                        resultSet.getString("doctor_id"),
-                        doctorName,
-                        doctorSurname
-                    ));
+            try (ResultSet resultSet = statement.executeQuery()) {
+              while (resultSet.next()) {
+                prescriptions.add(new GetPrescriptionsDto(
+                    resultSet.getInt("id"),
+                    resultSet.getString("diagnosis"),
+                    resultSet.getString("medication"),
+                    resultSet.getString("recommendations"),
+                    resultSet.getString("date"),
+                    resultSet.getString("time"),
+                    resultSet.getString("patient_CPR"),
+                    resultSet.getString("doctor_id"),
+                    resultSet.getString("doctor_name"),   // Directly from JOIN
+                    resultSet.getString("doctor_surname") // Directly from JOIN
+                ));
                 }
-
                 return prescriptions;
             }
         } catch (SQLException e) {
@@ -126,6 +127,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch clinic for doctorId: " + doctorId, e);
         }
+
     }
 
     @Override
@@ -138,6 +140,7 @@ public class EventRepository implements EventInterface {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
+
                     return new Doctor(
                             resultSet.getString("id"),
                             resultSet.getString("first_name"),
@@ -147,6 +150,7 @@ public class EventRepository implements EventInterface {
                             resultSet.getString("password"),
                             resultSet.getString("specialisation"),
                             getClinicByDoctorId(doctorId)
+
                     );
                 } else {
                     throw new RuntimeException("No doctor found for doctorId: " + doctorId);
@@ -155,6 +159,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor from SQL: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -184,6 +189,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
         }
+
     }
 
 
@@ -215,6 +221,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to fetch patients for doctor", e);
         }
+
         return patients;
     }
 
@@ -237,6 +244,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to create patient: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -255,6 +263,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient from SQL: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -278,6 +287,7 @@ public class EventRepository implements EventInterface {
         } catch (DateTimeParseException | SQLException e) {
             throw new RuntimeException("Failed to create prescription: " + e.getMessage(), e);
         }
+
     }
 
     @Override public Appointment getAppointmentByAppointmentId(int appointmentId)
@@ -311,6 +321,7 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException(
                     "Failed to fetch doctor from SQL: " + e.getMessage(), e);
         }
+
         return null;
     }
 
@@ -339,6 +350,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to fetch doctor : " + e.getMessage(), e);
         }
+
     }
 
     @Override public Set<Integer> getPrescriptionIds()
@@ -364,6 +376,7 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException(
                 "Failed to fetch appointment id : " + e.getMessage(), e);
         }
+
         return set;
     }
 
@@ -389,6 +402,7 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException(
                 "Failed to fetch prescriptions id : " + e.getMessage(), e);
         }
+
         return set;
     }
 
@@ -403,6 +417,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -420,6 +435,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor from SQL: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -433,6 +449,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to change doctor password: " + e.getMessage(), e);
         }
+
     }
 //    @Override
 //    public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
@@ -578,6 +595,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
         }
+
         return appointments;
     }
 
@@ -604,6 +622,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch doctor ID: " + e.getMessage(), e);
         }
+
     }
 
     @Override
@@ -624,6 +643,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user details: " + e.getMessage(), e);
         }
+
     }
 
     @Override public Patient getPatientByAppointmentId(int appointmentId)
@@ -651,6 +671,7 @@ public class EventRepository implements EventInterface {
             e.printStackTrace();
             throw new RuntimeException("Failed to fetch patient : " + e.getMessage(), e);
         }
+
     }
 
 
@@ -676,6 +697,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve doctors: " + e.getMessage(), e);
         }
+
         return doctors;
 
 
@@ -701,6 +723,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve cities: " + e.getMessage(), e);
         }
+
         return cities;
     }
 
@@ -733,6 +756,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve clinics: " + e.getMessage(), e);
         }
+
         return clinics;
     }
 
@@ -767,6 +791,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve clinics: " + e.getMessage(), e);
         }
+
         return doctors;
     }
 
@@ -784,6 +809,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to update appointment status: " + e.getMessage(), e);
         }
+
     }
     public void cancelAppointment(int appointmentId, String patientCpr) {
         // Get all appointments for the patient
@@ -819,6 +845,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
         }
+
     }
 
 
@@ -898,6 +925,7 @@ public class EventRepository implements EventInterface {
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
         }
+
         return appointments;
     }
 
@@ -932,6 +960,67 @@ public class EventRepository implements EventInterface {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+
          return daysDTO;
+    }
+
+    @Override
+    public int getAppointmentsCount(String cpr) {
+        int count = 0;
+        // SQL query to count appointments for the given CPR
+        String sql = """
+        SELECT COUNT(*)
+        FROM appointment a
+        WHERE a.patient_CPR = ?
+    """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            // Set the CPR in the prepared statement
+            statement.setString(1, cpr);
+
+            // Execute the query and retrieve the count
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1); // Get the count from the query result
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Return the final count of appointments for the given CPR
+        return count;
+    }
+    public int getPrescriptionCount(String cpr) {
+        int count = 0;
+        // SQL query to count prescriptions for the given CPR
+        String sql = """
+        SELECT COUNT(*)
+        FROM prescription p
+        WHERE p.patient_CPR = ?
+    """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            // Set the CPR in the prepared statement
+            statement.setString(1, cpr);
+
+            // Execute the query and retrieve the count
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+
+                    count = rs.getInt(1); // Get the count from the query result
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Return the final count of appointments for the given CPR
+        return count;
     }
 }

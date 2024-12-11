@@ -15,6 +15,9 @@
         <AuthorizeView>
             <NotAuthorized>
                 <p class="error-message">You need to login first.</p>
+                <NavLink class="nav-link" href="/">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
+                </NavLink>
             </NotAuthorized>
 
             <Authorized>
@@ -58,6 +61,7 @@
 
             id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            
             if (!string.IsNullOrEmpty(id))
             {
                 var doctor = await LoginService.getDoctorById(id);
@@ -78,9 +82,9 @@
 
     private async Task ChangePassword()
     {
-        if (string.IsNullOrEmpty(newPassword))
+        if (string.IsNullOrWhiteSpace(newPassword))
         {
-            responseMessage = "Field cannot be emtpy";
+            responseMessage = "Field cannot be empty";
             return;
         }
 
@@ -96,9 +100,26 @@
                 .ResetPasswordServiceMethod(changePasswordDto);
             
         }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                responseMessage = "Action failed: User not found. Please try loggin in again.";
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                responseMessage = "Action failed: Server error. Please try again later.";
+            }
+            else
+            {
+                responseMessage = "Action failed: An unexpected error occurred.";
+            }
+        }
         catch (Exception e)
         {
-            responseMessage = $"Changing password failed: {e.Message}";
+            // Catch any other general exceptions
+            responseMessage = "Action failed: An error occurred.";
         }
     }
 }

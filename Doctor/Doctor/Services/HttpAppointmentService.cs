@@ -22,7 +22,7 @@ public class HttpAppointmentService : IAppointmentService
                 await http.GetAsync(
                     $"{baseUrl}/Doctor/appointments?id={doctorId}");
             var response = await httpResponse.Content.ReadAsStringAsync();
-            Console.WriteLine($"Raw response: {response}");
+
 
             if (!httpResponse.IsSuccessStatusCode)
                 throw new Exception(
@@ -52,9 +52,8 @@ public class HttpAppointmentService : IAppointmentService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(
-                $"Error retrieving appointments: {ex.Message}");
-            throw;
+
+            throw ex;
         }
     }
 
@@ -66,7 +65,7 @@ public class HttpAppointmentService : IAppointmentService
                 await http.GetAsync(
                     $"{baseUrl}/Doctor/appointment?appointmentId={appointmentId}");
             var response = await httpResponse.Content.ReadAsStringAsync();
-            Console.WriteLine($"Raw response: {response}");
+
 
             if (!httpResponse.IsSuccessStatusCode)
                 throw new Exception(
@@ -83,9 +82,8 @@ public class HttpAppointmentService : IAppointmentService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(
-                $"Error retrieving appointments: {ex.Message}");
-            throw;
+
+            throw ex;
         }
     }
 
@@ -109,9 +107,8 @@ public class HttpAppointmentService : IAppointmentService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(
-                $"Error canceling appointment: {ex.Message}");
-            throw;
+
+            throw ex;
         }
     }
 }

@@ -4,6 +4,7 @@ import doctor.grpc.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
+import patient.grpc.CountReply;
 import patient.grpc.GetPrescriptionsResponse;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
@@ -139,12 +140,30 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     }
   }
 
+  @Override public void getPrescriptionsCount(PatientCprRequest request,
+      StreamObserver<PrescriptionCount> responseObserver)
+  {
+    try
+    {
+      int count = model.getPrescriptionCount(request.getCpr());
+      PrescriptionCount.Builder responseBuilder = PrescriptionCount.newBuilder();
+      responseBuilder.setCount(count);
+      responseObserver.onNext(responseBuilder.build());
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
+    }
+  }
+
   @Override
-  public void getPrescriptionsByCpr(PatientCprRequest request, StreamObserver<GetPrescriptionsByCprResponse> responseObserver)
+  public void getPrescriptionsByCpr(PrescriptionRequest request, StreamObserver<GetPrescriptionsByCprResponse> responseObserver)
   {
     try {
 
-      List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr());
+      List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr(), request.getPage());
 
       GetPrescriptionsByCprResponse.Builder responseBuilder = GetPrescriptionsByCprResponse.newBuilder();
 

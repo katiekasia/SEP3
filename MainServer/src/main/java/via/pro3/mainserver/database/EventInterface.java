@@ -22,7 +22,7 @@ public interface EventInterface
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
 
-  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr);
+  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr, int page);
   List<Doctor> getDoctors();
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);
@@ -43,4 +43,6 @@ public interface EventInterface
   void cancelAppointment(int appointmentId, String patientCpr);
 
   DaysDTO getDoctorsAvailibility(String doctorId);
+  int getAppointmentsCount(String cpr);
+  int getPrescriptionCount(String cpr);
 }

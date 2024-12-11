@@ -10,6 +10,7 @@ public interface IAppointmentService
 
     Task<List<DateDto>> GetDoctorAvailability(string doctorId);
     Task<List<DateDto>> GetDoctorsSchedule(string doctorId);
+    Task<int> GetAppointmentCount(string cpr);
     
     public Task<List<CityDto>> GetCities();
     public Task<List<ClinicDto>> GetClinicByCity(string code);

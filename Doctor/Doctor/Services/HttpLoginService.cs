@@ -30,8 +30,7 @@ public class HttpLoginService: ILoginService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+            throw ex;
         }
     }
 
@@ -52,8 +51,7 @@ public class HttpLoginService: ILoginService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+            throw ex;
         }
     }
 
@@ -74,8 +72,8 @@ public class HttpLoginService: ILoginService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+
+            throw ex;
         }
     }
 }

@@ -28,7 +28,7 @@
                 <button @onclick="LoginDoctor" class="login-btn">Login</button>
             </NotAuthorized>
             <Authorized>
-                <h3>Logged in! :)</h3>
+                <h3>Logged in! </h3>
             </Authorized>
         </AuthorizeView>
     </div>
@@ -50,13 +50,29 @@
         try
         {
             await ((SimpleAuthProvider)LoginService).Login(id, password);
-            navMgr.NavigateTo("/");
+            navMgr.NavigateTo("/Appointments");
             
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                responseMessage = "Login failed: User not found. Check your CPR.";
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                responseMessage = "Login failed: Server error. Please try again later.";
+            }
+            else
+            {
+                responseMessage = "Login failed: An unexpected error occurred.";
+            }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Inner Error: {e.InnerException.Message}");
-            responseMessage = $"Login failed: {e.Message} ";
+            // Catch any other general exceptions
+            responseMessage = "Login failed: An error occurred. Please check your credentials.";
         }
     }
 

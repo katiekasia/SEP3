@@ -35,8 +35,8 @@ public class HttpPrescriptionsService : IPrescriptionsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+
+            throw ex;
         }
     }
 
@@ -59,8 +59,8 @@ public class HttpPrescriptionsService : IPrescriptionsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+
+            throw ex;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Patient.Services
             try
             {
                 HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync
-                    ($"http://localhost:8081/Demo/update", updatePatientDto);
+                    ($"http://localhost:8081/Booking/update", updatePatientDto);
            
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (!httpResponseMessage.IsSuccessStatusCode)
@@ -31,8 +31,8 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw;
+                
+                throw ex;
             }
         }
     }

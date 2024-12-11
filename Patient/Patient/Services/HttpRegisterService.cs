@@ -17,7 +17,7 @@ namespace Patient.Services
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("api/Demo/register", request);
+                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("api/Booking/register", request);
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (!httpResponseMessage.IsSuccessStatusCode)
                     throw new ApplicationException(response);
@@ -29,8 +29,8 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw;
+                
+                throw ex;
             }
         }
     }

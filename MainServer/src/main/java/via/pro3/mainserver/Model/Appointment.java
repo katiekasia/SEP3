@@ -20,13 +20,20 @@ public class Appointment
     setType(type);
     setDateAndTime(dateAndTime);
     setDescription(description);
-    if (status.equals("Active")){
-    setStatus(new ActiveAppointment());}
-    else if (status.equals("Cancelled"))
+    if (status != null)
     {
-      setStatus(new CancelledAppointment());
-    }else {
-      setStatus(new ExpiredAppointment());
+      if (status.equals("Active"))
+      {
+        setStatus(new ActiveAppointment());
+      }
+      else if (status.equals("Cancelled"))
+      {
+        setStatus(new CancelledAppointment());
+      }
+      else
+      {
+        setStatus(new ExpiredAppointment());
+      }
     }
   }
 
@@ -106,7 +113,10 @@ public class Appointment
 
   public void setDescription(String description)
   {
-    this.description = description;
+    if (description != null)
+    {
+      this.description = description;
+    }else this.description = "No description provided";
   }
 
   public void setStatus(AppointmentState status)

@@ -14,13 +14,39 @@ namespace Patient.Services
             this.client = client;
         }
 
+        public async Task<int> GetAppointmentCount(string cpr)
+        {
+            try
+            {
+                var httpResponse = await client.GetAsync($"{baseUrl}/Booking/count?cpr={cpr}");
+               var response = await httpResponse.Content.ReadAsStringAsync();
+               
+               if (!httpResponse.IsSuccessStatusCode)
+                   throw new Exception(response);
+
+               return JsonSerializer.Deserialize<int>(response,
+                   new JsonSerializerOptions
+                       { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         public async Task<ResponseDto> CreateAppointment(
             CreateAppointmentDto createAppointmentDto)
         {
             try
             {
+                int check =
+                    await GetAppointmentCount(createAppointmentDto.patientCpr);
+                if ( check >= 5)
+                {
+                    throw new InvalidOperationException("Cannot create more than 8 appointments.");
+                }
                 var httpResponse =
-                    await client.PostAsJsonAsync($"{baseUrl}/Demo/book",
+                    await client.PostAsJsonAsync($"{baseUrl}/Booking/book",
                         createAppointmentDto);
                 var response = await httpResponse.Content.ReadAsStringAsync();
 
@@ -33,7 +59,7 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error creating appointment: {ex.Message}");
+
                 throw;
             }
         }
@@ -42,7 +68,7 @@ namespace Patient.Services
         {
             try
             {
-                var httpResponse = await client.GetAsync($"{baseUrl}/Demo/days?doctorId={doctorId}");
+                var httpResponse = await client.GetAsync($"{baseUrl}/Booking/days?doctorId={doctorId}");
                 var response = await httpResponse.Content.ReadAsStringAsync();
 
                 if (!httpResponse.IsSuccessStatusCode)
@@ -59,7 +85,7 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving appointments: {ex.Message}");
+
                 throw;
             }
         }
@@ -70,7 +96,7 @@ namespace Patient.Services
             {
                 var httpResponse =
                     await client.GetAsync(
-                        $"{baseUrl}/Demo/alldays?doctorId={doctorId}");
+                        $"{baseUrl}/Booking/alldays?doctorId={doctorId}");
                 var response = await httpResponse.Content.ReadAsStringAsync();
 
                 if (!httpResponse.IsSuccessStatusCode)
@@ -88,9 +114,7 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"Error retrieving appointments: {ex.Message}");
-                throw;
+                throw ex;
             }
         }
 
@@ -98,12 +122,12 @@ namespace Patient.Services
     {
         try
         {
-            var httpResponse = await client.GetAsync($"{baseUrl}/Demo/appointments?cpr={patientCpr}");
+            var httpResponse = await client.GetAsync($"{baseUrl}/Booking/appointments?cpr={patientCpr}");
             var response = await httpResponse.Content.ReadAsStringAsync();
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception($"Failed to get appointments: {response}");
+                throw new NullReferenceException($"Failed to get appointments: {response}");
             }
 
             var responseDto = JsonSerializer.Deserialize<ResponseDto>(
@@ -111,9 +135,9 @@ namespace Patient.Services
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
             );
 
-            if (!responseDto.Success)
+            if (!responseDto.Success && httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception(responseDto.response ?? "Unknown error occurred");
+                throw new NullReferenceException($"Failed to get appointments: {response}");
             }
 
             return responseDto.Appointments ??
@@ -121,8 +145,8 @@ namespace Patient.Services
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error retrieving appointments: {ex.Message}");
-            throw;
+            
+            throw ex;
         }
     }
 
@@ -133,7 +157,7 @@ namespace Patient.Services
             var cancelRequest = new CancelAppointmentDto(appointmentId, patientCpr);
 
             var httpResponse = await client.PostAsJsonAsync(
-                $"{baseUrl}/Demo/appointments/cancel",
+                $"{baseUrl}/Booking/appointments/cancel",
                 cancelRequest
             );
 
@@ -153,8 +177,8 @@ namespace Patient.Services
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error cancelling appointment: {ex.Message}");
-            throw;
+          
+            throw ex;
         }
     }
         public async Task<List<CityDto>> GetCities()
@@ -162,7 +186,7 @@ namespace Patient.Services
             try
             {
                 HttpResponseMessage httpResponse =
-                    await client.GetAsync("http://localhost:8081/Demo/cities");
+                    await client.GetAsync("http://localhost:8081/Booking/cities");
                 string response =
                     await httpResponse.Content.ReadAsStringAsync();
 
@@ -181,15 +205,14 @@ namespace Patient.Services
 
                 if (cities == null)
                     throw new Exception("No cities data available.");
-                Console.WriteLine(response);
+
 
                 return cities;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"Error occurred while fetching cities: {ex.Message}");
-                throw;
+              
+                throw ex;
             }
         }
 
@@ -199,10 +222,9 @@ namespace Patient.Services
             {
                 HttpResponseMessage httpResponse =
                     await client.GetAsync(
-                        $"http://localhost:8081/Demo/clinics?code={code}");
+                        $"http://localhost:8081/Booking/clinics?code={code}");
                 string response =
                     await httpResponse.Content.ReadAsStringAsync();
-                Console.WriteLine("I called");
 
                 if (!httpResponse.IsSuccessStatusCode)
                     throw new Exception("Failed to fetch cities: " + response);
@@ -224,9 +246,8 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"Error occurred while fetching cities: {ex.Message}");
-                throw;
+                
+                throw ex;
             }
         }
         
@@ -235,9 +256,9 @@ namespace Patient.Services
         {
             try
             { 
-                HttpResponseMessage httpResponse = await client.GetAsync($"http://localhost:8081/Demo/doctors?clinic_id={clinic_id}");
+                HttpResponseMessage httpResponse = await client.GetAsync($"http://localhost:8081/Booking/doctors?clinic_id={clinic_id}");
                 string response = await httpResponse.Content.ReadAsStringAsync();
-                Console.WriteLine("I called");
+                
 
                 if (!httpResponse.IsSuccessStatusCode)
                     throw new Exception("Failed to fetch doctors: " + response);
@@ -257,9 +278,9 @@ namespace Patient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred while fetching cities: {ex.Message}");
+                
 
-                throw;
+                throw ex;
             }
         }
         

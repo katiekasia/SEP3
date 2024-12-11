@@ -11,6 +11,9 @@
     <NotAuthorized>
         <h2>Patient Appointments</h2>
         <p>Please log in with your patient credentials.</p>
+        <NavLink class="nav-link" href="/">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Login
+        </NavLink>
     </NotAuthorized>
 
     <Authorized>
@@ -108,6 +111,9 @@
                 errorMessage = "Unable to fetch CPR number. Please log in again.";
             }
         }
+        catch (NullReferenceException e)
+        {
+        }
         catch (Exception e)
         {
             errorMessage = $"Failed to load appointments.";
@@ -127,6 +133,10 @@
             isLoading = true;
             errorMessage = null;
             appointments = await AppointmentService.GetAppointments(cprNumber);
+        }
+        catch (NullReferenceException ex)
+        {
+            // Check for HTTP status code
         }
         catch (Exception ex)
         {

@@ -70,6 +70,7 @@ public class ModelManager implements Model
     {
       return eventRepository.getPatientByCpr(cpr);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -80,6 +81,7 @@ public class ModelManager implements Model
     {
       return eventRepository.getPatientsByDoctorId(doctorid);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -90,16 +92,18 @@ public class ModelManager implements Model
     {
       return eventRepository.getDoctorById(id);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
 
-  @Override public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
+  @Override public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr, int page)
   {
     try
     {
-      return eventRepository.getPrescriptionsByPatientCpr(patientCpr);
+      return eventRepository.getPrescriptionsByPatientCpr(patientCpr, page);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -110,6 +114,7 @@ public class ModelManager implements Model
     {
       return eventRepository.getCities();
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -120,6 +125,7 @@ public class ModelManager implements Model
     {
       return eventRepository.getClinicByCity(code);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -130,6 +136,7 @@ public class ModelManager implements Model
     {
       return eventRepository.getDoctorsByClinic(id_clinic);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -147,6 +154,7 @@ public class ModelManager implements Model
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       throw new RuntimeException("Something went wrong");
     }
 
@@ -238,6 +246,7 @@ public class ModelManager implements Model
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       throw new RuntimeException(
           "Error retrieving doctor by clinic: " + e.getMessage(), e);
     }
@@ -255,6 +264,29 @@ public class ModelManager implements Model
     }
   }
 
+  @Override public int getAppointmentsCount(String cpr)
+  {
+    try
+    {
+      return eventRepository.getAppointmentsCount(cpr);
+    }catch (Exception e){
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+
+  @Override public int getPrescriptionCount(String cpr)
+  {
+    try
+    {
+
+    return eventRepository.getPrescriptionCount(cpr);
+  }catch (Exception e){
+  e.printStackTrace();
+  throw new RuntimeException(e.getMessage());
+}
+  }
+
   @Override public List<Appointment> getDoctorAppointments (String id)
   {
     try
@@ -269,6 +301,7 @@ public class ModelManager implements Model
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       throw new RuntimeException(
           "Error retrieving doctor appointments: " + e.getMessage(), e);
     }
@@ -284,6 +317,7 @@ public class ModelManager implements Model
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       throw new RuntimeException(
           "Error retrieving patient : " + e.getMessage(), e);
     }
@@ -294,6 +328,7 @@ public class ModelManager implements Model
     {
       return eventRepository.updateUser(updatePatientDto);
     }catch (Exception e){
+      e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
   }
@@ -306,9 +341,10 @@ public class ModelManager implements Model
       eventRepository.cancelAppointment(appointmentId, patientCpr);
       emailSender.sendBookingCancellation(doctor.getEmail(), patient.getEmail(), appointment);
     }  catch (IllegalStateException e) {
-
+      e.printStackTrace();
       throw e;
     } catch (Exception e) {
+      e.printStackTrace();
       throw new RuntimeException("Error cancelling appointment: " + e.getMessage(), e);
     }
   }
@@ -322,9 +358,11 @@ public class ModelManager implements Model
       emailSender.sendBookingCancellation(doctor.getEmail(), patient.getEmail(),appointment);
       return eventRepository.cancelAppointment(appointmentId);
     }  catch (IllegalStateException e) {
+      e.printStackTrace();
 
       throw e;
     } catch (Exception e) {
+      e.printStackTrace();
       throw new RuntimeException("Error cancelling appointment: " + e.getMessage(), e);
     }
   }
@@ -333,9 +371,10 @@ public class ModelManager implements Model
   @Override
   public List<Appointment> getPatientAppointments(String cpr) {
     try {
-      List<Appointment> appointments = eventRepository.getAppointmentsByPatientCpr(cpr);
-      return appointments != null ? appointments : new ArrayList<>();
+      return eventRepository.getAppointmentsByPatientCpr(cpr);
+
     } catch (Exception e) {
+      e.printStackTrace();
       throw new RuntimeException("Error retrieving patient appointments: " + e.getMessage(), e);
     }
   }
