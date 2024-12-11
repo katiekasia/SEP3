@@ -1,27 +1,26 @@
 package via.pro3.mainserver.Model;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class IdGenerator implements GeneratorInterface {
     private Set<Integer> appointmentIds;
     private Set<Integer> prescriptionIds;
 
-    public IdGenerator(int appointmentCount, int prescriptionCount) {
+    public IdGenerator() {
         appointmentIds = new HashSet<>();
         prescriptionIds = new HashSet<>();
-
-        for (int i = 0; i < appointmentCount; i++) {
-            appointmentIds.add(i);
-        }
-        for (int i = 0; i < prescriptionCount; i++) {
-            prescriptionIds.add(i);
-        }
     }
 
     @Override
     public int generateAppointmentId() {
-        int nextId = appointmentIds.size();
+        Random rand = new Random();
+        int nextId;
+
+        do {
+            nextId = rand.nextInt(1000000);
+        } while (appointmentIds.contains(nextId));
         appointmentIds.add(nextId);
         return nextId;
     }
@@ -29,18 +28,16 @@ public class IdGenerator implements GeneratorInterface {
 
     @Override
     public int generatePrescriptionId() {
-        int nextId = getNextAvailableId(prescriptionIds);
+        Random rand = new Random();
+        int nextId;
+
+        do {
+            nextId = rand.nextInt(1000000);
+        } while (prescriptionIds.contains(nextId));
         prescriptionIds.add(nextId);
         return nextId;
     }
 
-    private int getNextAvailableId(Set<Integer> ids) {
-        int nextId = 0;
-        while (ids.contains(nextId)) {
-            nextId++;
-        }
-        return nextId;
-    }
 
     @Override
     public void addAppointmentId(int id) {

@@ -7,8 +7,8 @@ import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.Model.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -57,7 +57,6 @@ public class EventRepository implements EventInterface {
                 
                     """;
 
-        System.out.println("Fetching presciptions for patient: " + patientCpr); // Debugging log
         try (Connection connection = database.getConnection(); // Get connection from pool
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -74,10 +73,7 @@ public class EventRepository implements EventInterface {
                     if (doctor != null) {
                         doctorName = doctor.getName();
                         doctorSurname = doctor.getSurname();
-                    } else {
-                        System.out.println("Doctor not found for id: " + resultSet.getString("doctor_id"));
                     }
-
                     prescriptions.add(new GetPrescriptionsDto(
                         resultSet.getInt("id"),
                         resultSet.getString("diagnosis"),
@@ -108,9 +104,6 @@ public class EventRepository implements EventInterface {
                 INNER JOIN doctor d ON c.id = d.clinic_id
                 INNER JOIN city ON c.city_PO_code = city.postal_code
                 WHERE d.id = ?""";
-
-        System.out.println("Fetching clinic for doctorId: " + doctorId); // Debugging log
-
 
         try (Connection connection = database.getConnection(); // Get connection from pool
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -290,7 +283,6 @@ public class EventRepository implements EventInterface {
     @Override public Appointment getAppointmentByAppointmentId(int appointmentId)
     {
         String sql = "SELECT * FROM appointment WHERE id = ?";
-        System.out.println(appointmentId);
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql))
         {
@@ -338,7 +330,6 @@ public class EventRepository implements EventInterface {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    System.out.println("patient success");
                     return  getDoctorById(resultSet.getString("doctor_id"));
 
                 }
@@ -350,22 +341,19 @@ public class EventRepository implements EventInterface {
         }
     }
 
-    @Override public int getPrescriptionCount()
+    @Override public Set<Integer> getPrescriptionIds()
     {
-        int nextId = 1;
-        String sql = "SELECT MAX(id) AS id FROM prescription";
+        Set<Integer> set = new HashSet<>();
+        String sql = "SELECT id AS id FROM prescription";
 
         try (Connection connection = database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql))
         {
             try (ResultSet resultSet = statement.executeQuery())
             {
-                if (resultSet.next())
+                while (resultSet.next())
                 {
-                    int maxId = resultSet.getInt("id");
-                    if (!resultSet.wasNull()){
-                        nextId = maxId++;
-                    }
+               set.add(resultSet.getInt("id"));
 
                 }
             }
@@ -376,26 +364,22 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException(
                 "Failed to fetch appointment id : " + e.getMessage(), e);
         }
-        return nextId;
+        return set;
     }
 
-    @Override public int getAppointmentCount()
+    @Override public Set<Integer> getAppointmentIds()
     {
-        int nextId = 1;
-        String sql = "SELECT MAX(id) AS id FROM appointment";
+        Set<Integer> set = new HashSet<>();
+        String sql = "SELECT id AS id FROM appointment";
 
         try (Connection connection = database.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql))
         {
             try (ResultSet resultSet = statement.executeQuery())
             {
-                if (resultSet.next())
+                while (resultSet.next())
                 {
-                    int maxId = resultSet.getInt("id");
-                    if (!resultSet.wasNull()){
-                        nextId = maxId++;
-                    }
-
+                 set.add(resultSet.getInt("id"));
                 }
             }
         }
@@ -405,7 +389,7 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException(
                 "Failed to fetch prescriptions id : " + e.getMessage(), e);
         }
-        return nextId;
+        return set;
     }
 
     @Override
@@ -440,14 +424,11 @@ public class EventRepository implements EventInterface {
 
     @Override
     public String changePassowrdDoctor(ResetPasswordDto request) {
-        System.out.println(request.getId());
-        System.out.println(request.getNewPassword());
         String sql = "UPDATE doctor SET password = ? WHERE id = ?";
         try(PreparedStatement statement = database.getConnection().prepareStatement(sql)){
             statement.setString(1, request.getNewPassword());
             statement.setString(2, request.getId());
             statement.executeUpdate();
-            System.out.println("Exectued");
             return "PasswordChanged";
         } catch (SQLException e) {
             throw new RuntimeException("Failed to change doctor password: " + e.getMessage(), e);
@@ -564,15 +545,12 @@ public class EventRepository implements EventInterface {
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            System.out.println("DATABASE called");
 
             statement.setString(1, doctorId);
             try (ResultSet rs = statement.executeQuery())
             {
-                System.out.println("DATABASE executed");
                 while (rs.next())
                 {
-                    System.out.println("found");
                     Clinic clinic = new Clinic(
                             rs.getString("clinic_id"),
                             rs.getString("clinic_name"),
@@ -664,7 +642,6 @@ public class EventRepository implements EventInterface {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    System.out.println("patient success");
                     return  getPatientByCpr(resultSet.getString("cpr"));
 
                 }
@@ -714,7 +691,6 @@ public class EventRepository implements EventInterface {
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
-            System.out.println("Database Cities");
             while (resultSet.next()) {
                 CityDto city = new CityDto(
                         resultSet.getString("city_name"),
@@ -740,11 +716,9 @@ public class EventRepository implements EventInterface {
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql);) {
             statement.setString(1, code);
-            System.out.println("Database Clinics");
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                System.out.println("Clinic found");
                 Clinic clinic = new Clinic(
                         resultSet.getString("id"),
                         resultSet.getString("name"),
@@ -773,11 +747,9 @@ public class EventRepository implements EventInterface {
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql);) {
             statement.setString(1, id_clinic);
-            System.out.println("Database Doctors");
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                System.out.println("Doctor found");
                 Doctor doctor = new Doctor(
                         resultSet.getString(1),
                         resultSet.getString("first_name"),
@@ -848,6 +820,8 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Failed to cancel appointment: " + e.getMessage(), e);
         }
     }
+
+
 
     @Override
     public List<Appointment> getAppointmentsByPatientCpr(String patientCpr) {
@@ -925,5 +899,39 @@ public class EventRepository implements EventInterface {
             throw new RuntimeException("Error retrieving appointments: " + e.getMessage(), e);
         }
         return appointments;
+    }
+
+    @Override public DaysDTO getDoctorsAvailibility(String doctorId)
+    {
+        List<DayDTO> days = new ArrayList<>();
+        DaysDTO daysDTO = new DaysDTO();
+        daysDTO.setDays(days);
+        String sql = """
+            SELECT
+            a.date,
+            a.time
+            FROM appointment a 
+            WHERE a.doctor_id = ?
+            ORDER BY a.date DESC, a.time ASC""";
+        try(Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, doctorId);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Date date = rs.getDate("date");
+                    if (!daysDTO.alreadyHas(date)) {
+                        DayDTO day = new DayDTO(date);
+                        daysDTO.add(day);
+                    }
+                   DayDTO dto = daysDTO.getDay(date);
+                    dto.check(rs.getTime("time"));
+                }
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+         return daysDTO;
     }
 }

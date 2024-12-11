@@ -38,7 +38,63 @@ namespace Patient.Services
             }
         }
 
-         public async Task<List<GetAppointmentsDto>> GetAppointments(string patientCpr)
+        public async Task<List<DateDto>> GetDoctorAvailability(string doctorId)
+        {
+            try
+            {
+                var httpResponse = await client.GetAsync($"{baseUrl}/Demo/days?doctorId={doctorId}");
+                var response = await httpResponse.Content.ReadAsStringAsync();
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to get appointments: {response}");
+                }
+
+                List<DateDto> dates =
+                    JsonSerializer.Deserialize<List<DateDto>>(response,
+                        new JsonSerializerOptions
+                            { PropertyNameCaseInsensitive = true });
+
+                return dates;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving appointments: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<List<DateDto>> GetDoctorsSchedule(string doctorId)
+        {
+            try
+            {
+                var httpResponse =
+                    await client.GetAsync(
+                        $"{baseUrl}/Demo/alldays?doctorId={doctorId}");
+                var response = await httpResponse.Content.ReadAsStringAsync();
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception(
+                        $"Failed to get appointments: {response}");
+                }
+
+                List<DateDto> dates =
+                    JsonSerializer.Deserialize<List<DateDto>>(response,
+                        new JsonSerializerOptions
+                            { PropertyNameCaseInsensitive = true });
+
+                return dates;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"Error retrieving appointments: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<List<GetAppointmentsDto>> GetAppointments(string patientCpr)
     {
         try
         {

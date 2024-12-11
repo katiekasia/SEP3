@@ -44,7 +44,7 @@
 
                 <div class="form-group">
                     <label for="clinic">Choose a clinic:</label>
-                    <select id="clinic" class="dropdown"  @onchange="HandleClinicChange">
+                    <select id="clinic" class="dropdown" @onchange="HandleClinicChange">
                         <option value="">Select a clinic</option>
                         @foreach (ClinicDto clinic in clinics)
                         {
@@ -81,17 +81,21 @@
                 </div>
 
                 <div class="form-group">
-                    @* <label for="date">Select Date:</label> *@
-                    @* <input type="date" id="date" class="input" @bind="selectedDate" /> *@
                     <MudDatePicker T="DateTime"
                                    Label="Select Date"
-                                   @bind-Date="selectedDate"
-                                   IsDateDisabledFunc="DisableSpecificDates" />
+                                   DateChanged="HandleDateChange"
+                                   IsDateDisabledFunc="DisableSpecificDates"/>
                 </div>
 
                 <div class="form-group">
                     <label for="time">Select Time:</label>
-                    <input type="time" id="time" class="input" step="900" @bind="selectedTime" />
+                    <select id="time" class="input" @bind="selectedTime">
+                        <option value="" disabled selected>Select a time</option>
+                        @foreach (var time in availableTimes)
+                        {
+                        <option value="@time">@time</option>
+                        }
+                    </select>
                 </div>
 
                 <button class="btn-confirm" @onclick="ConfirmDetails">Confirm Details</button>
@@ -102,13 +106,27 @@
         {
             <div id="confirmation-review" class="confirmation-container">
                 <h4>Review and Confirm Your Appointment</h4>
-                <p><strong>City:</strong> @selectedLocation.name</p>
-                <p><strong>Clinic:</strong> @selectedClinic.name @selectedClinic.address</p>
-                <p><strong>Doctor of your choice:</strong> @selectedDoctor.name @selectedDoctor.surname @selectedDoctor.specialization</p>
-                <p><strong>Type of visit:</strong> @selectedType</p>
-                <p><strong>Description:</strong> @writtenDescription</p>
-                <p><strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")</p>
-                <p><strong>Time:</strong> @selectedTime?.ToString(@"hh\:mm")</p>
+                <p>
+                    <strong>City:</strong> @selectedLocation.name
+                </p>
+                <p>
+                    <strong>Clinic:</strong> @selectedClinic.name @selectedClinic.address
+                </p>
+                <p>
+                    <strong>Doctor of your choice:</strong> @selectedDoctor.name @selectedDoctor.surname @selectedDoctor.specialization
+                </p>
+                <p>
+                    <strong>Type of visit:</strong> @selectedType
+                </p>
+                <p>
+                    <strong>Description:</strong> @writtenDescription
+                </p>
+                <p>
+                    <strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")
+                </p>
+                <p>
+                    <strong>Time:</strong> @selectedTime
+                </p>
 
                 <button class="btn-book" @onclick="CreateAppointment">Book</button>
             </div>
@@ -120,24 +138,23 @@
         }
 
 
-
-
         @code {
             private List<CityDto> cities = new List<CityDto>();
             private List<ClinicDto> clinics = new List<ClinicDto>();
             private List<DoctorDto> doctors = new List<DoctorDto>();
-            
-            
-            private List<DateTime> disabledDates = new List<DateTime>
-            {
-                new DateTime(2024, 12, 15),
-                new DateTime(2024, 12, 20),
-                new DateTime(2024, 12, 25)
-            };
+            private List<DateDto> Doctordates = new List<DateDto>();
+
+            private List<string> availableTimes = new List<string>();
+
+
+            private List<DateTime> disabledDates = new List<DateTime>();
+
             private bool DisableSpecificDates(DateTime date)
             {
-                return disabledDates.Any(d => d.Date == date.Date); // Disable only dates in the list
+                return disabledDates.Any(d => d.Date == date.Date) || date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
             }
+            
+
             private string cpr;
 
             protected override async Task OnInitializedAsync()
@@ -153,46 +170,41 @@
                         serverResponse = "Error: Could not retrieve CPR. Please try logging in again.";
                         return;
                     }
-
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("AuthState");
+                    serverResponse = "Unexpected error while loading the page.";
                 }
 
                 try
                 {
                     cities = await AppointmentService.GetCities();
-
                 }
                 catch (Exception e)
                 {
-                    serverResponse = $"Error fetching cities: {e.Message}";
-                    Console.WriteLine("Error: " + e);
+                    serverResponse = "Error fetching cities";
+                    
                 }
 
                 try
                 {
-                    if(selectedLocation!= null)
+                    if (selectedLocation != null)
                         clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
-
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    serverResponse = "Unexpected error while loading the page.";
                 }
 
                 try
                 {
-                    if(selectedClinic!= null)
+                    if (selectedClinic != null)
                         doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
-
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    serverResponse = "Unexpected error while loading the page.";
+ 
                 }
             }
 
@@ -206,8 +218,10 @@
             private string? selectedType;
             private string? writtenDescription;
             private DateTime? selectedDate;
-            private TimeOnly? selectedTime;
+            private string selectedTime;
+
             private bool showConfirmation = false;
+
             //
             private async void HandleLocationChange(ChangeEventArgs e)
             {
@@ -217,19 +231,59 @@
                 selectedLocation = cities.FirstOrDefault(city => city.code == selectedCode);
 
                 // Debug or handle null cases if no city matches
-                if (selectedLocation == null)
+                if (selectedLocation != null)
                 {
-                    Console.WriteLine($"No city found with code: {selectedCode}");
-                }
-                else
-                {
-                    Console.WriteLine($"Selected city: , {selectedLocation.name} with:  {selectedLocation.code}");
                     clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
-                    Console.WriteLine(clinics.Count);
                     StateHasChanged();
                 }
             }
 
+            private void HandleDateChange(DateTime? newDate)
+            {
+                selectedDate = newDate;
+
+                if (newDate != null)
+                {
+
+                    bool dateFound = false;
+
+                    foreach (var dto in Doctordates)
+                    {
+                        // Compare the selected date with each date in your list
+                        if (DateTime.Parse(dto.date).Date.Equals(newDate.Value.Date))
+                        {
+                            availableTimes = dto.times;  // Assign the times if a match is found
+                            dateFound = true;
+                            break;
+                        }
+                    }
+
+                    // If no match is found, generate available times from 8:00 AM to 3:45 PM every 15 minutes
+                    if (!dateFound)
+                    {
+                        availableTimes = GenerateAvailableTimes();
+                    }
+
+                    StateHasChanged();  // Refresh the UI with the updated available times
+                }
+            }
+            private List<string> GenerateAvailableTimes()
+            {
+                List<string> times = new List<string>();
+
+                // Start time (08:00 AM)
+                DateTime startTime = DateTime.Parse("08:00");
+                // End time (03:45 PM) -> 15:45 in 24-hour format
+                DateTime endTime = DateTime.Parse("15:45");
+
+                // Generate times from 8:00 to 15:45 every 15 minutes
+                for (DateTime time = startTime; time <= endTime; time = time.AddMinutes(15))
+                {
+                    times.Add(time.ToString("HH:mm"));  // Use 24-hour format "HH:mm"
+                }
+
+                return times;
+            }
             private async void HandleClinicChange(ChangeEventArgs e)
             {
                 string selectedClinicId = e.Value?.ToString();
@@ -245,25 +299,28 @@
                         try
                         {
                             doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
-                            Console.WriteLine($"Doctors found: {doctors.Count}");
-                            foreach (var doc in doctors)
-                            {
-                                Console.WriteLine($"Doctor: {doc.name}, ID: {doc.id}, Specialization: {doc.specialization}");
-                            }
                             StateHasChanged();
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Error fetching doctors: {ex.Message}");
+                            serverResponse = "Unexpected server error. Please try again later.";
                         }
                     }
                 }
             }
-            private void HandleDoctorChange(ChangeEventArgs e)
+
+            private async void HandleDoctorChange(ChangeEventArgs e)
             {
                 string selectedDoctorId = e.Value?.ToString();
                 selectedDoctor = doctors.FirstOrDefault(d => d.id == selectedDoctorId);
-                Console.WriteLine($"Selected doctor: {selectedDoctor?.name} {selectedDoctor?.specialization}");
+               List<DateDto> dates = await AppointmentService.GetDoctorAvailability(selectedDoctorId);
+               Doctordates = await AppointmentService.GetDoctorsSchedule(selectedDoctor.id);
+                foreach (var date in dates)
+                {
+                    disabledDates.Add(DateTime.Parse(date.date));
+                }
+
+
                 StateHasChanged();
             }
 
@@ -271,15 +328,12 @@
 
             private async Task CreateAppointment()
             {
-                Console.WriteLine(selectedDate.ToString());
-                Console.WriteLine(selectedTime.ToString());
                 if (selectedDate == null || selectedTime == null)
                 {
                     serverResponse = "Please select a valid date and time.";
                     return;
                 }
-
-                Console.WriteLine($"Retrieved CPR from claims: {cpr}");
+                
 
                 if (string.IsNullOrEmpty(cpr))
                 {
@@ -295,19 +349,31 @@
                     doctorId = selectedDoctor.id,
                     patientCpr = cpr,
                     date = selectedDate?.ToString("yyyy-MM-dd"),
-                    time = selectedTime?.ToString("HH:mm")
+                    time = selectedTime
                 };
 
                 try
                 {
                     var response = await AppointmentService.CreateAppointment(createAppointmentDto);
-                    serverResponse = response.response ?? " response";
+                    serverResponse = "Appointment created successfully";
                     Navigation.NavigateTo("/appointments");
+                }
+                catch (HttpRequestException httpEx)
+                {
+                  
+                    if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        serverResponse = "Booking failed: Server error. Please try again later.";
+                    }
+                    else
+                    {
+                        serverResponse = "Booking failed: An unexpected error occurred.";
+                    }
                 }
                 catch (Exception e)
                 {
-                    serverResponse = $"Error creating an appointment: {e.Message}";
-                    Console.WriteLine($"Full error details: {e}");
+                    // Catch any other general exceptions
+                    serverResponse = "Booking failed: An error occurred.";
                 }
             }
 
@@ -315,4 +381,3 @@
 
     </Authorized>
 </AuthorizeView>
-

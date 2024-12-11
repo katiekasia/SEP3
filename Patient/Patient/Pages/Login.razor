@@ -54,9 +54,27 @@
             navMgr.NavigateTo("/");
 
         }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                serverResponse = "Login failed: User not found. Check your CPR.";
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                serverResponse = "Login failed: Server error. Please try again later.";
+            }
+            else
+            {
+                serverResponse = "Login failed: An unexpected error occurred.";
+            }
+        }
         catch (Exception e)
         {
-            serverResponse = $"Loggin failed: {e.Message}";
+            // Catch any other general exceptions
+            serverResponse = "Login failed: An error occurred. Please check your credentials.";
         }
     }
+
 }

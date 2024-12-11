@@ -94,17 +94,29 @@
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                serverResponse = await responseMessage.Content.ReadAsStringAsync();
+                serverResponse = "Registered successfully!";
             }
             else
             {
-                serverResponse = await responseMessage.Content.ReadAsStringAsync();
+                serverResponse = "Registration failed, please retry.";
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                serverResponse = "Action failed: Server error. Please try again later.";
+            }
+            else
+            {
+                serverResponse = "Action failed: An unexpected error occurred.";
             }
         }
         catch (Exception e)
         {
-            serverResponse = $"Registration failed: {e.Message}";
-            Console.WriteLine(e);
+            // Catch any other general exceptions
+            serverResponse = "Action failed: An error occurred. Please check your credentials.";
         }
     }
 }

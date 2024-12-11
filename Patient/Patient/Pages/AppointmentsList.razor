@@ -110,7 +110,7 @@
         }
         catch (Exception e)
         {
-            errorMessage = $"Failed to load appointments: {e.Message}";
+            errorMessage = $"Failed to load appointments.";
         }
     }
 
@@ -131,7 +131,7 @@
         catch (Exception ex)
         {
             errorMessage = "Failed to load appointments. Please try again.";
-            Console.WriteLine($"Error: {ex.Message}");
+            
         }
         finally
         {
@@ -164,7 +164,7 @@
         catch (Exception ex)
         {
             errorMessage = "Failed to cancel appointment. Please try again.";
-            Console.WriteLine($"Error: {ex.Message}");
+            
         }
     }
 }

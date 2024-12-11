@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface EventInterface
 {
@@ -35,9 +36,11 @@ public interface EventInterface
   String cancelAppointment(int appointmentId);
   Appointment getAppointmentByAppointmentId(int appointmentId);
   Doctor getDoctorByAppointmentId(int appointmentId);
-  int getPrescriptionCount();
-  int getAppointmentCount();
+  Set<Integer> getPrescriptionIds();
+  Set<Integer> getAppointmentIds();
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);
+
+  DaysDTO getDoctorsAvailibility(String doctorId);
 }

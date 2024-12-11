@@ -74,20 +74,45 @@
             lastName = user.FindFirst(ClaimTypes.Surname)?.Value;
             Email = user.FindFirst(ClaimTypes.Email)?.Value;
             phoneNumber = user.FindFirst(ClaimTypes.MobilePhone)?.Value;
-
-            Console.WriteLine($"CPR fetched: {CPR}");
-            Console.WriteLine($"Patient: {firstName} {lastName}");
         }
         catch (Exception e)
         {
-            responseMessage = $"Failed: {e.Message}";
+            responseMessage = "An error occurred while loading.";
         }
     }
 
     private async Task EditAccount()
     {
         try
-        {
+        {if (string.IsNullOrWhiteSpace(firstName))
+            {
+                responseMessage = "Name is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                responseMessage = "Surname is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                responseMessage = "Phone number is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email) || !Email.Contains("@"))
+            {
+                responseMessage = "Valid email is required";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 5)
+            {
+                responseMessage = "Password must be at least 5 characters";
+                return;
+            }
             var updatePatient = new UpdatePatientDto()
             {
                 cpr = CPR,
@@ -96,8 +121,7 @@
                 email = string.IsNullOrEmpty(Email) ? null : Email,
                 newPassword = string.IsNullOrEmpty(newPassword) ? null : newPassword
             };
-
-            Console.WriteLine($"Updated fields: {updatePatient.surname}, {updatePatient.phone}, {updatePatient.email}, {updatePatient.newPassword}");
+            
 
             var response = await UpdateService.UpdatePatient(updatePatient);
 
@@ -110,9 +134,26 @@
                 responseMessage = "Failed to update account.";
             }
         }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                responseMessage = "Action failed: User not found. Please try loggin in again.";
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                responseMessage = "Action failed: Server error. Please try again later.";
+            }
+            else
+            {
+                responseMessage = "Action failed: An unexpected error occurred.";
+            }
+        }
         catch (Exception e)
         {
-            responseMessage = $"Changing account failed: {e.Message}";
+            // Catch any other general exceptions
+            responseMessage = "Action failed: An error occurred. Please check your credentials.";
         }
     }
 }

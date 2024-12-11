@@ -38,18 +38,14 @@ public class Server {
         }
 
         try {
-            System.out.println("attempt");
             GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
                     .setId(loginDto.getcpr()).build();
 
             LoginDoctorResponse response = blockingStub.loginDoctor(request);
-            System.out.println("response: " + response);
             if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword())) {
-                System.out.println("success");
                 DoctorDto doctorDto = new DoctorDto(response.getName(),
                         response.getSurname(), response.getSpecialisation(),
                         response.getId());
-                System.out.println("sent");
                 return doctorDto;
             } else {
                 throw new IllegalArgumentException("Invalid login credentials");
@@ -110,7 +106,6 @@ public class Server {
     @GetMapping("/appointment")
     public GetAppointmentsDto getAppointment(@RequestParam String appointmentId) {
         try {
-            System.out.println("request");
             GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
                     .setId(appointmentId)
                     .build();
@@ -130,7 +125,6 @@ public class Server {
             dto.setPatientLastName(response.getPatientLastName());
             dto.setPatientPhone(response.getPatientPhone());
 
-            System.out.println("sseasesa");
             return dto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +135,6 @@ public class Server {
     @GetMapping("/appointments")
     public ResponseDto getAppointments(@RequestParam String id) {
         try {
-            System.out.println("request");
             GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
                     .setId(id)
                     .build();
@@ -163,11 +156,9 @@ public class Server {
                 dto.setPatientLastName(info.getPatientLastName());
                 dto.setPatientPhone(info.getPatientPhone());
 
-                System.out.println(dto.toString());
                 appointmentsDtoList.add(dto);
             }
 
-            System.out.println("SEENT");
             ResponseDto responseDto = new ResponseDto();
             responseDto.setAppointments(appointmentsDtoList);
             return responseDto;

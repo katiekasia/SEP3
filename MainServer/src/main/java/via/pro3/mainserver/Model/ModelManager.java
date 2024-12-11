@@ -24,7 +24,9 @@ public class ModelManager implements Model
     DatabaseInterface database = DatabaseSingleton.getInstance();
     this.eventRepository = new EventRepository(database);
     this.emailSender = new EmailSender();
-    idGenerator = new IdGenerator(eventRepository.getAppointmentCount(),eventRepository.getPrescriptionCount());
+    idGenerator = new IdGenerator();
+    idGenerator.setAppointmentIds(eventRepository.getAppointmentIds());
+    idGenerator.setPrescriptionIds(eventRepository.getPrescriptionIds() );
   }
 
 
@@ -64,41 +66,72 @@ public class ModelManager implements Model
 
   @Override public Patient getPatientByCpr(String cpr)
   {
-    return eventRepository.getPatientByCpr(cpr);
+    try
+    {
+      return eventRepository.getPatientByCpr(cpr);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override
   public List<Patient> getPatientsByDoctorId(String doctorid) {
-    return eventRepository.getPatientsByDoctorId(doctorid);
+    try
+    {
+      return eventRepository.getPatientsByDoctorId(doctorid);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public Doctor getDoctorById(String id)
   {
-    return eventRepository.getDoctorById(id);
+    try
+    {
+      return eventRepository.getDoctorById(id);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr)
   {
-    System.out.println("MODEL MANAGER Prescription");
-    return eventRepository.getPrescriptionsByPatientCpr(patientCpr);
+    try
+    {
+      return eventRepository.getPrescriptionsByPatientCpr(patientCpr);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public List<CityDto> getCities ()
   {
-    System.out.println("Model manager Cities");
-    return eventRepository.getCities();
+    try
+    {
+      return eventRepository.getCities();
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public List<Clinic> getClinicByCity (String code)
   {
-    System.out.println("Model manager Clinics");
-    return eventRepository.getClinicByCity(code);
+    try
+    {
+      return eventRepository.getClinicByCity(code);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public List<Doctor> getDoctorByClinic (String id_clinic)
   {
-    System.out.println("Model manager Doctors");
-    return eventRepository.getDoctorsByClinic(id_clinic);
+    try
+    {
+      return eventRepository.getDoctorsByClinic(id_clinic);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   @Override public void registerPatient (RegisterDto registerDto){
@@ -109,7 +142,6 @@ public class ModelManager implements Model
     try
     {
       eventRepository.createUser(patient);
-      System.out.println("manager");
       DBresponse response = DBresponse.newBuilder()
           .setConfirmation("Patient registered successfully").build();
     }
@@ -128,12 +160,8 @@ public class ModelManager implements Model
       {
         Patient patient = getPatientByCpr(loginDto.getcpr());
 
-        //if (PasswordHasher.validate(loginDto.getPassword(), patient.getPassword())){
-
         return patient;
-        // }else {
-        //   throw new RuntimeException("Invalid login credentials");
-        //  }
+
       }
     }
     catch (Exception e)
@@ -215,11 +243,22 @@ public class ModelManager implements Model
     }
   }
 
+  @Override public DaysDTO getDoctorsAvailability(String doctorId)
+  {
+    try
+    {
+      return eventRepository.getDoctorsAvailibility(doctorId);
+    }catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+
   @Override public List<Appointment> getDoctorAppointments (String id)
   {
     try
     {
-      System.out.println("MODEL called");
       List<Appointment> appointments = eventRepository.getAppointmentsByDoctorId(
           id);
       if (appointments == null || appointments.isEmpty())
@@ -251,7 +290,12 @@ public class ModelManager implements Model
   }
   @Override public String updatePatient (UpdatePatientDto updatePatientDto)
   {
-    return eventRepository.updateUser(updatePatientDto);
+    try
+    {
+      return eventRepository.updateUser(updatePatientDto);
+    }catch (Exception e){
+      throw new RuntimeException(e.getMessage());
+    }
   }
   @Override
   public void cancelAppointment(int appointmentId, String patientCpr) {

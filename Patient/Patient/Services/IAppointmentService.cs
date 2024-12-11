@@ -8,6 +8,9 @@ public interface IAppointmentService
     public Task<ResponseDto> CreateAppointment(CreateAppointmentDto request);
     Task<List<GetAppointmentsDto>> GetAppointments(string patientCpr);
 
+    Task<List<DateDto>> GetDoctorAvailability(string doctorId);
+    Task<List<DateDto>> GetDoctorsSchedule(string doctorId);
+    
     public Task<List<CityDto>> GetCities();
     public Task<List<ClinicDto>> GetClinicByCity(string code);
     

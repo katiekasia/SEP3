@@ -16,6 +16,8 @@ import via.pro3.mainserver.Model.Doctor;
 import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.database.EventRepository;
 
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientImpl extends PatientGrpc.PatientImplBase {
@@ -55,8 +57,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
             LoginDto loginDto = new LoginDto(request.getCpr(), null);
 
             Patient patient = model.loginPatient(loginDto);
-
-            System.out.println(patient.getPassword());
             LoginResponse response = LoginResponse.newBuilder()
                 .setName(patient.getName())
                 .setEmail(patient.getEmail())
@@ -87,7 +87,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
             RegisterDto registerDto = new RegisterDto(request.getName(),
                 request.getSurname(), request.getEmail(), request.getPhone(),
                 request.getPassword(), request.getCPRNo());
-            System.out.println("impl is here");
 
             model.registerPatient(registerDto);
 
@@ -133,8 +132,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
 
                 responseBuilder.addPrescriptions(prescriptionInfo);
             }
-
-            System.out.println("DATABASE PREScrtiption");
 
             responseObserver.onNext(responseBuilder.build());
         } catch (Exception e) {
@@ -187,7 +184,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     @Override
     public void getCities(GetCities request, StreamObserver<CityListResponse> responseObserver) {
         try {
-            System.out.println("impl is here");
             List<CityDto> cities = model.getCities();
 
             CityListResponse.Builder responseBuilder = CityListResponse.newBuilder();
@@ -217,7 +213,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     @Override
     public void getClinics(CityRequest request, StreamObserver<ClinicListResponse> responseObserver) {
         try {
-            System.out.println("impl code");
             List<Clinic> clinics = model.getClinicByCity(request.getPostalcode());
             ClinicListResponse.Builder responseBuilder = ClinicListResponse.newBuilder();
             for (Clinic clinic : clinics) {
@@ -244,7 +239,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
     @Override
     public void getDoctors(patient.grpc.Clinic request, StreamObserver<DoctorListResponse> responseObserver) {
         try {
-            System.out.println("PATEINTIMPL DOCTOR");
             List<Doctor> doctors = model.getDoctorByClinic(request.getId());
             DoctorListResponse.Builder responseBuilder = DoctorListResponse.newBuilder();
             for (Doctor doctor : doctors) {
@@ -254,7 +248,6 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
                     .setLastname(doctor.getSurname())
                     .setSpecialisation(doctor.getSpecialization())
                     .build();
-                System.out.println("specialization" + doctor.getSpecialization());
                 responseBuilder.addDoctor(info);
             }
             responseObserver.onNext(responseBuilder.build());
@@ -334,7 +327,39 @@ public class PatientImpl extends PatientGrpc.PatientImplBase {
         }
     }
 
+@Override public void getDoctorsAvailability(DoctorId request, StreamObserver<AllDays> responseObserver){
+        try
+        {
+            DaysDTO allDays = model.getDoctorsAvailability(request.getDoctorId());
 
+            AllDays.Builder responseBuilder = AllDays.newBuilder();
+
+
+            for (DayDTO dto : allDays.getDays()){
+                List<String> hourStrings = new ArrayList<>();
+                for (Time time : dto.getTimes()){
+                    if (time != null)
+                    {
+                        hourStrings.add(time.toString());
+                    }
+                }
+                DayDto dtoBuilder = DayDto.newBuilder()
+                    .setDate(dto.getDate().toString())
+                    .setIsFree(dto.isFree())
+                    .addAllFreeHours(hourStrings)
+                    .build();
+
+                responseBuilder.addDays(dtoBuilder);
+            }
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        }catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(Status.INTERNAL
+                .withDescription("Error fetching days: " + e.getMessage())
+                .asRuntimeException());
+        }
+}
 
 }
 

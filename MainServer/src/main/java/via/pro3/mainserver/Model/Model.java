@@ -33,4 +33,5 @@ public interface Model
   String cancelAppointment(int appointmentId);
   List<Appointment> getPatientAppointments(String cpr);
   String getDoctorByClinicName(String clinicName);
+  DaysDTO getDoctorsAvailability(String doctorId);
 }

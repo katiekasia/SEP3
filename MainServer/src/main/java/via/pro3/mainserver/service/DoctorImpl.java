@@ -109,9 +109,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
       List<Appointment> appointments = model.getDoctorAppointments(request.getId());
       GetAppointmentsResponseD.Builder responseBuilder = GetAppointmentsResponseD.newBuilder();
 
-      System.out.println("IMPL called");
       for (Appointment appointment : appointments) {
-        System.out.println("CREATED IMPL");
         Patient patient = model.getPatientByAppointmentId(appointment.getAppointmentId());
 
         AppointmentInfoD appointmentInfo = AppointmentInfoD.newBuilder()
@@ -167,8 +165,6 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
         responseBuilder.addPrescriptions(prescriptionInfo);
       }
 
-      System.out.println("DATABASE PREScrtiption");
-
       responseObserver.onNext(responseBuilder.build());
     } catch (Exception e) {
 
@@ -191,11 +187,6 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
 
             List<PatientDtoMessage> patientDtos = new ArrayList<>();
             for (Patient patient : allPatients) {
-                System.out.println(patient.getCPRNo());
-                System.out.println(patient.getName());
-                System.out.println(patient.getSurname());
-                System.out.println(patient.getEmail());
-                System.out.println(patient.getPhone());
                 PatientDtoMessage patientDto = PatientDtoMessage.newBuilder()
                         .setCpr(patient.getCPRNo())
                         .setFirstName(patient.getName())
