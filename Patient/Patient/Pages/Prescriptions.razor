@@ -3,8 +3,12 @@
 @using Patient.DTOs
 @using Patient.Services
 
+
 @inject AuthenticationStateProvider AuthProvider;
 @inject IPrescriptionService PrescriptionService;
+
+
+<link href="css/Prescription.css" rel="stylesheet"/>
 
 <h3>Prescriptions</h3>
 <PageTitle>Prescriptions</PageTitle>
@@ -16,7 +20,7 @@
     <Authorized>
         <div class="prescription-container">
             <h3>Your Prescriptions</h3>
-            
+
             @if (loading)
             {
                 <p>Loading prescriptions...</p>
@@ -35,8 +39,8 @@
                         <p><strong>Recommendations:</strong> @prescription.recommendations</p>
                         <p><strong>Date:</strong> @prescription.date</p>
                         <p><strong>Time:</strong> @prescription.time</p>
-                        <p><strong>Doctor:</strong> @prescription.doctorid @prescription.doctorname @prescription.doctorsurname</p>
-             
+                        <p><strong>Doctor:</strong>@prescription.doctorname @prescription.doctorsurname</p>
+
                     </div>
                 }
             }
@@ -79,68 +83,3 @@
 }
 
 
-<style>
-    .prescription-container {
-        padding: 20px;
-        background-color: #f4f8ff; /* Soft light blue background */
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 20px;
-    }
-
-    .prescription-container h3 {
-        color: #004085; /* Dark blue for title */
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    /* Prescription Card Styling */
-    .prescription-card {
-        background-color: #ffffff;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .prescription-card:hover {
-        transform: translateY(-5px); /* Slight hover effect */
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-    }
-
-    /* Title and Label Styling within Prescription Cards */
-    .prescription-card h4 {
-        color: #0062cc; /* Blue color for diagnosis */
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .prescription-card p {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #555555; /* Dark gray text */
-    }
-
-    .prescription-card strong {
-        color: #004085; /* Dark blue for labels */
-    }
-
-    /* Loading and No Prescriptions Messages */
-    p {
-        font-size: 16px;
-        color: #555555;
-    }
-
-    /* Error or No Data Styling */
-    p.no-prescriptions {
-        color: #ff6b6b; /* Red for error message */
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    p.loading {
-        color: #007bff; /* Blue for loading text */
-        font-size: 16px;
-    }
-</style>
