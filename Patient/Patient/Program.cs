@@ -21,6 +21,8 @@ builder.Services.AddScoped<ILoginService, HttpLoginService>();
 builder.Services.AddScoped<SimpleAuthProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 builder.Services.AddScoped<IPrescriptionService, HttpPrescriptionService>();
+builder.Services.AddSingleton<IAppointmentStateService, AppointmentStateService>();
+builder.Services.AddSingleton<IPrescriptionStateService, PrescriptionStateService>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddMudServices();

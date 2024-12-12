@@ -20,19 +20,11 @@ public class Appointment
     setType(type);
     setDateAndTime(dateAndTime);
     setDescription(description);
-    if (status != null)
-    {
-      if (status.equals("Active"))
-      {
-        setStatus(new ActiveAppointment());
-      }
-      else if (status.equals("Cancelled"))
-      {
-        setStatus(new CancelledAppointment());
-      }
-      else
-      {
-        setStatus(new ExpiredAppointment());
+    if (status != null) {
+      switch (status) {
+        case "Active" -> setStatus(new ActiveAppointment());
+        case "Cancelled" -> setStatus(new CancelledAppointment());
+        default -> setStatus(new ExpiredAppointment());
       }
     }
   }
@@ -41,7 +33,7 @@ public class Appointment
     status.cancel(this);
   }
   public void expire(){
-    if (LocalDate.now().isAfter(dateAndTime.getDate())){
+    if (LocalDate.now().isAfter(dateAndTime.getDate()) || LocalDate.now().isEqual(dateAndTime.getDate()) && LocalTime.now().isAfter(dateAndTime.getTime())) {
       status.expire(this);
     }
   }
@@ -72,6 +64,7 @@ public class Appointment
   }
   public String getStatus()
   {
+    expire();
     return status.status();
   }
   public String getAdressString(){return clinic.getAddress();}

@@ -23,8 +23,6 @@ import java.util.List;
     blockingStub = PatientGrpc.newBlockingStub(channel);
   }
 
-
-
   @GetMapping("/cities") public List<CityDto> getCities()
   {
 
@@ -51,7 +49,8 @@ import java.util.List;
 
   }
 
-  @GetMapping("/days") public List<DateDto> getDoctorsAvailability(@RequestParam String doctorId)
+  @GetMapping("/days") public List<DateDto> getDoctorsAvailability(
+      @RequestParam String doctorId)
   {
     try
     {
@@ -60,7 +59,7 @@ import java.util.List;
       AllDays response = blockingStub.getDoctorsAvailability(request);
       List<DateDto> days = new ArrayList<>();
 
-      for (DayDto daysDto: response.getDaysList())
+      for (DayDto daysDto : response.getDaysList())
       {
         if (!daysDto.getIsFree())
         {
@@ -86,7 +85,10 @@ import java.util.List;
       throw new RuntimeException("Error getting cities", e);
     }
   }
-  @GetMapping("/alldays") public List<DateDto> GetDoctorsSchedule(@RequestParam String doctorId){
+
+  @GetMapping("/alldays") public List<DateDto> GetDoctorsSchedule(
+      @RequestParam String doctorId)
+  {
     try
     {
       DoctorId request = DoctorId.newBuilder().setDoctorId(doctorId).build();
@@ -94,7 +96,7 @@ import java.util.List;
       AllDays response = blockingStub.getDoctorsAvailability(request);
       List<DateDto> days = new ArrayList<>();
 
-      for (DayDto daysDto: response.getDaysList())
+      for (DayDto daysDto : response.getDaysList())
       {
         if (daysDto.getIsFree())
         {
@@ -359,7 +361,8 @@ import java.util.List;
   {
     try
     {
-      RequestForAppointments request = RequestForAppointments.newBuilder().setCpr(cpr).setPage(page).build();
+      RequestForAppointments request = RequestForAppointments.newBuilder()
+          .setCpr(cpr).setPage(page).build();
 
       GetPrescriptionsResponse response = blockingStub.getPrescriptionsByPatientCpr(
           request);
@@ -367,16 +370,11 @@ import java.util.List;
       List<GetPrescriptionsDto> prescriptionDtos = new ArrayList<>();
       for (PrescriptionInfo prescription : response.getPrescriptionsList())
       {
-        GetPrescriptionsDto dto = new GetPrescriptionsDto(
-            prescription.getId(),
-            prescription.getDiagnosis(),
-            prescription.getMedication(),
-            prescription.getRecommendations(),
-            prescription.getDate(),
-            prescription.getTime(),
-            prescription.getPatientcpr(),
-            prescription.getDoctorid(),
-            prescription.getDoctorname(),
+        GetPrescriptionsDto dto = new GetPrescriptionsDto(prescription.getId(),
+            prescription.getDiagnosis(), prescription.getMedication(),
+            prescription.getRecommendations(), prescription.getDate(),
+            prescription.getTime(), prescription.getPatientcpr(),
+            prescription.getDoctorid(), prescription.getDoctorname(),
             prescription.getDoctorsurname());
 
         prescriptionDtos.add(dto);
@@ -391,21 +389,50 @@ import java.util.List;
     }
 
   }
-  @GetMapping("/count") public int getAppointmentsCount(@RequestParam String cpr){
+
+  @GetMapping("/countPres") public int getPrescriptionsCount(
+      @RequestParam String cpr)
+  {
     try
     {
-      RequestForAppointments request = RequestForAppointments.newBuilder().setCpr(cpr).build();
+      RequestForAppointments request = RequestForAppointments.newBuilder()
+          .setCpr(cpr).build();
 
       CountReply response = blockingStub.getPrescriptionCount(request);
 
       return response.getCount();
-    }catch (StatusRuntimeException e)
+    }
+    catch (StatusRuntimeException e)
     {
       e.printStackTrace();
       throw new RuntimeException("Error counting", e);
     }
     catch (Exception e)
-    {e.printStackTrace();
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting appointments", e);
+    }
+  }
+
+  @GetMapping("/count") public int getAppointmentsCount(
+      @RequestParam String cpr)
+  {
+    try
+    {
+      PatientRequest request = PatientRequest.newBuilder().setCpr(cpr).build();
+
+      CountReply response = blockingStub.getAppointmentCount(request);
+
+      return response.getCount();
+    }
+    catch (StatusRuntimeException e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting", e);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
       throw new RuntimeException("Error counting appointments", e);
     }
   }
@@ -439,7 +466,6 @@ import java.util.List;
         dto.setClinicStreetNumber(appointment.getClinicStreetNumber());
         dto.setClinicCity(appointment.getClinicCity());
 
-
         appointmentsList.add(dto);
       }
 
@@ -460,7 +486,8 @@ import java.util.List;
       return errorResponse;
     }
     catch (Exception e)
-    {e.printStackTrace();
+    {
+      e.printStackTrace();
 
       ResponseDto errorResponse = new ResponseDto();
       errorResponse.setSuccess(false);

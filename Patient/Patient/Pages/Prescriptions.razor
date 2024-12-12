@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using Patient.DTOs
 @using Patient.Services
+@inject IPrescriptionStateService state;
 
 
 @inject AuthenticationStateProvider AuthProvider;
@@ -23,6 +24,9 @@
     <Authorized>
         <div class="prescription-container">
             <h3>Your Prescriptions</h3>
+            <div class="pagination-controls">
+                <button @onclick="Refresh" disabled="@isDisabledRefresh">Refresh</button>
+                </div>
 
             @if (loading)
             {
@@ -63,6 +67,8 @@
     private string errorMessage;
     private string cpr;
 
+    private bool isDisabledRefresh = false;
+
     // Pagination variables
     private int prescriptionCount;
     private int currentPage = 1;
@@ -71,6 +77,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (state.IsInitialized)
+        {
+            prescriptions = state.Prescriptions;
+            loading = false;
+            return;
+        }
         try
         {
             var authState = await AuthProvider.GetAuthenticationStateAsync();
@@ -87,6 +99,8 @@
 
 
             prescriptions = await PrescriptionService.GetPrescriptionsByPatientCpr(cpr, currentPage);
+            
+            state.SetPrescriptions(prescriptions);
             
         }
         catch (Exception e)
@@ -167,6 +181,18 @@
             isCooldownActive = false;
         }
     }
+
+    public async Task Refresh()
+    {
+        LoadPrescriptionsForPage(currentPage);
+
+        isDisabledRefresh = true;
+
+        await Task.Delay(30000);
+
+        isDisabledRefresh = false;
+    }
+    
 }
 
 

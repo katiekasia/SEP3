@@ -1,5 +1,8 @@
 @page "/Register"
+@using Patient.DTOs
+@using Patient.Services
 @inject HttpClient Http
+@inject IRegisterService registerService;
 
 <link href="css/Register.css" rel="stylesheet" />
 
@@ -77,7 +80,8 @@
             return;
         }
 
-        var registerDto = new
+        var registerDto = new 
+            RegisterDto()
         {
             name = Name,
             surname = Surname,
@@ -89,10 +93,9 @@
 
         try
         {
-            HttpResponseMessage responseMessage = await Http.PostAsJsonAsync(
-                "http://localhost:8081/Demo/register", registerDto);
+            var response = await registerService.RegisterPatient(registerDto);
 
-            if (responseMessage.IsSuccessStatusCode)
+            if (response != null)
             {
                 serverResponse = "Registered successfully!";
             }

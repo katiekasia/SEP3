@@ -43,7 +43,7 @@ namespace Patient.Services
                     await GetAppointmentCount(createAppointmentDto.patientCpr);
                 if ( check >= 5)
                 {
-                    throw new InvalidOperationException("Cannot create more than 8 appointments.");
+                    throw new InvalidOperationException("Cannot create more than 5 appointments.");
                 }
                 var httpResponse =
                     await client.PostAsJsonAsync($"{baseUrl}/Booking/book",

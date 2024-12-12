@@ -874,50 +874,41 @@ public class EventRepository implements EventInterface {
         INNER JOIN doctor d ON a.doctor_id = d.id
         INNER JOIN clinic c ON d.clinic_id = c.id
         INNER JOIN city ON c.city_PO_code = city.postal_code
-        WHERE a.patient_CPR = ?
+        WHERE a.patient_CPR = ? 
+          AND a.status IN ('Active', 'Cancelled')
         ORDER BY a.date DESC, a.time ASC
     """;
 
         try (Connection connection = database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, patientCpr);
 
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
                     Clinic clinic = new Clinic(
-                            rs.getString("clinic_id"),
-                            rs.getString("clinic_name"),
-                            rs.getString("clinic_city"),
-                            rs.getString("clinic_street"),
-                            rs.getString("clinic_street_number")
+                        rs.getString("clinic_id"),
+                        rs.getString("clinic_name"),
+                        rs.getString("clinic_city"),
+                        rs.getString("clinic_street"),
+                        rs.getString("clinic_street_number")
                     );
 
                     MyDateAndTime dateAndTime = new MyDateAndTime(
-                            rs.getDate("date").toLocalDate(),
-                            rs.getTime("time").toLocalTime()
+                        rs.getDate("date").toLocalDate(),
+                        rs.getTime("time").toLocalTime()
                     );
 
                     int appointmentId = rs.getInt("id");
 
                     Appointment appointment = new Appointment(
-                            appointmentId,
-                            clinic,
-                            rs.getString("type"),
-                            dateAndTime,
-                            rs.getString("description"),
-                            rs.getString("status")
+                        appointmentId,
+                        clinic,
+                        rs.getString("type"),
+                        dateAndTime,
+                        rs.getString("description"),
+                        rs.getString("status")
                     );
-                    LocalDateTime appointmentDateTime = LocalDateTime.of(
-                            appointment.getDate(),
-                            appointment.getTime()
-                    );
-                    LocalDateTime now = LocalDateTime.now();
-
-                    if (appointmentDateTime.isBefore(now) && appointment.getStatus().equals("Active")) {
-                        appointment.expire();
-                        updateAppointmentStatus(appointment.getAppointmentId(), "Expired");
-                    }
 
                     appointments.add(appointment);
                 }
@@ -970,8 +961,14 @@ public class EventRepository implements EventInterface {
         // SQL query to count appointments for the given CPR
         String sql = """
         SELECT COUNT(*)
-        FROM appointment a
-        WHERE a.patient_CPR = ?
+        FROM (
+            SELECT 1
+            FROM appointment a
+            WHERE a.patient_CPR = ?
+              AND a.status = 'Active'
+            ORDER BY a.date DESC, a.time ASC
+            LIMIT 5
+        ) AS limited_results
     """;
 
         try (Connection connection = database.getConnection();

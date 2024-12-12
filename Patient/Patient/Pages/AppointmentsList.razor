@@ -3,7 +3,9 @@
 @using Patient.DTOs
 @using Patient.Services
 @inject IAppointmentService AppointmentService
-@inject AuthenticationStateProvider AuthProvider; 
+@inject AuthenticationStateProvider AuthProvider
+@inject NavigationManager NavigationManager;
+@inject IAppointmentStateService state;
 
 <link href="css/Appointments.css" rel="stylesheet" />
 
@@ -84,17 +86,23 @@
     </Authorized>
 </AuthorizeView>
 
-
 @code {
     private List<GetAppointmentsDto> appointments;
     private string errorMessage;
     private bool isLoading;
+
 
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private string cprNumber;
 
     protected override async Task OnInitializedAsync()
     {
+        if (state.IsInitialized)
+        {
+            appointments = state.Appointments;
+            return;
+        }; // Skip if already initialized
+
         try
         {
             var authState = await authenticationStateTask;
@@ -104,19 +112,17 @@
 
             if (!string.IsNullOrWhiteSpace(cprNumber))
             {
-                await FetchAppointments(); // Automatically fetch appointments
+                await FetchAppointments();
             }
             else
             {
                 errorMessage = "Unable to fetch CPR number. Please log in again.";
             }
+            
         }
-        catch (NullReferenceException e)
+        catch (Exception)
         {
-        }
-        catch (Exception e)
-        {
-            errorMessage = $"Failed to load appointments.";
+            errorMessage = "Failed to load appointments.";
         }
     }
 
@@ -133,15 +139,11 @@
             isLoading = true;
             errorMessage = null;
             appointments = await AppointmentService.GetAppointments(cprNumber);
+            state.SetAppointments(appointments);
         }
-        catch (NullReferenceException ex)
-        {
-            // Check for HTTP status code
-        }
-        catch (Exception ex)
+        catch (Exception)
         {
             errorMessage = "Failed to load appointments. Please try again.";
-            
         }
         finally
         {
@@ -171,10 +173,9 @@
                 errorMessage = "Failed to cancel appointment. Please try again.";
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             errorMessage = "Failed to cancel appointment. Please try again.";
-            
         }
     }
 }

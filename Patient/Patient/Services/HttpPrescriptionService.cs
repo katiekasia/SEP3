@@ -16,7 +16,7 @@ public class HttpPrescriptionService : IPrescriptionService
     {
         try
         {
-            var httpResponse = await client.GetAsync($"{baseUrl}/Booking/count?cpr={cpr}");
+            var httpResponse = await client.GetAsync($"{baseUrl}/Booking/countPres?cpr={cpr}");
             var response = await httpResponse.Content.ReadAsStringAsync();
                
             if (!httpResponse.IsSuccessStatusCode)

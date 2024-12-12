@@ -98,6 +98,7 @@
     {
         var cancelAppointment = await AppointmentService.cancelAppointment(AppointmentId);
         serverResponse = cancelAppointment.response;
+        NavigationManager.NavigateTo("/Appointments");
     }
 
 }

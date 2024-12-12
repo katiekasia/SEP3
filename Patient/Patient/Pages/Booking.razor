@@ -9,6 +9,7 @@
 @inject IAppointmentService AppointmentService
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider;
+@inject IAppointmentStateService state;
 
 <PageTitle>Book Appointment</PageTitle>
 
@@ -375,6 +376,7 @@
                 {
                     var response = await AppointmentService.CreateAppointment(createAppointmentDto);
                     serverResponse = "Appointment created successfully";
+                    state.ClearAppointments();
                     Navigation.NavigateTo("/appointments");
                 }
                 catch (HttpRequestException httpEx)
@@ -392,7 +394,7 @@
                 }
                 catch (InvalidOperationException e)
                 {
-                    serverResponse = "Cannot create more than 8 appointments.";
+                    serverResponse = "Cannot create more than 5 appointments.";
                 }
                 catch (Exception e)
                 {
