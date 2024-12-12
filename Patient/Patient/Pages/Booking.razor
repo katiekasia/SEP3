@@ -155,7 +155,7 @@
 
             private bool DisableSpecificDates(DateTime date)
             {
-                return disabledDates.Any(d => d.Date == date.Date) || date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+                return disabledDates.Any(d => d.Date == date.Date) || date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || date.Date < DateTime.Now.Date;;
             }
             
 
