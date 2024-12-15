@@ -70,6 +70,11 @@
             responseMessage = "Field cannot be emtpy";
             return;
         }
+        if (newPassword.Length<5)
+        {
+            responseMessage = "Field cannot contain less than 5 characters";
+            return;
+        }
 
         try
         {
@@ -81,7 +86,8 @@
 
             var response = await LoginService
                 .ResetPasswordServiceMethod(changePasswordDto);
-            
+            responseMessage = "Password changed successfully";
+
         }
         catch (Exception e)
         {

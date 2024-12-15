@@ -1,0 +1,411 @@
+﻿@page "/Booking"
+@using System.Diagnostics
+@using System.Linq.Expressions
+@using System.Security.Claims
+@using Patient.DTOs
+@using Patient.Services
+@using Patient.Auth
+@inject HttpClient Http
+@inject IAppointmentService AppointmentService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider;
+@inject IAppointmentStateService state;
+
+<PageTitle>Book Appointment</PageTitle>
+
+<link href="css/Demo.css" rel="stylesheet"/>
+<h3>Book an appointment</h3>
+
+<AuthorizeView>
+    <NotAuthorized>
+        Please log in with your patient credentials
+        <NavLink class="nav-link" href="/">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Login
+        </NavLink>
+    </NotAuthorized>
+    <Authorized>
+        @if (!showConfirmation)
+        {
+            <div id="appointment-form" class="form-container">
+                <div class="form-group">
+                    <label for="location">Choose a city:</label>
+                    <select id="location" class="dropdown" @onchange="HandleLocationChange">
+                        <option value="">Select a location</option>
+                        @if (cities != null && cities.Any())
+                        {
+                            @foreach (CityDto city in cities)
+                            {
+                                <option value="@city.code">@city.name (@city.code)</option>
+                            }
+                        }
+                        else
+                        {
+                            <p>No cities available.</p>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="clinic">Choose a clinic:</label>
+                    <select id="clinic" class="dropdown" @onchange="HandleClinicChange">
+                        <option value="">Select a clinic</option>
+                        @foreach (ClinicDto clinic in clinics)
+                        {
+                            <option value="@clinic.id">@clinic.name @clinic.address</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="doctor">Choose a doctor:</label>
+                    <select id="doctor" class="dropdown" @onchange="HandleDoctorChange">
+                        <option value="">Select a doctor</option>
+                        @foreach (var doctor in doctors)
+                        {
+                            <option value="@doctor.id">@doctor.name @doctor.surname @doctor.specialization</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialization">Choose a type of visit:</label>
+                    <select id="specialization" class="dropdown" @bind="selectedType">
+                        <option value="">Select a type of visit</option>
+                        @foreach (var type in types)
+                        {
+                            <option value="@type">@type</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Describe your symptoms:</label>
+                    <textarea id="description" class="textarea" rows="5" @bind="writtenDescription"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <MudDatePicker T="DateTime"
+                                   Label="Select Date"
+                                   DateChanged="HandleDateChange"
+                                   IsDateDisabledFunc="DisableSpecificDates"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Select Time:</label>
+                    <select id="time" class="input" @bind="selectedTime">
+                        <option value="" disabled selected>Select a time</option>
+                        @foreach (var time in availableTimes)
+                        {
+                        <option value="@time">@time</option>
+                        }
+                    </select>
+                </div>
+
+                <button class="btn-confirm" @onclick="ConfirmDetails">Book</button>
+            </div>
+        }
+
+        @if (showConfirmation)
+        {
+            <div id="confirmation-review" class="confirmation-container">
+                <h4>Review and Confirm Your Appointment</h4>
+                <p>
+                    <strong>City:</strong> @selectedLocation.name
+                </p>
+                <p>
+                    <strong>Clinic:</strong> @selectedClinic.name @selectedClinic.address
+                </p>
+                <p>
+                    <strong>Doctor of your choice:</strong> @selectedDoctor.name @selectedDoctor.surname @selectedDoctor.specialization
+                </p>
+                <p>
+                    <strong>Type of visit:</strong> @selectedType
+                </p>
+                <p>
+                    <strong>Description:</strong> @writtenDescription
+                </p>
+                <p id="date-sl">
+                    <strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")
+                </p>
+                <p>
+                    <strong>Time:</strong> @selectedTime
+                </p>
+               
+
+                <button class="btn-book" @onclick="CreateAppointment" disabled="@isDisabled">Confirm Details</button>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(serverResponse))
+        {
+            <div id="server-response" class="response-container">@serverResponse</div>
+        }
+
+
+        @code {
+            private List<CityDto> cities = new List<CityDto>();
+            private List<ClinicDto> clinics = new List<ClinicDto>();
+            private List<DoctorDto> doctors = new List<DoctorDto>();
+            private List<DateDto> Doctordates = new List<DateDto>();
+
+            private List<string> availableTimes = new List<string>();
+
+
+            private List<DateTime> disabledDates = new List<DateTime>();
+
+            private bool DisableSpecificDates(DateTime date)
+            {
+                return disabledDates.Any(d => d.Date == date.Date) || date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || date.Date < DateTime.Now.Date;;
+            }
+            
+
+            private string cpr;
+
+            protected override async Task OnInitializedAsync()
+            {
+                try
+                {
+                    var authState = await AuthProvider.GetAuthenticationStateAsync();
+                    var user = authState.User;
+                    this.cpr = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    if (string.IsNullOrEmpty(this.cpr))
+                    {
+                        serverResponse = "Error: Could not retrieve CPR. Please try logging in again.";
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    serverResponse = "Unexpected error while loading the page.";
+                }
+
+                try
+                {
+                    cities = await AppointmentService.GetCities();
+                }
+                catch (Exception e)
+                {
+                    serverResponse = "Error fetching cities";
+                    
+                }
+
+                try
+                {
+                    if (selectedLocation != null)
+                        clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
+                }
+                catch (Exception e)
+                {
+                    serverResponse = "Unexpected error while loading the page.";
+                }
+
+                try
+                {
+                    if (selectedClinic != null)
+                        doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
+                }
+                catch (Exception e)
+                {
+                    serverResponse = "Unexpected error while loading the page.";
+ 
+                }
+            }
+
+
+            private List<string> types = new() { "Preventive Visit/Check up", "Consultation Visit", "Urgent Care Visit", "Telemedicine Visit" };
+
+            private string? serverResponse;
+            private CityDto? selectedLocation;
+            private DoctorDto? selectedDoctor;
+            private ClinicDto? selectedClinic;
+            private string? selectedType;
+            private string? writtenDescription;
+            private DateTime? selectedDate;
+            private string selectedTime;
+
+            private bool showConfirmation = false;
+            private bool isDisabled = false;
+
+            //
+            private async void HandleLocationChange(ChangeEventArgs e)
+            {
+                string selectedCode = e.Value?.ToString();
+                selectedClinic = null;
+                selectedDoctor = null;
+                selectedDate = null;
+                selectedTime = null;
+
+                // Match the selected code to the corresponding CityDto
+                selectedLocation = cities.FirstOrDefault(city => city.code == selectedCode);
+
+                // Debug or handle null cases if no city matches
+                if (selectedLocation != null)
+                {
+                    clinics = await AppointmentService.GetClinicByCity(selectedLocation.code);
+                    StateHasChanged();
+                }
+            }
+
+            private void HandleDateChange(DateTime? newDate)
+            {
+                selectedDate = newDate;
+                selectedTime = null;
+
+                if (newDate != null)
+                {
+
+                    bool dateFound = false;
+
+                    foreach (var dto in Doctordates)
+                    {
+                        // Compare the selected date with each date in your list
+                        if (DateTime.Parse(dto.date).Date.Equals(newDate.Value.Date))
+                        {
+                            availableTimes = dto.times;  // Assign the times if a match is found
+                            dateFound = true;
+                            break;
+                        }
+                    }
+
+                    // If no match is found, generate available times from 8:00 AM to 3:45 PM every 15 minutes
+                    if (!dateFound)
+                    {
+                        availableTimes = GenerateAvailableTimes();
+                    }
+
+                    StateHasChanged();  // Refresh the UI with the updated available times
+                }
+            }
+            private List<string> GenerateAvailableTimes()
+            {
+                List<string> times = new List<string>();
+
+                // Start time (08:00 AM)
+                DateTime startTime = DateTime.Parse("08:00");
+                // End time (03:45 PM) -> 15:45 in 24-hour format
+                DateTime endTime = DateTime.Parse("15:45");
+
+                // Generate times from 8:00 to 15:45 every 15 minutes
+                for (DateTime time = startTime; time <= endTime; time = time.AddMinutes(15))
+                {
+                    times.Add(time.ToString("HH:mm"));  // Use 24-hour format "HH:mm"
+                }
+
+                return times;
+            }
+            private async void HandleClinicChange(ChangeEventArgs e)
+            {
+                string selectedClinicId = e.Value?.ToString();
+                selectedDoctor = null;
+                selectedDate = null;
+                selectedTime = null;
+
+                if (!string.IsNullOrEmpty(selectedClinicId))
+                {
+                    // Update the selected clinic (from the clinic list)
+                    selectedClinic = clinics.FirstOrDefault(clinic => clinic.id == selectedClinicId);
+
+                    // Fetch the list of doctors for the selected clinic
+                    if (selectedClinic != null)
+                    {
+                        try
+                        {
+                            doctors = await AppointmentService.GetDoctorsByClinic(selectedClinic.id);
+                            StateHasChanged();
+                        }
+                        catch (Exception ex)
+                        {
+                            serverResponse = "Unexpected server error. Please try again later.";
+                        }
+                    }
+                }
+            }
+
+            private async void HandleDoctorChange(ChangeEventArgs e)
+            {
+                string selectedDoctorId = e.Value?.ToString();
+                selectedDate = null;
+                selectedTime = null;
+                selectedDoctor = doctors.FirstOrDefault(d => d.id == selectedDoctorId);
+               List<DateDto> dates = await AppointmentService.GetDoctorAvailability(selectedDoctorId);
+               Doctordates = await AppointmentService.GetDoctorsSchedule(selectedDoctor.id);
+                foreach (var date in dates)
+                {
+                    disabledDates.Add(DateTime.Parse(date.date));
+                }
+
+
+                StateHasChanged();
+            }
+
+            private void ConfirmDetails() => showConfirmation = true;
+
+            private async Task CreateAppointment()
+            {
+                if (selectedDate == null || selectedTime == null)
+                {
+                    serverResponse = "Please select a valid date and time.";
+                    return;
+                }
+                
+
+                if (string.IsNullOrEmpty(cpr))
+                {
+                    serverResponse = "Unable to retrieve user CPR. Please try logging in again.";
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(writtenDescription))
+                {
+                    writtenDescription = "No description provided";
+                }
+
+                var createAppointmentDto = new CreateAppointmentDto()
+                {
+                    status = "Active",
+                    description = writtenDescription,
+                    type = selectedType,
+                    doctorId = selectedDoctor.id,
+                    patientCpr = cpr,
+                    date = selectedDate?.ToString("yyyy-MM-dd"),
+                    time = selectedTime
+                };
+
+                try
+                {
+                    var response = await AppointmentService.CreateAppointment(createAppointmentDto);
+                    serverResponse = "Appointment created successfully";
+                    state.ClearAppointments();
+                    Navigation.NavigateTo("/appointments");
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    isDisabled = true;
+
+                    if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        serverResponse = "Booking failed: Server error. Please try again later.";
+                    }
+                    else
+                    {
+                        serverResponse = "Booking failed: An unexpected error occurred.";
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    serverResponse = "Cannot create more than 5 appointments.";
+                }
+                catch (Exception e)
+                {
+                    isDisabled = true;
+                    // Catch any other general exceptions
+                    serverResponse = "Booking failed: An error occurred.";
+                }
+            }
+
+        }
+
+    </Authorized>
+</AuthorizeView>
