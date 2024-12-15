@@ -4,6 +4,7 @@ import doctor.grpc.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
+import patient.grpc.CountReply;
 import patient.grpc.GetPrescriptionsResponse;
 import via.pro3.mainserver.DTOs.LoginDto;
 import via.pro3.mainserver.DTOs.ResetPasswordDto;
@@ -71,9 +72,9 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     catch (Exception e)
     {
       e.printStackTrace();
-      UniResponse loginDoctorResponse = UniResponse.newBuilder()
-          .setInfo("Failed").build();
-      responseObserver.onNext(loginDoctorResponse);
+      responseObserver.onError(
+          Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+              .asRuntimeException());
     }
     finally
     {
@@ -96,7 +97,9 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     catch (Exception e)
     {
       e.printStackTrace();
-      responseObserver.onNext(null);
+      responseObserver.onError(
+          Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+              .asRuntimeException());
     }
     finally
     {
@@ -109,9 +112,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
       List<Appointment> appointments = model.getDoctorAppointments(request.getId());
       GetAppointmentsResponseD.Builder responseBuilder = GetAppointmentsResponseD.newBuilder();
 
-      System.out.println("IMPL called");
       for (Appointment appointment : appointments) {
-        System.out.println("CREATED IMPL");
         Patient patient = model.getPatientByAppointmentId(appointment.getAppointmentId());
 
         AppointmentInfoD appointmentInfo = AppointmentInfoD.newBuilder()
@@ -141,12 +142,30 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     }
   }
 
+  @Override public void getPrescriptionsCount(PatientCprRequest request,
+      StreamObserver<PrescriptionCount> responseObserver)
+  {
+    try
+    {
+      int count = model.getPrescriptionCount(request.getCpr());
+      PrescriptionCount.Builder responseBuilder = PrescriptionCount.newBuilder();
+      responseBuilder.setCount(count);
+      responseObserver.onNext(responseBuilder.build());
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
+    }
+  }
+
   @Override
-  public void getPrescriptionsByCpr(PatientCprRequest request, StreamObserver<GetPrescriptionsByCprResponse> responseObserver)
+  public void getPrescriptionsByCpr(PrescriptionRequest request, StreamObserver<GetPrescriptionsByCprResponse> responseObserver)
   {
     try {
 
-      List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr());
+      List<GetPrescriptionsDto> prescriptions = model.getPrescriptionsByPatientCpr(request.getCpr(), request.getPage());
 
       GetPrescriptionsByCprResponse.Builder responseBuilder = GetPrescriptionsByCprResponse.newBuilder();
 
@@ -166,8 +185,6 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
 
         responseBuilder.addPrescriptions(prescriptionInfo);
       }
-
-      System.out.println("DATABASE PREScrtiption");
 
       responseObserver.onNext(responseBuilder.build());
     } catch (Exception e) {
@@ -191,11 +208,6 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
 
             List<PatientDtoMessage> patientDtos = new ArrayList<>();
             for (Patient patient : allPatients) {
-                System.out.println(patient.getCPRNo());
-                System.out.println(patient.getName());
-                System.out.println(patient.getSurname());
-                System.out.println(patient.getEmail());
-                System.out.println(patient.getPhone());
                 PatientDtoMessage patientDto = PatientDtoMessage.newBuilder()
                         .setCpr(patient.getCPRNo())
                         .setFirstName(patient.getName())
@@ -213,8 +225,10 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
 
             responseObserver.onNext(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            responseObserver.onError(new RuntimeException("Failed to fetch patients: " + e.getMessage()));
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
         } finally {
             responseObserver.onCompleted();
         }
@@ -238,9 +252,10 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             responseObserver.onNext(response);
         }
         catch (Exception e){
-            e.printStackTrace();
-            Response response = Response.newBuilder().setConfirmation("Failed").build();
-            responseObserver.onNext(response);
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
         }
         finally {
             responseObserver.onCompleted();
@@ -273,5 +288,25 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             .withCause(e)
             .asRuntimeException());
       }
+    }
+
+    @Override
+    public void cancelAppointment(GetAppointmentByIdReq request,
+                                       StreamObserver<Response> responseObserver){
+        try{
+            Response response = Response.newBuilder()
+                    .setConfirmation(model.cancelAppointment(Integer.parseInt(request.getId())))
+                    .build();
+            responseObserver.onNext(response);
+        }
+        catch (Exception e){
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
+        }
+        finally {
+            responseObserver.onCompleted();
+        }
     }
 }

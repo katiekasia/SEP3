@@ -5,28 +5,44 @@
 @inject HttpClient Http;
 @inject ILoginService LoginService;
 @inject AuthenticationStateProvider AuthProvider;
+
 <h3>Profile Overview</h3>
 
-<AuthorizeView>
-    <NotAuthorized>
-        You need to login first
-    </NotAuthorized>
-    
-    <Authorized>
-        <p>ID: @id</p>
-        <p>First name: @firstName</p>
-        <p>Last name: @lastName</p>
-        <p>Specialisation: @specialisation</p>
-        
-        <input @bind="@newPassword"></input>
-        <button @onclick="ChangePassword">Change password</button>
+<link href="css/profile.css" rel="stylesheet" />
 
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-        <p>Server Response: @responseMessage</p>
-        }
-    </Authorized>
-</AuthorizeView>
+<div class="profile-wrapper">
+    <div class="profile-box">
+        <AuthorizeView>
+            <NotAuthorized>
+                <p class="error-message">You need to login first.</p>
+                <NavLink class="nav-link" href="/">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
+                </NavLink>
+            </NotAuthorized>
+
+            <Authorized>
+                <h3>Doctor Profile</h3>
+                <div class="profile-details">
+                    <p>Id: @id</p>
+                    <p>First Name: @firstName</p>
+                    <p>Last Name: @lastName</p>
+                    <p>Specialisation: @specialisation</p>
+                </div>
+
+                <div class="password-container">
+                    <input @bind="@newPassword" type="password" placeholder="Enter new password" class="input-field" />
+                    <button @onclick="ChangePassword" class="profile-btn">Change Password</button>
+                </div>
+
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                <p class="response-message">@responseMessage</p>
+                }
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
 
 @code {
     private string id;
@@ -45,6 +61,7 @@
 
             id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            
             if (!string.IsNullOrEmpty(id))
             {
                 var doctor = await LoginService.getDoctorById(id);
@@ -65,9 +82,9 @@
 
     private async Task ChangePassword()
     {
-        if (string.IsNullOrEmpty(newPassword))
+        if (string.IsNullOrWhiteSpace(newPassword))
         {
-            responseMessage = "Field cannot be emtpy";
+            responseMessage = "Field cannot be empty";
             return;
         }
         if (newPassword.Length<5)
@@ -89,9 +106,26 @@
             responseMessage = "Password changed successfully";
 
         }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                responseMessage = "Action failed: User not found. Please try loggin in again.";
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                responseMessage = "Action failed: Server error. Please try again later.";
+            }
+            else
+            {
+                responseMessage = "Action failed: An unexpected error occurred.";
+            }
+        }
         catch (Exception e)
         {
-            responseMessage = $"Changing password failed: {e.Message}";
+            // Catch any other general exceptions
+            responseMessage = "Action failed: An error occurred.";
         }
     }
 }

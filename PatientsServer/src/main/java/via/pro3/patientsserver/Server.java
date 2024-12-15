@@ -12,7 +12,7 @@ import patient.grpc.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController @RequestMapping("/Demo") @CrossOrigin(origins = "*") public class Server
+@RestController @RequestMapping("/Booking") @CrossOrigin(origins = "*") public class Server
 {
   private final PatientGrpc.PatientBlockingStub blockingStub;
 
@@ -49,13 +49,86 @@ import java.util.List;
 
   }
 
+  @GetMapping("/days") public List<DateDto> getDoctorsAvailability(
+      @RequestParam String doctorId)
+  {
+    try
+    {
+      DoctorId request = DoctorId.newBuilder().setDoctorId(doctorId).build();
+
+      AllDays response = blockingStub.getDoctorsAvailability(request);
+      List<DateDto> days = new ArrayList<>();
+
+      for (DayDto daysDto : response.getDaysList())
+      {
+        if (!daysDto.getIsFree())
+        {
+          DateDto dto = new DateDto();
+          dto.setDate(daysDto.getDate());
+          List<String> timesStrings = new ArrayList<>();
+          for (String s : daysDto.getFreeHoursList())
+          {
+            timesStrings.add(s);
+          }
+          dto.setTimes(timesStrings);
+
+          days.add(dto);
+        }
+      }
+
+      return days;
+
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error getting cities", e);
+    }
+  }
+
+  @GetMapping("/alldays") public List<DateDto> GetDoctorsSchedule(
+      @RequestParam String doctorId)
+  {
+    try
+    {
+      DoctorId request = DoctorId.newBuilder().setDoctorId(doctorId).build();
+
+      AllDays response = blockingStub.getDoctorsAvailability(request);
+      List<DateDto> days = new ArrayList<>();
+
+      for (DayDto daysDto : response.getDaysList())
+      {
+        if (daysDto.getIsFree())
+        {
+          DateDto dto = new DateDto();
+          dto.setDate(daysDto.getDate());
+          List<String> timesStrings = new ArrayList<>();
+          for (String s : daysDto.getFreeHoursList())
+          {
+            timesStrings.add(s);
+          }
+          dto.setTimes(timesStrings);
+
+          days.add(dto);
+        }
+      }
+
+      return days;
+
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error getting cities", e);
+    }
+  }
+
   @GetMapping("/clinics") public List<ClinicDto> getClinicsByCity(
       @RequestParam String code)
   {
-    System.out.println(code);
     try
     {
-      System.out.println("CALLED clinic");
+
       CityRequest request = CityRequest.newBuilder().setName("")
           .setPostalcode(code).build();
       ClinicListResponse response = blockingStub.getClinics(request);
@@ -65,11 +138,9 @@ import java.util.List;
       {
         ClinicDto dto = new ClinicDto(clinic.getId(), clinic.getName(),
             clinic.getAddress());
-        System.out.println("CLINIC PACKED");
         clinics.add(dto);
       }
 
-      System.out.println("clinic sent");
       return clinics;
 
     }
@@ -84,10 +155,8 @@ import java.util.List;
   @GetMapping("/doctors") public List<DoctorDto> getDoctorByClinic(
       @RequestParam String clinic_id)
   {
-    System.out.println(clinic_id);
     try
     {
-      System.out.println("CALLED doctor");
       Clinic request = Clinic.newBuilder().setName("").setId(clinic_id)
           .setAddress("").build();
       DoctorListResponse response = blockingStub.getDoctors(request);
@@ -97,11 +166,9 @@ import java.util.List;
       {
         DoctorDto dto = new DoctorDto(doctor.getId(), doctor.getFirstname(),
             doctor.getLastname(), doctor.getSpecialisation());
-        System.out.println("DOCTOR PACKED");
         doctors.add(dto);
       }
 
-      System.out.println("doctor sent");
       return doctors;
 
     }
@@ -138,12 +205,6 @@ import java.util.List;
   {
     try
     {
-      System.out.println(registerDto.getName());
-      System.out.println(registerDto.getSurname());
-      System.out.println(registerDto.getEmail());
-      System.out.println(registerDto.getPassword());
-      System.out.println(registerDto.getPhone());
-      System.out.println(registerDto.getCprNo());
 
       String password = PasswordHasher.hash(registerDto.getPassword());
       RegisterRequest request = RegisterRequest.newBuilder()
@@ -158,7 +219,6 @@ import java.util.List;
         throw new RuntimeException(
             "Patient registration failed: " + response.getConfirmation());
       }
-      System.out.println("Got here");
       ResponseDto responseDto = new ResponseDto();
       responseDto.setResponse(response.getConfirmation());
       return responseDto;
@@ -297,11 +357,12 @@ import java.util.List;
   }
 
   @GetMapping("/Prescriptions") public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(
-      @RequestParam String cpr)
+      @RequestParam String cpr, @RequestParam int page)
   {
     try
     {
-      PatientRequest request = PatientRequest.newBuilder().setCpr(cpr).build();
+      RequestForAppointments request = RequestForAppointments.newBuilder()
+          .setCpr(cpr).setPage(page).build();
 
       GetPrescriptionsResponse response = blockingStub.getPrescriptionsByPatientCpr(
           request);
@@ -309,20 +370,16 @@ import java.util.List;
       List<GetPrescriptionsDto> prescriptionDtos = new ArrayList<>();
       for (PrescriptionInfo prescription : response.getPrescriptionsList())
       {
-        GetPrescriptionsDto dto = new GetPrescriptionsDto(
-            prescription.getId(),
-            prescription.getDiagnosis(),
-            prescription.getMedication(),
-            prescription.getRecommendations(),
-            prescription.getDate(),
-            prescription.getTime(),
-            prescription.getPatientcpr(),
-            prescription.getDoctorid(),
-            prescription.getDoctorname(),
+        GetPrescriptionsDto dto = new GetPrescriptionsDto(prescription.getId(),
+            prescription.getDiagnosis(), prescription.getMedication(),
+            prescription.getRecommendations(), prescription.getDate(),
+            prescription.getTime(), prescription.getPatientcpr(),
+            prescription.getDoctorid(), prescription.getDoctorname(),
             prescription.getDoctorsurname());
 
         prescriptionDtos.add(dto);
       }
+
       return prescriptionDtos;
     }
     catch (StatusRuntimeException e)
@@ -331,6 +388,53 @@ import java.util.List;
           "gRPC error: " + e.getStatus().getDescription(), e);
     }
 
+  }
+
+  @GetMapping("/countPres") public int getPrescriptionsCount(
+      @RequestParam String cpr)
+  {
+    try
+    {
+      RequestForAppointments request = RequestForAppointments.newBuilder()
+          .setCpr(cpr).build();
+
+      CountReply response = blockingStub.getPrescriptionCount(request);
+
+      return response.getCount();
+    }
+    catch (StatusRuntimeException e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting", e);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting appointments", e);
+    }
+  }
+
+  @GetMapping("/count") public int getAppointmentsCount(
+      @RequestParam String cpr)
+  {
+    try
+    {
+      PatientRequest request = PatientRequest.newBuilder().setCpr(cpr).build();
+
+      CountReply response = blockingStub.getAppointmentCount(request);
+
+      return response.getCount();
+    }
+    catch (StatusRuntimeException e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting", e);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException("Error counting appointments", e);
+    }
   }
 
   @GetMapping("/appointments") public ResponseDto getAppointments(
@@ -373,6 +477,7 @@ import java.util.List;
     }
     catch (StatusRuntimeException e)
     {
+      e.printStackTrace();
 
       ResponseDto errorResponse = new ResponseDto();
       errorResponse.setSuccess(false);
@@ -382,6 +487,7 @@ import java.util.List;
     }
     catch (Exception e)
     {
+      e.printStackTrace();
 
       ResponseDto errorResponse = new ResponseDto();
       errorResponse.setSuccess(false);

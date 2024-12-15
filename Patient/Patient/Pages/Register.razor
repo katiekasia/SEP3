@@ -1,0 +1,127 @@
+@page "/Register"
+@using Patient.DTOs
+@using Patient.Services
+@inject HttpClient Http
+@inject IRegisterService registerService;
+@inject NavigationManager navMgr;
+
+<link href="css/Register.css" rel="stylesheet" />
+
+<div class="login-wrapper">
+    <div class="login-box">
+        <h3>Register</h3>
+
+        <div class="input-container">
+            <input placeholder="Name" @bind="Name" class="input-field" />
+            <input placeholder="Surname" @bind="Surname" class="input-field" />
+            <input placeholder="CPR" @bind="CPR_No" class="input-field" />
+            <input placeholder="Phone number" @bind="Phone" class="input-field" />
+            <input placeholder="Email" @bind="Email" class="input-field" />
+            <input placeholder="Password" type="password" @bind="Password" class="input-field" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(serverResponse))
+        {
+            <p class="error-message">@serverResponse</p>
+        }
+
+        @if (!string.IsNullOrEmpty(serverResponse2))
+        {
+            <p>@serverResponse2</p>
+        }
+
+        <button @onclick="RegisterPatient" class="login-btn">Register</button>
+
+        <p class="register-link">
+            Have an account? <a href="/">Log in</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    private string Name;
+    private string Surname;
+    private string Password;
+    private string CPR_No;
+    private string Phone;
+    private string Email;
+    private string serverResponse;
+    private string serverResponse2;
+
+    private async Task RegisterPatient()
+    {
+        // Validate inputs before creating DTO
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            serverResponse = "Name is required";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Surname))
+        {
+            serverResponse = "Surname is required";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Phone))
+        {
+            serverResponse = "Phone number is required";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Email) || !Email.Contains("@"))
+        {
+            serverResponse = "Valid email is required";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Password) || Password.Length < 5)
+        {
+            serverResponse = "Password must be at least 5 characters";
+            return;
+        }
+
+        var registerDto = new 
+            RegisterDto()
+        {
+            name = Name,
+            surname = Surname,
+            email = Email,
+            phone = Phone,
+            password = Password,
+            cprno = CPR_No
+        };
+
+        try
+        {
+            var response = await registerService.RegisterPatient(registerDto);
+
+            if (response != null)
+            {
+                serverResponse = "Registered successfully!";
+                navMgr.NavigateTo("/");
+            }
+            else
+            {
+                serverResponse = "Registration failed, please retry.";
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Check for HTTP status code
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                serverResponse = "Action failed: Server error. Please try again later.";
+            }
+            else
+            {
+                serverResponse = "Action failed: An unexpected error occurred.";
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            serverResponse = "Registration failed. Please check your credentials again.";
+        }
+    }
+}

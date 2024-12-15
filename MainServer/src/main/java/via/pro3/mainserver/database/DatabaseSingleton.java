@@ -22,7 +22,10 @@ public final class DatabaseSingleton implements DatabaseInterface {
         config.setJdbcUrl(URL);
         config.setUsername(USER);
         config.setPassword(PSWD);
-        config.setMaximumPoolSize(10);  // Set the pool size
+        config.setMaximumPoolSize(20);
+        config.setConnectionTimeout(300000);
+        config.setLeakDetectionThreshold(300000);
+        config.setMaximumPoolSize(30);  // Set the pool size
         dataSource = new HikariDataSource(config);
     }
 

@@ -12,6 +12,9 @@
     <NotAuthorized>
         <div>
             <p>You need to login first.</p>
+            <NavLink class="nav-link" href="/">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
+            </NavLink>
         </div>
     </NotAuthorized>
     <Authorized>
@@ -134,7 +137,7 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            serverResponse = "Error while adding prescription";
         }
     }
 }

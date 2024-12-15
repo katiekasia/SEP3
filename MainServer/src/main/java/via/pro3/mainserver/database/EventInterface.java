@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface EventInterface
 {
@@ -21,7 +22,7 @@ public interface EventInterface
   String changePassowrdDoctor(ResetPasswordDto request);
   boolean loginUser(LoginDto request);
 
-  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr);
+  List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(String patientCpr, int page);
   List<Doctor> getDoctors();
   List<CityDto> getCities();
   List<Clinic> getClinicByCity(String code);
@@ -32,8 +33,16 @@ public interface EventInterface
   Patient getPatientByAppointmentId(int appointmentId);
   String updateUser(UpdatePatientDto request);
   void addPrescription(PrescriptionDto request);
+  String cancelAppointment(int appointmentId);
   Appointment getAppointmentByAppointmentId(int appointmentId);
+  Doctor getDoctorByAppointmentId(int appointmentId);
+  Set<Integer> getPrescriptionIds();
+  Set<Integer> getAppointmentIds();
 
   void updateAppointmentStatus(int appointmentId, String newStatus);
   void cancelAppointment(int appointmentId, String patientCpr);
+
+  DaysDTO getDoctorsAvailibility(String doctorId);
+  int getAppointmentsCount(String cpr);
+  int getPrescriptionCount(String cpr);
 }

@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    padding: 0;
+    color: white
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.details-wrapper {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.details-wrapper h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.details-wrapper p {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.details-wrapper strong {
+    color: #007bff;
+}
+
+.details-wrapper .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+.details-wrapper .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.details-wrapper .btn-danger:hover {
+    background-color: #b02a37;
+}
+
+.notification {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.notification.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.notification.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    color: #fff;
+}

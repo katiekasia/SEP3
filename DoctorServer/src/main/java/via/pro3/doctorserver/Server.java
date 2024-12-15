@@ -5,7 +5,7 @@ import DTOs.*;
 import DTOs.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import doctor.grpc.*;
-import doctor.grpc.PatientDtoMessage;
+import io.grpc.StatusRuntimeException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -16,269 +16,275 @@ import java.util.stream.Collectors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-@CrossOrigin(origins = "*") @RestController @RequestMapping("/Doctor")
+@CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/Doctor")
 
-public class Server
-{
-  private final DoctorGrpc.DoctorBlockingStub blockingStub;
+public class Server {
+    private final DoctorGrpc.DoctorBlockingStub blockingStub;
 
-  public Server()
-  {
-    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-            .usePlaintext().build();
+    public Server() {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+                .usePlaintext().build();
 
-    blockingStub = DoctorGrpc.newBlockingStub(channel);
-  }
-
-  @PostMapping("/login") public DoctorDto loginDoctor(
-          @RequestBody LoginDto loginDto)
-  {
-    if (loginDto == null || loginDto.getcpr() == null
-            || loginDto.getPassword() == null)
-    {
-      throw new IllegalArgumentException("Invalid login credentials");
+        blockingStub = DoctorGrpc.newBlockingStub(channel);
     }
 
-    try
-    {
-      System.out.println("attempt");
-      GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
-              .setId(loginDto.getcpr()).build();
+    @PostMapping("/login")
+    public DoctorDto loginDoctor(
+            @RequestBody LoginDto loginDto) {
+        if (loginDto == null || loginDto.getcpr() == null
+                || loginDto.getPassword() == null) {
+            throw new IllegalArgumentException("Invalid login credentials");
+        }
 
-      LoginDoctorResponse response = blockingStub.loginDoctor(request);
-      System.out.println("response: " + response);
-      if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword()))
-      {
-        System.out.println("success");
-        DoctorDto doctorDto = new DoctorDto(response.getName(),
-                response.getSurname(), response.getSpecialisation(),
-                response.getId());
-        System.out.println("sent");
-        return doctorDto;
-      }
-      else {
-        throw new IllegalArgumentException("Invalid login credentials");
-      }
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException("Login failed: " + e.getMessage());
-    }
-  }
+        try {
+            GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
+                    .setId(loginDto.getcpr()).build();
 
-  @PostMapping("/resetPassword") public ResponseDto changePassword(
-          @RequestBody ResetPasswordDto resetPasswordDto)
-  {
-    if (resetPasswordDto == null)
-    {
-      throw new IllegalArgumentException("Invalid reset password");
+            LoginDoctorResponse response = blockingStub.loginDoctor(request);
+            if (PasswordHasher.validate(response.getPassword(), loginDto.getPassword())) {
+                DoctorDto doctorDto = new DoctorDto(response.getName(),
+                        response.getSurname(), response.getSpecialisation(),
+                        response.getId());
+                return doctorDto;
+            } else {
+                throw new IllegalArgumentException("Invalid login credentials");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Login failed: " + e.getMessage());
+        }
     }
 
-    try
-    {
-      String newPassword = PasswordHasher.hash(resetPasswordDto.getNewPassword());
+    @PostMapping("/resetPassword")
+    public ResponseDto changePassword(
+            @RequestBody ResetPasswordDto resetPasswordDto) {
+        if (resetPasswordDto == null) {
+            throw new IllegalArgumentException("Invalid reset password");
+        }
 
-      ChangePasswordRequest request = ChangePasswordRequest.newBuilder()
-              .setId(resetPasswordDto.getId())
-              .setNewPassword(newPassword)
-              .build();
+        try {
+            String newPassword = PasswordHasher.hash(resetPasswordDto.getNewPassword());
 
-      UniResponse response = blockingStub.changePassword(request);
+            ChangePasswordRequest request = ChangePasswordRequest.newBuilder()
+                    .setId(resetPasswordDto.getId())
+                    .setNewPassword(newPassword)
+                    .build();
 
-      ResponseDto responseDto = new ResponseDto();
-      responseDto.setResponse(response.getInfo());
-      return responseDto;
+            UniResponse response = blockingStub.changePassword(request);
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getInfo());
+            return responseDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Reset password failed: " + e.getMessage());
+        }
     }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException("Reset password failed: " + e.getMessage());
+
+    @PostMapping("/getDoctorById")
+    public DoctorDto getDoctorById(
+            @RequestBody String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("Invalid doctor id");
+        }
+        try {
+            GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder().setId(id)
+                    .build();
+
+            GetDoctorByIdResponse response = blockingStub.getDoctorById(request);
+
+            DoctorDto doctorDto = new DoctorDto(response.getFirstname(),
+                    response.getLastname(), response.getSpecialisation(), "");
+            return doctorDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Get doctor failed: " + e.getMessage());
+        }
     }
-  }
 
-  @PostMapping("/getDoctorById") public DoctorDto getDoctorById(
-          @RequestBody String id)
-  {
-    if (id == null || id.isEmpty())
-    {
-      throw new IllegalArgumentException("Invalid doctor id");
+    @GetMapping("/appointment")
+    public GetAppointmentsDto getAppointment(@RequestParam String appointmentId) {
+        try {
+            GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
+                    .setId(appointmentId)
+                    .build();
+
+            AppointmentInfoD response = blockingStub.getAppointmentById(request);
+            GetAppointmentsDto dto = new GetAppointmentsDto();
+
+            dto.setId(response.getId());
+            dto.setDescription(response.getDescription());
+            dto.setType(response.getType());
+            dto.setDate(response.getDate());
+            dto.setTime(response.getTime());
+            dto.setStatus(response.getStatus());
+            dto.setPatientCpr(response.getPatientCpr());
+            dto.setPatientEmail(response.getPatientEmail());
+            dto.setPatientFirstName(response.getPatientFirstName());
+            dto.setPatientLastName(response.getPatientLastName());
+            dto.setPatientPhone(response.getPatientPhone());
+
+            return dto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+        }
     }
-    try
-    {
-      GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder().setId(id)
-              .build();
 
-      GetDoctorByIdResponse response = blockingStub.getDoctorById(request);
+    @GetMapping("/appointments")
+    public ResponseDto getAppointments(@RequestParam String id) {
+        try {
+            GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
+                    .setId(id)
+                    .build();
 
-      DoctorDto doctorDto = new DoctorDto(response.getFirstname(),
-              response.getLastname(), response.getSpecialisation(), "");
-      return doctorDto;
+            GetAppointmentsResponseD response = blockingStub.getAppointmentsByDoctorId(request);
+            List<GetAppointmentsDto> appointmentsDtoList = new ArrayList<>();
+
+            for (AppointmentInfoD info : response.getAppointmentsList()) {
+                GetAppointmentsDto dto = new GetAppointmentsDto();
+                dto.setId(info.getId());
+                dto.setDescription(info.getDescription());
+                dto.setType(info.getType());
+                dto.setDate(info.getDate());
+                dto.setTime(info.getTime());
+                dto.setStatus(info.getStatus());
+                dto.setPatientCpr(info.getPatientCpr());
+                dto.setPatientEmail(info.getPatientEmail());
+                dto.setPatientFirstName(info.getPatientFirstName());
+                dto.setPatientLastName(info.getPatientLastName());
+                dto.setPatientPhone(info.getPatientPhone());
+
+                appointmentsDtoList.add(dto);
+            }
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setAppointments(appointmentsDtoList);
+            return responseDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+        }
     }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException("Get doctor failed: " + e.getMessage());
+
+    @PutMapping("/cancelAppointment")
+    public ResponseDto cancelAppointment(@RequestParam String appointmentId) {
+        try {
+            GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
+                    .setId(appointmentId)
+                    .build();
+
+            ResponseDto response = new ResponseDto();
+            response.setResponse((String.valueOf(blockingStub.cancelAppointment(request))));
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+        }
     }
-  }
 
-  @GetMapping("/appointment") public GetAppointmentsDto getAppointment(@RequestParam String appointmentId)
-  {
-    try
-    {
-      System.out.println("request");
-      GetAppointmentByIdReq request = GetAppointmentByIdReq.newBuilder()
-          .setId(appointmentId)
-          .build();
+    @GetMapping("/Prescriptions")
+    public List<GetPrescriptionsDto> getPrescriptionsByClientCpr(@RequestParam String cpr, @RequestParam int page) {
+        try {
+            PrescriptionRequest request = PrescriptionRequest.newBuilder().setCpr(cpr).setPage(page).build();
 
-      AppointmentInfoD response = blockingStub.getAppointmentById(request);
-      GetAppointmentsDto dto = new GetAppointmentsDto();
+            GetPrescriptionsByCprResponse response = blockingStub.getPrescriptionsByCpr(request);
 
-      dto.setId(response.getId());
-      dto.setDescription(response.getDescription());
-      dto.setType(response.getType());
-      dto.setDate(response.getDate());
-      dto.setTime(response.getTime());
-      dto.setStatus(response.getStatus());
-      dto.setPatientCpr(response.getPatientCpr());
-      dto.setPatientEmail(response.getPatientEmail());
-      dto.setPatientFirstName(response.getPatientFirstName());
-      dto.setPatientLastName(response.getPatientLastName());
-      dto.setPatientPhone(response.getPatientPhone());
+            List<GetPrescriptionsDto> prescriptionDtos = new ArrayList<>();
+            for (PrescriptionByCprInfo prescription : response.getPrescriptionsList()) {
+                GetPrescriptionsDto dto = new GetPrescriptionsDto(
+                        prescription.getId(),
+                        prescription.getDiagnosis(),
+                        prescription.getMedication(),
+                        prescription.getRecommendations(),
+                        prescription.getDate(),
+                        prescription.getTime(),
+                        prescription.getPatientcpr(),
+                        prescription.getDoctorid(),
+                        prescription.getDoctorname(),
+                        prescription.getDoctorsurname());
 
-      System.out.println("sseasesa");
-      return dto;
-    }catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+                prescriptionDtos.add(dto);
+            }
+
+            return prescriptionDtos;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching prescriptions: " + e.getMessage());
+        }
     }
-  }
-  @GetMapping("/appointments")
-  public ResponseDto getAppointments(@RequestParam String id){
-    try
-    {
-      System.out.println("request");
-      GetDoctorByIdRequest request = GetDoctorByIdRequest.newBuilder()
-              .setId(id)
-              .build();
+    @GetMapping("/count") public int getAppointmentsCount(@RequestParam String cpr){
+        try
+        {
+            PatientCprRequest request = PatientCprRequest.newBuilder().setCpr(cpr).build();
 
-      GetAppointmentsResponseD response = blockingStub.getAppointmentsByDoctorId(request);
-      List<GetAppointmentsDto> appointmentsDtoList = new ArrayList<>();
-
-      for(AppointmentInfoD info : response.getAppointmentsList()){
-        GetAppointmentsDto dto = new GetAppointmentsDto();
-        dto.setId(info.getId());
-        dto.setDescription(info.getDescription());
-        dto.setType(info.getType());
-        dto.setDate(info.getDate());
-        dto.setTime(info.getTime());
-        dto.setStatus(info.getStatus());
-        dto.setPatientCpr(info.getPatientCpr());
-        dto.setPatientEmail(info.getPatientEmail());
-        dto.setPatientFirstName(info.getPatientFirstName());
-        dto.setPatientLastName(info.getPatientLastName());
-        dto.setPatientPhone(info.getPatientPhone());
-
-        System.out.println(dto.toString());
-        appointmentsDtoList.add(dto);
-      }
-
-      System.out.println("SEENT");
-      ResponseDto responseDto = new ResponseDto();
-      responseDto.setAppointments(appointmentsDtoList);
-      return responseDto;
-    }catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException("Error fetching appointments: " + e.getMessage());
+            PrescriptionCount response = blockingStub.getPrescriptionsCount(request);
+            return response.getCount();
+        }catch (StatusRuntimeException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException("Error counting", e);
+        }
+        catch (Exception e)
+        {e.printStackTrace();
+            throw new RuntimeException("Error counting appointments", e);
+        }
     }
-  }
 
+    @GetMapping("/AddPrescriptions/getPatients")
+    public List<PatientDto> getPatients(@RequestParam String doctorid) {
+        try {
+            GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
 
-  @GetMapping("/Prescriptions")
-  public List<GetPrescriptionsDto> getPrescriptionsByClientCpr(@RequestParam String cpr){
-    try
-    {
-      PatientCprRequest request = PatientCprRequest.newBuilder().setCpr(cpr).build();
+            GetPatientsResponse response = blockingStub.getPatientsByDoctorId(request);
 
-      GetPrescriptionsByCprResponse response = blockingStub.getPrescriptionsByCpr(request);
+            List<PatientDto> patientDtos = new ArrayList<>();
 
-      List<GetPrescriptionsDto> prescriptionDtos = new ArrayList<>();
-      for (PrescriptionByCprInfo prescription : response.getPrescriptionsList())
-      {
-        GetPrescriptionsDto dto = new GetPrescriptionsDto(
-            prescription.getId(),
-            prescription.getDiagnosis(),
-            prescription.getMedication(),
-            prescription.getRecommendations(),
-            prescription.getDate(),
-            prescription.getTime(),
-            prescription.getPatientcpr(),
-            prescription.getDoctorid(),
-            prescription.getDoctorname(),
-            prescription.getDoctorsurname());
+            for (PatientDtoMessage patientDto : response.getPatientsList()) {
+                PatientDto dto = new PatientDto(
+                        patientDto.getCpr(),
+                        patientDto.getFirstName(),
+                        patientDto.getLastName(),
+                        patientDto.getEmail(),
+                        patientDto.getPhoneNumber()
+                );
 
-        prescriptionDtos.add(dto);
-      }
-      return prescriptionDtos;
+                patientDtos.add(dto);
+            }
 
-    }catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException("Error fetching prescriptions: " + e.getMessage());
+            return patientDtos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Get patients failed: " + e.getMessage());
+        }
     }
-  }
 
-  @GetMapping("/AddPrescriptions/getPatients")
-  public List<PatientDto> getPatients(@RequestParam String doctorid) {
-    try {
-      GetPatientsRequest request = GetPatientsRequest.newBuilder().setDoctorid(doctorid).build();
+    @PostMapping("/AddPrescriptions/addPrescription")
+    public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
+        try {
+            AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
+                    .setId(prescriptionDto.getId())
+                    .setDiagnosis(prescriptionDto.getDiagnosis())
+                    .setMedication(prescriptionDto.getMedication())
+                    .setRecommendations(prescriptionDto.getRecommendations())
+                    .setDate(prescriptionDto.getDate())
+                    .setTime(prescriptionDto.getTime())
+                    .setPatientcpr(prescriptionDto.getPatientCpr())
+                    .setDoctorid(prescriptionDto.getDoctorId())
+                    .build();
 
-      GetPatientsResponse response = blockingStub.getPatientsByDoctorId(request);
+            ResponseDto responseDto = new ResponseDto();
 
-      List<PatientDto> patientDtos = new ArrayList<>();
+            Response response = blockingStub.addPrescription(request);
+            responseDto.setResponse(response.getConfirmation());
 
-      for (PatientDtoMessage patientDto : response.getPatientsList()) {
-        PatientDto dto = new PatientDto(
-            patientDto.getCpr(),
-            patientDto.getFirstName(),
-            patientDto.getLastName(),
-            patientDto.getEmail(),
-            patientDto.getPhoneNumber()
-        );
-
-        patientDtos.add(dto);
-      }
-
-      return patientDtos;
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new RuntimeException("Get patients failed: " + e.getMessage());
+            return responseDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Add prescription failed: " + e.getMessage());
+        }
     }
-  }
-
-  @PostMapping("/AddPrescriptions/addPrescription")
-  public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
-    try{
-      AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
-              .setId(prescriptionDto.getId())
-              .setDiagnosis(prescriptionDto.getDiagnosis())
-              .setMedication(prescriptionDto.getMedication())
-              .setRecommendations(prescriptionDto.getRecommendations())
-              .setDate(prescriptionDto.getDate())
-              .setTime(prescriptionDto.getTime())
-              .setPatientcpr(prescriptionDto.getPatientCpr())
-              .setDoctorid(prescriptionDto.getDoctorId())
-              .build();
-
-      ResponseDto responseDto = new ResponseDto();
-
-      Response response = blockingStub.addPrescription(request);
-      responseDto.setResponse(response.getConfirmation());
-
-      return responseDto;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      throw new RuntimeException("Add prescription failed: " + e.getMessage());
-    }
-  }
 }

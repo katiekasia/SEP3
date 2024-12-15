@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+}
+
+h3 {
+    text-align: center;
+    font-size: 2rem;
+    color: #fff;
+    margin: 20px 0;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.navigation button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.navigation button:hover {
+    background-color: #0056b3;
+}
+
+.schedule-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #ffffff;
+    color: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table th, .schedule-table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.schedule-table th {
+    background: #007bff;
+    color: white;
+    font-size: 1rem;
+}
+
+.schedule-table td {
+    font-size: 0.9rem;
+    color: #555;
+    position: relative;
+}
+
+.schedule-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.schedule-table tr:nth-child(odd) {
+    background: #fff;
+}
+
+.appointment {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
+}
+
+.appointment:hover {
+    background-color: #218838;
+}
+
+.appointment strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.appointment span {
+    display: block;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .schedule-table th, .schedule-table td {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .navigation button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}

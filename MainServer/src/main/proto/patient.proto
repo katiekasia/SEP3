@@ -12,9 +12,17 @@ service Patient {
   rpc getDoctors(Clinic) returns (DoctorListResponse){}
   rpc updateUser (UpdateUserRequest) returns (DBresponse) {}
   rpc getAppointmentsByPatientCpr(PatientRequest) returns (GetAppointmentsResponse) {}
-  rpc getPrescriptionsByPatientCpr(PatientRequest) returns (GetPrescriptionsResponse){}
+  rpc getPrescriptionsByPatientCpr(RequestForAppointments) returns (GetPrescriptionsResponse){}
   rpc cancelAppointment (CancelAppointmentRequest) returns (DBresponse) {}
+  rpc getDoctorsAvailability(DoctorId) returns(AllDays){}
+  rpc getAppointmentCount(PatientRequest) returns(CountReply){}
+  rpc getPrescriptionCount(RequestForAppointments) returns (CountReply){}
 
+}
+
+message RequestForAppointments{
+  string cpr = 1;
+  int32 page = 2;
 }
 message CreateAppointment {
   string type = 1;
@@ -25,10 +33,23 @@ message CreateAppointment {
   string appointmentDate = 6;
   string appointmentTime = 7;
 }
-
+message DoctorId{
+  string doctorId = 1;
+}
 message CityRequest {
   string name =1;
   string postalcode= 2;
+}
+message AllDays{
+  repeated DayDto days = 1;
+}
+message DayDto{
+  bool isFree = 1;
+  string date = 2;
+  repeated string freeHours = 3;
+}
+message CountReply{
+  int32 count = 1;
 }
 
 message CityListResponse {

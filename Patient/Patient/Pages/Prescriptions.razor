@@ -1,0 +1,199 @@
+﻿@page "/Prescriptions"
+@using System.Security.Claims
+@using Patient.DTOs
+@using Patient.Services
+@inject IPrescriptionStateService state;
+
+
+@inject AuthenticationStateProvider AuthProvider;
+@inject IPrescriptionService PrescriptionService;
+
+
+<link href="css/Prescription.css" rel="stylesheet"/>
+
+<h3>Prescriptions</h3>
+<PageTitle>Prescriptions</PageTitle>
+
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Please log in to see your prescriptions :)</p>
+        <NavLink class="nav-link" href="/">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Login
+        </NavLink>
+    </NotAuthorized>
+    <Authorized>
+        <div class="prescription-container">
+            <h3>Your Prescriptions</h3>
+            <div class="pagination-controls">
+                <button @onclick="Refresh" disabled="@isDisabledRefresh">Refresh</button>
+                </div>
+
+            @if (loading)
+            {
+                <p>Loading prescriptions...</p>
+            }
+            else if (prescriptions == null || !prescriptions.Any())
+            {
+                <p>No prescriptions found</p>
+            }
+            else
+            {
+                @foreach (var prescription in prescriptions)
+                {
+                    <div class="prescription-card">
+                        <h4>Diagnosis: @prescription.diagnosis</h4>
+                        <p><strong>Medication:</strong> @prescription.medication</p>
+                        <p><strong>Recommendations:</strong> @prescription.recommendations</p>
+                        <p><strong>Date:</strong> @prescription.date</p>
+                        <p><strong>Time:</strong> @prescription.time</p>
+                        <p><strong>Doctor:</strong>@prescription.doctorname @prescription.doctorsurname</p>
+                    </div>
+                }
+
+
+                <div class="pagination-controls">
+                    <button @onclick="GoToPreviousPage" disabled="@(!CanGoToPreviousPage || isCooldownActive)">Previous</button>
+                    <button @onclick="GoToNextPage" disabled="@(!CanGoToNextPage || isCooldownActive)">Next</button>
+                </div>
+            }
+        </div>
+  
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private List<GetPrescriptionsDto> prescriptions;
+    private bool loading = true;
+    private string errorMessage;
+    private string cpr;
+
+    private bool isDisabledRefresh = false;
+
+    // Pagination variables
+    private int prescriptionCount;
+    private int currentPage = 1;
+    private int pageSize = 10; 
+    private bool isCooldownActive = false; // To track if cooldown is active
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (state.IsInitialized)
+        {
+            prescriptions = state.Prescriptions;
+            loading = false;
+            return;
+        }
+        try
+        {
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            this.cpr = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(this.cpr))
+            {
+                errorMessage = "Couldn't retrieve your CPR. Please ensure you're logged in.";
+                return;
+            }
+            
+            prescriptionCount = await PrescriptionService.GetPrescriptionCount(cpr);
+
+
+            prescriptions = await PrescriptionService.GetPrescriptionsByPatientCpr(cpr, currentPage);
+            
+            state.SetPrescriptions(prescriptions);
+            
+        }
+        catch (Exception e)
+        {
+            errorMessage = "An error occurred while loading prescriptions.";
+ 
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    private async Task LoadPrescriptionsForPage(int page)
+    {
+        loading = true;
+        try
+        {
+            prescriptions = await PrescriptionService.GetPrescriptionsByPatientCpr(cpr, page);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            errorMessage = "An error occurred while loading prescriptions.";
+
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    // Pagination helper properties
+    private bool CanGoToPreviousPage => currentPage > 1;
+    private bool CanGoToNextPage => currentPage * pageSize < prescriptionCount;
+
+    // Methods to handle next and previous page navigation
+    private async Task GoToPreviousPage()
+    {
+
+        if (CanGoToPreviousPage && !isCooldownActive)
+        {
+            // Start cooldown
+            loading = true;
+            isCooldownActive = true;
+
+            currentPage--;
+            await LoadPrescriptionsForPage(currentPage);
+            loading = false;
+            StateHasChanged();
+
+
+            await Task.Delay(4000);
+
+            // End cooldown
+            isCooldownActive = false;
+        }
+    }
+
+    private async Task GoToNextPage()
+    {
+        if (CanGoToNextPage && !isCooldownActive)
+        {
+            // Start cooldown
+            loading = true;
+            isCooldownActive = true;
+
+            currentPage++;
+            await LoadPrescriptionsForPage(currentPage);
+            loading = false;
+            StateHasChanged();
+
+
+            await Task.Delay(4000);
+
+            // End cooldown
+            isCooldownActive = false;
+        }
+    }
+
+    public async Task Refresh()
+    {
+        LoadPrescriptionsForPage(currentPage);
+
+        isDisabledRefresh = true;
+
+        await Task.Delay(30000);
+
+        isDisabledRefresh = false;
+    }
+    
+}
+
+
+
