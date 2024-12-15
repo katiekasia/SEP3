@@ -7,8 +7,9 @@ namespace Patient.Services
     public class HttpRegisterService : IRegisterService
     {
         private readonly HttpClient client;
+        private readonly string baseUrl = "http://localhost:8081";
 
-        public HttpRegisterService()
+        public HttpRegisterService(HttpClient client)
         {
             this.client = client;
         }
@@ -17,7 +18,7 @@ namespace Patient.Services
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync("api/Booking/register", request);
+                HttpResponseMessage httpResponseMessage = await client.PostAsJsonAsync($"{baseUrl}/Booking/register", request);
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (!httpResponseMessage.IsSuccessStatusCode)
                     throw new ApplicationException(response);
