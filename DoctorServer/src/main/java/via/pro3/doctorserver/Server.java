@@ -265,6 +265,7 @@ public class Server {
     @PostMapping("/AddPrescriptions/addPrescription")
     public ResponseDto addPrescription(@RequestBody PrescriptionDto prescriptionDto) {
         try {
+
             AddPrescriptionRequest request = AddPrescriptionRequest.newBuilder()
                     .setId(prescriptionDto.getId())
                     .setDiagnosis(prescriptionDto.getDiagnosis())

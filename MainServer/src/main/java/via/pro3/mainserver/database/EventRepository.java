@@ -8,6 +8,8 @@ import via.pro3.mainserver.Model.Patient;
 import via.pro3.mainserver.Model.*;
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -272,19 +274,26 @@ public class EventRepository implements EventInterface {
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            LocalDateTime dateTime = LocalDateTime.parse(request.getDate(), formatter);
+            LocalDate date = LocalDate.parse(request.getDate());
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime time = LocalTime.parse(request.getTime(), timeFormatter);
+
+
+
+            // Extract Date and Time
+
 
             statement.setInt(1, request.getId());
             statement.setString(2, request.getDiagnosis());
             statement.setString(3, request.getMedication());
             statement.setString(4, request.getRecommendations());
-            statement.setDate(5, Date.valueOf(dateTime.toLocalDate()));
-            statement.setTime(6, Time.valueOf(dateTime.toLocalTime()));
+            statement.setDate(5, Date.valueOf(date));
+            statement.setTime(6, Time.valueOf(time));
             statement.setString(7, request.getPatientCpr());
             statement.setString(8, request.getDoctorId());
             statement.executeUpdate();
         } catch (DateTimeParseException | SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Failed to create prescription: " + e.getMessage(), e);
         }
 

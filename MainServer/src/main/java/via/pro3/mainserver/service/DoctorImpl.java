@@ -237,6 +237,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     @Override
     public void addPrescription(AddPrescriptionRequest request, StreamObserver<Response> responseObserver){
         try{
+
             PrescriptionDto prescriptionDto = new PrescriptionDto(
                     request.getId(),
                     request.getDiagnosis(), request.getMedication(),
