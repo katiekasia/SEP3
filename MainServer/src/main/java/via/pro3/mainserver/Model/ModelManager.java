@@ -297,6 +297,11 @@ public class ModelManager implements Model
       {
         return new ArrayList<>();
       }
+      for (Appointment appointment : appointments){
+        if (appointment.getStatus().equals("Expired")){
+          eventRepository.updateAppointment(appointment.getAppointmentId(), appointment.getStatus());
+        }
+      }
       return appointments;
     }
     catch (Exception e)
@@ -371,7 +376,17 @@ public class ModelManager implements Model
   @Override
   public List<Appointment> getPatientAppointments(String cpr) {
     try {
-      return eventRepository.getAppointmentsByPatientCpr(cpr);
+      List<Appointment> appointments = eventRepository.getAppointmentsByPatientCpr(cpr);
+      if (appointments == null || appointments.isEmpty())
+      {
+        return new ArrayList<>();
+      }
+      for (Appointment appointment : appointments){
+        if (appointment.getStatus().equals("Expired")){
+          eventRepository.updateAppointment(appointment.getAppointmentId(), appointment.getStatus());
+        }
+      }
+      return appointments;
 
     } catch (Exception e) {
       e.printStackTrace();

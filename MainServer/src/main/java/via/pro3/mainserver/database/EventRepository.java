@@ -1020,4 +1020,28 @@ public class EventRepository implements EventInterface {
         // Return the final count of appointments for the given CPR
         return count;
     }
+
+    @Override public void updateAppointment(int appointmentId,
+        String newStatus)
+    {
+        String sql = """
+            UPDATE appointment
+            SET status = ?
+            WHERE id = ?
+            """;
+
+        try (Connection connection = database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the parameters for the query
+            statement.setString(1, newStatus);
+            statement.setInt(2, appointmentId);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            throw new RuntimeException("Error updating appointment status", e);
+        }
+    }
 }
