@@ -6,23 +6,31 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import patient.grpc.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController @RequestMapping("/Booking") @CrossOrigin(origins = "*") public class Server
 {
   private final PatientGrpc.PatientBlockingStub blockingStub;
+  private final JwtUtil jwtUtil;
 
-  public Server()
+  public Server(JwtUtil jwtUtil)
   {
     ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
         .usePlaintext().build();
     blockingStub = PatientGrpc.newBlockingStub(channel);
+    this.jwtUtil = jwtUtil;
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/cities") public List<CityDto> getCities()
   {
 
@@ -49,6 +57,7 @@ import java.util.List;
 
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/days") public List<DateDto> getDoctorsAvailability(
       @RequestParam String doctorId)
   {
@@ -86,6 +95,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/alldays") public List<DateDto> GetDoctorsSchedule(
       @RequestParam String doctorId)
   {
@@ -123,6 +133,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/clinics") public List<ClinicDto> getClinicsByCity(
       @RequestParam String code)
   {
@@ -152,6 +163,7 @@ import java.util.List;
 
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/doctors") public List<DoctorDto> getDoctorByClinic(
       @RequestParam String clinic_id)
   {
@@ -180,6 +192,7 @@ import java.util.List;
 
   }
 
+  @PreAuthorize("hasRole('USER')")
   @PostMapping("/book") public ResponseDto bookAppointment(
       @RequestBody CreateAppointmentDto createAppointmentDto)
   {
@@ -230,7 +243,7 @@ import java.util.List;
     }
   }
 
-  @PostMapping("/login") public UserDto loginPatient(
+  @PostMapping("/login") public ResponseEntity<?> loginPatient(
       @RequestBody LoginDto loginDto)
   {
     try
@@ -244,6 +257,9 @@ import java.util.List;
       if (PasswordHasher.validate(response.getPassword(),
           loginDto.getPassword()))
       {
+        String jwtToken = jwtUtil.generateToken(loginDto.getcpr());
+
+
         UserDto userDto = new UserDto();
         userDto.setName(response.getName());
         userDto.setEmail(response.getEmail());
@@ -251,17 +267,21 @@ import java.util.List;
         userDto.setSurname(response.getSurname());
         userDto.setCpr(response.getCpr());
 
-        return userDto;
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("token", jwtToken); // Add the token to the response
+        responseBody.put("user", userDto);   // Add user details
+
+        return ResponseEntity.ok(responseBody);
       }
       else
       {
-        throw new RuntimeException("Invalid credentials");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
       }
     }
     catch (StatusRuntimeException e)
     {
       e.printStackTrace();
-      throw new RuntimeException("Error logging in", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error logging in");
     }
     catch (Exception e)
     {
@@ -270,6 +290,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @PostMapping("/update") public ResponseDto updatePatient(
       @RequestBody UpdatePatientDto updatePatientDto)
   {
@@ -306,6 +327,7 @@ import java.util.List;
 
   }
 
+  @PreAuthorize("hasRole('USER')")
   @PostMapping("/appointments/cancel") public ResponseDto cancelAppointment(
       @RequestBody CancelAppointmentDto cancelDto)
   {
@@ -356,6 +378,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/Prescriptions") public List<GetPrescriptionsDto> getPrescriptionsByPatientCpr(
       @RequestParam String cpr, @RequestParam int page)
   {
@@ -390,6 +413,7 @@ import java.util.List;
 
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/countPres") public int getPrescriptionsCount(
       @RequestParam String cpr)
   {
@@ -414,6 +438,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/count") public int getAppointmentsCount(
       @RequestParam String cpr)
   {
@@ -437,6 +462,7 @@ import java.util.List;
     }
   }
 
+  @PreAuthorize("hasRole('USER')")
   @GetMapping("/appointments") public ResponseDto getAppointments(
       @RequestParam String cpr)
   {

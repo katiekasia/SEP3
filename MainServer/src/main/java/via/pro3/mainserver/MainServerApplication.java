@@ -28,6 +28,7 @@ public class MainServerApplication {
             String ipAddress = localHost.getHostAddress();
 
 
+
             System.out.println("Server IP Address: " + ipAddress);
         } catch (UnknownHostException e) {
             System.err.println("Unable to retrieve IP address: " + e.getMessage());
@@ -38,6 +39,7 @@ public class MainServerApplication {
     {
         return (args) -> {
             Model model = new ModelManager();
+
 
             Server server =
                 ServerBuilder.forPort(9090)
