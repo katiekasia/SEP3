@@ -370,7 +370,10 @@
                 }
                 
                 showConfirmation = true;
-                    
+                if (string.IsNullOrEmpty(writtenDescription))
+                {
+                    writtenDescription = "No description provided";
+                }
             }
 
             private async Task CreateAppointment()
@@ -380,11 +383,6 @@
                 {
                     serverResponse = "Unable to retrieve user CPR. Please try logging in again.";
                     return;
-                }
-
-                if (string.IsNullOrEmpty(writtenDescription))
-                {
-                    writtenDescription = "No description provided";
                 }
 
                 var createAppointmentDto = new CreateAppointmentDto()
