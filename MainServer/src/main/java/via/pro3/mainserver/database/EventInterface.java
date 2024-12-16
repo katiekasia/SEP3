@@ -45,4 +45,6 @@ public interface EventInterface
   DaysDTO getDoctorsAvailibility(String doctorId);
   int getAppointmentsCount(String cpr);
   int getPrescriptionCount(String cpr);
+
+  void updateAppointment(int appointmentId, String newStatus);
 }
