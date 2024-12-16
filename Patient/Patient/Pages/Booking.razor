@@ -1,6 +1,7 @@
 ﻿@page "/Booking"
 @using System.Diagnostics
 @using System.Linq.Expressions
+@using System.Net.Security
 @using System.Security.Claims
 @using Patient.DTOs
 @using Patient.Services
@@ -340,16 +341,40 @@
                 StateHasChanged();
             }
 
-            private void ConfirmDetails() => showConfirmation = true;
-
-            private async Task CreateAppointment()
+            private void ConfirmDetails()
             {
+                if (selectedLocation ==null)
+                {
+                    serverResponse = "Please select a desired city.";
+                    return;
+                }
+                if (selectedClinic == null)
+                {
+                    serverResponse = "Please select a desired clinic.";
+                    return;
+                }
+                if (selectedDoctor == null)
+                {
+                    serverResponse = "Please select a desired doctor.";
+                    return;
+                }
+                if (selectedType == null)
+                {
+                    serverResponse = "Please select a type of visit.";
+                    return;
+                }
                 if (selectedDate == null || selectedTime == null)
                 {
                     serverResponse = "Please select a valid date and time.";
                     return;
                 }
                 
+                showConfirmation = true;
+                    
+            }
+
+            private async Task CreateAppointment()
+            {
 
                 if (string.IsNullOrEmpty(cpr))
                 {
