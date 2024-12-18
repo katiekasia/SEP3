@@ -1,6 +1,7 @@
 ﻿@page "/Booking"
 @using System.Diagnostics
 @using System.Linq.Expressions
+@using System.Net.Security
 @using System.Security.Claims
 @using Patient.DTOs
 @using Patient.Services
@@ -102,7 +103,7 @@
                     </select>
                 </div>
 
-                <button class="btn-confirm" @onclick="ConfirmDetails">Confirm Details</button>
+                <button class="btn-confirm" @onclick="ConfirmDetails">Book</button>
             </div>
         }
 
@@ -125,14 +126,15 @@
                 <p>
                     <strong>Description:</strong> @writtenDescription
                 </p>
-                <p>
+                <p id="date-sl">
                     <strong>Date:</strong> @selectedDate?.ToString("yyyy-MM-dd")
                 </p>
                 <p>
                     <strong>Time:</strong> @selectedTime
                 </p>
+               
 
-                <button class="btn-book" @onclick="CreateAppointment" disabled="@isDisabled">Book</button>
+                <button class="btn-book" @onclick="CreateAppointment" disabled="@isDisabled">Confirm Details</button>
             </div>
         }
 
@@ -339,26 +341,48 @@
                 StateHasChanged();
             }
 
-            private void ConfirmDetails() => showConfirmation = true;
-
-            private async Task CreateAppointment()
+            private void ConfirmDetails()
             {
+                if (selectedLocation ==null)
+                {
+                    serverResponse = "Please select a desired city.";
+                    return;
+                }
+                if (selectedClinic == null)
+                {
+                    serverResponse = "Please select a desired clinic.";
+                    return;
+                }
+                if (selectedDoctor == null)
+                {
+                    serverResponse = "Please select a desired doctor.";
+                    return;
+                }
+                if (selectedType == null)
+                {
+                    serverResponse = "Please select a type of visit.";
+                    return;
+                }
                 if (selectedDate == null || selectedTime == null)
                 {
                     serverResponse = "Please select a valid date and time.";
                     return;
                 }
                 
+                showConfirmation = true;
+                if (string.IsNullOrEmpty(writtenDescription))
+                {
+                    writtenDescription = "No description provided";
+                }
+            }
+
+            private async Task CreateAppointment()
+            {
 
                 if (string.IsNullOrEmpty(cpr))
                 {
                     serverResponse = "Unable to retrieve user CPR. Please try logging in again.";
                     return;
-                }
-
-                if (string.IsNullOrEmpty(writtenDescription))
-                {
-                    writtenDescription = "No description provided";
                 }
 
                 var createAppointmentDto = new CreateAppointmentDto()

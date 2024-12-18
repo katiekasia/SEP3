@@ -3,6 +3,7 @@
 @using Patient.Services
 @inject HttpClient Http
 @inject IRegisterService registerService;
+@inject NavigationManager navMgr;
 
 <link href="css/Register.css" rel="stylesheet" />
 
@@ -98,6 +99,7 @@
             if (response != null)
             {
                 serverResponse = "Registered successfully!";
+                navMgr.NavigateTo("/");
             }
             else
             {
@@ -118,8 +120,8 @@
         }
         catch (Exception e)
         {
-            // Catch any other general exceptions
-            serverResponse = "Action failed: An error occurred. Please check your credentials.";
+            Console.WriteLine(e);
+            serverResponse = "Registration failed. Please check your credentials again.";
         }
     }
 }

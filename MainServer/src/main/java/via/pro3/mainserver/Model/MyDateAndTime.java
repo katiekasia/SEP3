@@ -108,12 +108,12 @@ public class MyDateAndTime
 
   public LocalTime getTime()
   {
-    return time;
+    return LocalTime.of(hour, minute);
   }
 
   public LocalDate getDate()
   {
-    return date;
+    return LocalDate.of(year, month, day);
   }
 
   //SETTERS BELOW****************************

@@ -8,7 +8,7 @@
     color: white;
 }
 
- 
+
 .form-group {
     margin-bottom: 15px;
 }
@@ -32,8 +32,13 @@
     resize: vertical;
 }
 
+#date-sl{
+    margin-top: 40px;
+}
+
 .btn-confirm,
 .btn-book {
+    margin-top: 200px;
     display: inline-block;
     padding: 10px 20px;
     font-size: 16px;

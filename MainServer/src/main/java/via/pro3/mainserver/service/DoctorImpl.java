@@ -72,9 +72,9 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     catch (Exception e)
     {
       e.printStackTrace();
-      UniResponse loginDoctorResponse = UniResponse.newBuilder()
-          .setInfo("Failed").build();
-      responseObserver.onNext(loginDoctorResponse);
+      responseObserver.onError(
+          Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+              .asRuntimeException());
     }
     finally
     {
@@ -97,7 +97,9 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     catch (Exception e)
     {
       e.printStackTrace();
-      responseObserver.onNext(null);
+      responseObserver.onError(
+          Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+              .asRuntimeException());
     }
     finally
     {
@@ -223,8 +225,10 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
 
             responseObserver.onNext(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            responseObserver.onError(new RuntimeException("Failed to fetch patients: " + e.getMessage()));
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
         } finally {
             responseObserver.onCompleted();
         }
@@ -233,6 +237,7 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
     @Override
     public void addPrescription(AddPrescriptionRequest request, StreamObserver<Response> responseObserver){
         try{
+
             PrescriptionDto prescriptionDto = new PrescriptionDto(
                     request.getId(),
                     request.getDiagnosis(), request.getMedication(),
@@ -248,9 +253,10 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             responseObserver.onNext(response);
         }
         catch (Exception e){
-            e.printStackTrace();
-            Response response = Response.newBuilder().setConfirmation("Failed").build();
-            responseObserver.onNext(response);
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
         }
         finally {
             responseObserver.onCompleted();
@@ -295,9 +301,10 @@ public class DoctorImpl extends DoctorGrpc.DoctorImplBase
             responseObserver.onNext(response);
         }
         catch (Exception e){
-            e.printStackTrace();
-            Response response = Response.newBuilder().setConfirmation("Failed").build();
-            responseObserver.onNext(response);
+          e.printStackTrace();
+          responseObserver.onError(
+              Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+                  .asRuntimeException());
         }
         finally {
             responseObserver.onCompleted();

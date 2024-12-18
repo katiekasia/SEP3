@@ -111,6 +111,12 @@
     {
         try
         {
+            
+            string dateNow = DateTime.Now.ToString("yyyy-MM-dd");
+       
+
+            string timeNow = DateTime.Now.ToString("HH:mm:ss");
+           
             var random = new Random();
             var prescriptionDto = new PrescriptionDto()
             {
@@ -118,11 +124,17 @@
                 diagnosis = diagnosis,
                 medication = medication,
                 recommendations = recommendations,
-                date = DateTime.Now.ToString(),
-                time = DateTime.UtcNow.ToString(),
+                date = dateNow,
+                time = timeNow,
                 patientcpr = patientCpr,
                 doctorid = doctorId
             };
+
+            // if (medication == null && diagnosis == null && recommendations == null)
+            // {
+            //     serverResponse = "Please add information about medication, diagnosis or recommendation ;)";
+            //     return;
+            // }
             
             var response = await prescriptionService.AddPrescription(prescriptionDto);
             

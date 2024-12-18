@@ -11,6 +11,7 @@ public class Patient {
     private String phone;
     private String email;
     private Map<Integer,Appointment> appointments;
+    private Map<Integer,Prescription> prescriptions;
 
     public Patient(String CPRNo, String name, String surname, String phone, String email, String password) {
         this.CPRNo = CPRNo;
@@ -20,6 +21,7 @@ public class Patient {
         this.phone = phone;
         this.email = email;
         appointments = new HashMap<Integer, Appointment>();
+        prescriptions = new HashMap<Integer,Prescription>();
     }
     public Patient(){}
     public void addAppointment(Appointment appointment){

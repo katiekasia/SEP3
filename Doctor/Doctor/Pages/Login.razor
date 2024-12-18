@@ -23,7 +23,7 @@
 
                 @if (!string.IsNullOrEmpty(responseMessage))
                 {
-                <p class="error-message">Server Response: @responseMessage</p>
+                <p class="error-message">@responseMessage</p>
                 }
                 <button @onclick="LoginDoctor" class="login-btn">Login</button>
             </NotAuthorized>

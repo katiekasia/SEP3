@@ -9,7 +9,6 @@ public class ExpiredAppointment extends AppointmentState
 
   @Override public void expire(Appointment appointment)
   {
-    throw new IllegalStateException("Appointment already expired.");
   }
 
   @Override public String status()

@@ -104,10 +104,9 @@ public class PatientImpl extends PatientGrpc.PatientImplBase
     catch (Exception e)
     {
       e.printStackTrace();
-      DBresponse errorResponse = DBresponse.newBuilder()
-          .setConfirmation("Registration failed: " + e.getMessage()).build();
-
-      responseObserver.onNext(errorResponse);
+      responseObserver.onError(
+          Status.INTERNAL.withDescription(e.getMessage()).withCause(e)
+              .asRuntimeException());
     }
     finally
     {
