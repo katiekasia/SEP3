@@ -15,14 +15,14 @@ public class Prescription
     setMedication(medication);
     setRecommendations(recommendations);
     setDoctor(doctor);
-    setDateAndTime(dateAndTime.copy());
+    setDateAndTime(dateAndTime);
   }
 //GETTERS BELOW*******************
 
 
   public MyDateAndTime getDateAndTime()
   {
-    return dateAndTime.copy();
+    return dateAndTime != null ? dateAndTime.copy() : null;
   }
   public Doctor getDoctor()
   {
@@ -50,29 +50,26 @@ public class Prescription
 
 //SETTERS BELOW***********************************
 
-  public void setId(int id)
-  {
+  public void setId(int id) {
     this.id = id;
   }
 
-  public void setDateAndTime(MyDateAndTime dateAndTime)
-  {
-    this.dateAndTime = dateAndTime;
+  public void setDateAndTime(MyDateAndTime dateAndTime) {
+    this.dateAndTime = dateAndTime.copy();
   }
 
-  public void setDiagnosis(String diagnosis)
-  {if (diagnosis == null) diagnosis = "";
+  public void setDiagnosis(String diagnosis) {
+    if (diagnosis == null) {
+      diagnosis = "";
+    }
     this.diagnosis = diagnosis;
   }
 
-  public void setMedication(String medication)
-  {
-    if (medication == null) medication = "";
+  public void setMedication(String medication) {
     this.medication = medication;
   }
 
-  public void setRecommendations(String recommendations)
-  {
+  public void setRecommendations(String recommendations) {
     if (recommendations == null) recommendations = "";
     this.recommendations = recommendations;
   }
